@@ -9,7 +9,7 @@ class Experiment:
         self.Attr = pyExp.parse_obj(data)
 
     def get_best_model() -> Model:
-        # return "best_model"
+        # return best_model
         pass
 
     def get_best_model_by_metric(metric: str) -> Model:
