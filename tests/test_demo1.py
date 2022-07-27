@@ -11,7 +11,7 @@ def test_demo1():
    client = Client(
       auth_key="auth_key", 
       project_id="project_id", 
-      host="host")
+      host="host_ip")
 
    current_path = os.path.dirname(os.path.abspath(__file__))
    train_file_path = os.path.join(current_path, "train.csv")
