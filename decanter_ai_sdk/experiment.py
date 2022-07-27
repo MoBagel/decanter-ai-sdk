@@ -2,12 +2,25 @@ from unicodedata import category
 from pydantic import BaseModel
 from typing import Any, List, Dict
 from decanter_ai_sdk.model import Model
-class Experiment():
+
+
+class Experiment:
     def __init__(self, data) -> None:
         self.Attr = pyExp.parse_obj(data)
-    
+
     def get_best_model() -> Model:
-        return "best_model"
+        # return "best_model"
+        pass
+
+    def get_best_model_by_metric(metric: str) -> Model:
+        pass
+
+    def get_model_list() -> List[Model]:
+        pass
+
+    def experiment_info() -> Dict:
+        pass
+
 
 class pyExp(BaseModel):
     id: int = None
@@ -59,31 +72,3 @@ class pyExp(BaseModel):
     train_table: Dict[str, Any] = None
     updated_at: str = None
     validation_percentage: float = None
-
-    # def __init__(self) -> None:
-    #     # super().__init__(**data)
-    #     pass
-
-    def get_best_model() -> Model:
-        
-        pass
-
-    # def get_best_model_by_metric(metric: str) -> Model:
-    #     pass
-
-    # def get_model_list() -> List[Model]:
-    #     pass
-
-    # def get_best_model_by_matrics(matric) -> Model:
-    #     pass
-
-    # def experiment_info() -> Dict:
-    #     pass
-
-
-# class Experiment():
-#     def __init__(self, experiment_id, experiment_name, model_list, response_data):
-#         self.experiment_id = experiment_id
-#         self.experiment_name = experiment_name
-#         self.model_list = model_list
-#         self.attributes = response_data
