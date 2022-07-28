@@ -1,9 +1,11 @@
 import logging
 from random import random
 import json
+from tabnanny import check
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+# from typing import Dict, Any
 
 
 logger = logging.getLogger(__name__)
@@ -74,7 +76,20 @@ class Api:
         # return self.requests_(http="POST", url= self.url + "upload", files = file, headers=self.headers, data = data)
 
     def post_train_iid(self, data):
-        exp = {
+        return { "_id":"train_id" }
+        pass
+
+    def post_predict_iid(self, data):
+        return { "_id":"prediction_id" }
+        pass
+
+    # @staticmethod
+    def check(self, check_url, id):
+        # check with server and print process using fake data right now
+        if(check_url=="table"):
+            return {"_id": "returned_data_id", "status": "done"}
+        if(check_url=="experiment"):
+            return {
             "_id": "62d7bc5e30833d5b1bd36ee7",
             "algos": ["DRF", "GLM", "StackedEnsemble"],
             "attributes": {
@@ -245,7 +260,7 @@ class Api:
                 },
             },
             "bagel_id": "M005",
-            "balance_class": "false",
+            "balance_class": "False",
             "best_model": "Generalized Linear Model 1",
             "best_model_id": "62d7bc63363ac1ad75cc34d1",
             "best_score": 0.9866558000000001,
@@ -266,15 +281,15 @@ class Api:
                 "company_id": "62d6e045e0c2efffdc84c39b",
                 "created_at": "2022-07-20T06:34:55.898000Z",
                 "is_active": "true",
-                "is_removed": "false",
+                "is_removed": "False",
                 "last_login": "2022-07-20T06:35:15.717000Z",
                 "login_attempts": 0,
                 "mfa_code": "",
                 "mfa_email": "",
-                "mfa_email_verify": "false",
-                "need_new_pass": "false",
+                "mfa_email_verify": "False",
+                "need_new_pass": "False",
                 "need_onboarding": "true",
-                "need_pass_reset": "false",
+                "need_pass_reset": "False",
                 "role": 0,
                 "unlocked_at": "None",
                 "updated_at": "2022-07-20T06:35:15.723000Z",
@@ -317,7 +332,7 @@ class Api:
             "hyperparameters": {
                 "algos": "StackedEnsemble,GLM,DRF",
                 "apu_name": "None",
-                "balance_class": "false",
+                "balance_class": "False",
                 "data_rows": 398,
                 "endogenous_features": [],
                 "exogenous_features": [],
@@ -393,9 +408,9 @@ class Api:
                 "validation_percentage": 0.1,
             },
             "is_binary_classification": "true",
-            "is_favorited": "false",
-            "is_forecast": "false",
-            "is_starred": "false",
+            "is_favorited": "False",
+            "is_forecast": "False",
+            "is_starred": "False",
             "max_model": 3,
             "name": "API_breast_cancer_example",
             "nfold": 2,
@@ -492,18 +507,58 @@ class Api:
             "updated_at": "2022-07-20T08:27:38.803000Z",
             "validation_percentage": 0.1,
         }
-       
-        return exp
-        # pass
-
-    def post_predict_iid(self, data):
-
-        pass
-
-    # @staticmethod
-    def check(self, check_url, id):
-        # print(str(self.url) + str(check_url) + '/' + id)
-        # check with server and print process
-        # return result
-
-        return {"_id": "returned_data_id", "status": 1}
+        if(check_url=="prediction"):
+            return {
+      "_id":"62df711d3c02dec8a049e0f2",
+      "apu_mock_model":False,
+      "company_id":"62dec9aed92d6a1c31cd04e7",
+      "compared_to_what":"cv",
+      "completed_at":"2022-07-26T04:44:45.000000Z",
+      "created_at":"2022-07-26T04:44:13.768000Z",
+      "data_id":"62df711fcdcc1337e8d7a825",
+      "download_count":0,
+      "error":{
+         
+      },
+      "experiment_id":"62df70543465481f32deec2b",
+      "is_auto_predict":False,
+      "is_multi_model":False,
+      "keep_columns":[
+         "ID"
+      ],
+      "model_id":"62df706b0d2ebed0bc921bb3",
+      "performance":{
+         "cross_threshold":False,
+         "drift":{
+            "auc":2.07,
+            "lift_top_group":-3.14,
+            "logloss":-90.02,
+            "mean_per_class_error":-269.0,
+            "misclassification":-248.56
+         },
+         "drift_diff":{
+            "auc":0.020588457824142647,
+            "lift_top_group":-0.08542668852459068,
+            "logloss":-0.09543853665021831,
+            "mean_per_class_error":-0.07366007007600595,
+            "misclassification":-0.06255310624561403
+         },
+         "metrics":{
+            "auc":0.9749627421758573,
+            "lift_top_group":2.8032786885245904,
+            "logloss":0.2014578441502183,
+            "mean_per_class_error":0.10104321907600596,
+            "misclassification":0.08771929824561403
+         }
+      },
+      "plot_key":"62df713dcdcc1337e8d7a82d",
+      "progress":1.0,
+      "progress_message":"task completed",
+      "project_id":"62df5f26c64f9b760444d911",
+      "shapley_only":False,
+      "started_at":"2022-07-26T04:44:13.000000Z",
+      "status":"done",
+      "table_id":"62df7019d92d6a1c31cd0516",
+      "task_id":"62df711da42f883c147314de",
+      "updated_at":"2022-07-26T04:44:13.768000Z"
+   }

@@ -1,30 +1,11 @@
 from unicodedata import category
-from pydantic import BaseModel
+from attr import attributes
+from pydantic import BaseModel, Field
 from typing import Any, List, Dict
 from decanter_ai_sdk.model import Model
+import sys
 
-
-class Experiment:
-    def __init__(self, data) -> None:
-        self.Attr = pyExp.parse_obj(data)
-
-    def get_best_model() -> Model:
-        # return best_model
-        pass
-
-    def get_best_model_by_metric(metric: str) -> Model:
-        pass
-
-    def get_model_list() -> List[Model]:
-        pass
-
-    def experiment_info() -> Dict:
-        pass
-
-
-class pyExp(BaseModel):
-    id: int = None
-    name: str = None
+class Experiment(BaseModel):
     algos: List[str] = None
     attributes: Dict[str, Any] = None
     bagel_id: str = None
@@ -72,3 +53,70 @@ class pyExp(BaseModel):
     train_table: Dict[str, Any] = None
     updated_at: str = None
     validation_percentage: float = None
+    id: str = Field(..., alias='_id')
+
+    def get_best_model(self) -> Model:
+        return Model(
+                model_id = self.best_model_id,
+                model_name = self.best_model,
+                metrics_score = self.attributes[self.best_model]['validation_scores'],
+                experiment_id = self.id,
+                experiment_name = self.name,
+                attributes = self.attributes[self.best_model]
+            )
+
+    def get_id(self) -> str:
+        return self.id
+
+    def get_best_model_by_metric(self, metric: str) -> Model:
+        result = None
+        if(metric=="auc" or metric =="r2" or metric=="left_top_group" or metric=="custom_increasing"):
+            t = 0
+            for attr in self.attributes:
+                print(self.attributes[attr]['cv_averages'][metric])
+                if float(self.attributes[attr]['cv_averages'][metric]) > t:
+                    t = float(self.attributes[attr]['cv_averages'][metric])
+                    result = Model(
+                        model_id = self.attributes[attr]['model_id'],
+                        model_name = self.attributes[attr]['name'],
+                        metrics_score = self.attributes[attr]['validation_scores'],
+                        experiment_id = self.id,
+                        experiment_name = self.name,
+                        attributes= self.attributes[attr])
+        else:
+            t = sys.maxint
+            for attr in self.attributes:
+                if float(self.attributes[attr]['cv_averages'][metric]) < t:
+                    t = float(self.attributes[attr]['cv_averages'][metric])
+                    result = Model(
+                        model_id = self.attributes[attr]['model_id'],
+                        model_name = self.attributes[attr]['name'],
+                        metrics_score = self.attributes[attr]['validation_scores'],
+                        experiment_id = self.id,
+                        experiment_name = self.name,
+                        attributes= self.attributes[attr])
+        
+        return result
+
+    def get_model_list(self) -> List[Model]:
+        list = []
+
+        for attr in self.attributes:
+
+            list.append(Model(
+                model_id = self.attributes[attr]['model_id'],
+                model_name = self.attributes[attr]['name'],
+                metrics_score = self.attributes[attr]['validation_scores'],
+                experiment_id = self.id,
+                experiment_name = self.name,
+                attributes= self.attributes[attr]))
+
+        return list
+
+    def experiment_info(self) -> Dict:
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "created_at" : self.created_at,
+            "completed_at" : self.completed_at
+        }
