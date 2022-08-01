@@ -6,53 +6,53 @@ from decanter_ai_sdk.model import Model
 import sys
 
 class Experiment(BaseModel):
-    algos: List[str] = None
-    attributes: Dict[str, Any] = None
-    bagel_id: str = None
-    best_model: str = None
-    best_model_id: str = None
-    best_score: float = None
-    category: str = None
-    company_id: str = None
-    completed_at: str = None
-    corex_models: List[str] = None
-    created_at: str = None
-    created_by: Dict[str, str] = None
-    data_id: str = None
-    error: Dict[str, str] = None
-    feature_types: List[Dict[str, str]] = None
-    features: List[str] = None
-    forecast_column: str = None
+    algos: List[str] 
+    attributes: Dict[str, Any] 
+    bagel_id: str 
+    best_model: str 
+    best_model_id: str 
+    best_score: float 
+    category: str 
+    company_id: str 
+    completed_at: str 
+    corex_models: List[str] 
+    created_at: str 
+    created_by: Dict[str, str] 
+    data_id: str 
+    error: Dict[str, str]
+    feature_types: List[Dict[str, str]] 
+    features: List[str] 
+    forecast_column: str
     forecast_exogeneous_columns: List[str] = None
     forecast_time_group_columns: List[str] = None
-    gp_table_id: str = None
-    holdout: Dict[str, str] = None
-    holdout_percentage: float = None
-    is_binary_classification: bool = None
-    is_favorited: bool = None
-    is_forecast: bool = None
-    is_starred: bool = None
-    max_model: int = None
-    name: str = None
-    nfold: int = None
-    preprocessing: Dict[str, str] = None
-    progress: float = None
-    progress_message: str = None
-    project_id: str = None
-    recommendations: List[Dict[str, Any]] = None
-    seed: int = None
-    stacked_ensemble: bool = None
-    started_at: str = None
-    status: str = None
-    stopping_metric: str = None
-    target: str = None
-    target_type: str = None
-    task_id: str = None
-    timeseriesValues: Dict[str, Any] = None
-    tolerance: float = None
-    train_table: Dict[str, Any] = None
-    updated_at: str = None
-    validation_percentage: float = None
+    gp_table_id: str 
+    holdout: Dict[str, str] 
+    holdout_percentage: float 
+    is_binary_classification: bool 
+    is_favorited: bool 
+    is_forecast: bool 
+    is_starred: bool 
+    max_model: int 
+    name: str 
+    nfold: int 
+    preprocessing: Dict[str, str] 
+    progress: float 
+    progress_message: str 
+    project_id: str 
+    recommendations: List[Dict[str, Any]] 
+    seed: int 
+    stacked_ensemble: bool 
+    started_at: str 
+    status: str 
+    stopping_metric: str 
+    target: str 
+    target_type: str 
+    task_id: str 
+    timeseriesValues: Dict[str, Any] 
+    tolerance: float 
+    train_table: Dict[str, Any] 
+    updated_at: str 
+    validation_percentage: float 
     id: str = Field(..., alias='_id')
 
     def get_best_model(self) -> Model:
