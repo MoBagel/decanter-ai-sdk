@@ -8,6 +8,9 @@ class Prediction():
         self.pred = Pred.parse_obj(data)
         self.predict_df = "pred_data"
 
+    def get_predict_df(self) -> pd.DataFrame:
+        return self.predict
+
 class Pred(BaseModel):
     prediction_id : str = Field(..., alias="_id")
     apu_mock_model : str
@@ -34,8 +37,7 @@ class Pred(BaseModel):
     task_id: str
     updated_at: str
 
-    def get_predict_df():
-        pass
+    
 
     def get_metrics():
         # wait until progress == 1
