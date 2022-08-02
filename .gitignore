@@ -1,5 +1,13 @@
-.pytest_cache
+tests/__pycache__
 
-*/__pycache__
+tests/.pytest_cache
 
-test_demo1.py
+tests/__init__.py
+
+tests/test_1.py
+
+# Byte-compiled / optimized / DLL files
+
+*.py[cod]
+
+*$py.class
