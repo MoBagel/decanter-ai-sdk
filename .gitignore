@@ -7,6 +7,11 @@ tests/__init__.py
 tests/test_1.py
 
 # Byte-compiled / optimized / DLL files
+*/__pycache__
+
+*/.pytest_cache
+
+.pytest_cache
 
 *.py[cod]
 

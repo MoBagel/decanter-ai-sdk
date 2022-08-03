@@ -75,11 +75,11 @@ class Experiment(BaseModel):
             or metric == "left_top_group"
             or metric == "custom_increasing"
         ):
-            t = 0
+            score = 0
             for attr in self.attributes:
                 print(self.attributes[attr]["cv_averages"][metric])
-                if float(self.attributes[attr]["cv_averages"][metric]) > t:
-                    t = float(self.attributes[attr]["cv_averages"][metric])
+                if float(self.attributes[attr]["cv_averages"][metric]) > score:
+                    score = float(self.attributes[attr]["cv_averages"][metric])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
                         model_name=self.attributes[attr]["name"],
@@ -89,10 +89,10 @@ class Experiment(BaseModel):
                         attributes=self.attributes[attr],
                     )
         else:
-            t = sys.maxint
+            score = sys.maxint
             for attr in self.attributes:
-                if float(self.attributes[attr]["cv_averages"][metric]) < t:
-                    t = float(self.attributes[attr]["cv_averages"][metric])
+                if float(self.attributes[attr]["cv_averages"][metric]) < score:
+                    score = float(self.attributes[attr]["cv_averages"][metric])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
                         model_name=self.attributes[attr]["name"],

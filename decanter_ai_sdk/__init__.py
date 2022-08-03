@@ -1,6 +1,7 @@
 __version__ = '0.1.0'
 import logging
 import sys
+from .client import Client
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())

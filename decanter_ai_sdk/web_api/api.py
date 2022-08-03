@@ -1,20 +1,7 @@
 from io import StringIO
-import logging
 import json
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from time import sleep
 import pandas as pd
-
-logger = logging.getLogger(__name__)
-requests.packages.urllib3.disable_warnings()
-
-requests_session = requests.Session()
-retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-
-requests_session.mount("http://", HTTPAdapter(max_retries=retries))
-requests_session.mount("https://", HTTPAdapter(max_retries=retries))
 
 
 class Api:
@@ -23,47 +10,6 @@ class Api:
         self.headers = headers
         self.project_id = project_id
         self.upload_headers = upload_headers
-
-    @staticmethod
-    def requests_(http, url, json=None, data=None, files=None, headers=None):
-        try:
-            if http == "GET":
-                return requests_session.get(
-                    url=url,
-                    verify=False,
-                )
-            if http == "POST":
-                return requests_session.post(
-                    url=url,
-                    json=json,
-                    data=data,
-                    files=files,
-                    verify=False,
-                    headers=headers,
-                )
-            if http == "PUT":
-                return requests_session.put(
-                    url=url,
-                    json=json,
-                    data=data,
-                    files=files,
-                    verify=False,
-                    headers=headers,
-                )
-            if http == "DELETE":
-                return requests_session.delete(
-                    url=url,
-                    json=json,
-                    data=data,
-                    files=files,
-                    verify=False,
-                )
-
-            raise Exception("No such HTTP Method.")
-
-        except requests.exceptions.RequestException as err:
-            logger.error("Request Failed :(")
-            raise Exception(err)
 
     def post_upload(self, file: str, name: str):
 
@@ -85,6 +31,16 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
+        return res.json()["experiment"]["_id"]
+
+    def post_train_ts(self, data):
+
+        res = requests.post(
+            f"{self.url}experiment/create",
+            headers=self.headers,
+            data=json.dumps(data),
+            verify=False,
+        )
 
         return res.json()["experiment"]["_id"]
 
@@ -96,7 +52,6 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
-
         return res.json()["prediction"]["_id"]
 
     def get_table_info(self, table_id):
@@ -136,19 +91,14 @@ class Api:
             return res["data"]
 
     def get_pred_data(self, pred_id):
-        url = self.url + "prediction/" + pred_id + "/download"
         data = {"prediction_id": pred_id}
-        status_code = None
 
-        while status_code != 200:
-            prediction_get_response = requests.get(
-                f"{self.url}/prediction/{pred_id}/download",
-                headers=self.headers,
-                data=data,
-                verify=False,
-            )
-            status_code = prediction_get_response.status_code
-            sleep(2)
+        prediction_get_response = requests.get(
+            f"{self.url}/prediction/{pred_id}/download",
+            headers=self.headers,
+            data=data,
+            verify=False,
+        )
 
         read_file = StringIO(prediction_get_response.text)
         prediction_df = pd.read_csv(read_file)

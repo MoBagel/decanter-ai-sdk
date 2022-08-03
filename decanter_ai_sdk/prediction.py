@@ -6,8 +6,8 @@ import pandas as pd
 
 class Prediction:
     def __init__(self, data) -> None:
-        self.pred = Attributes.parse_obj(data)
-        self.predict_df
+        self.attributes = Attributes.parse_obj(data)
+        self.predict_df = None
 
     def get_predict_df(self) -> pd.DataFrame:
         return self.predict_df
@@ -40,4 +40,4 @@ class Attributes(BaseModel):
     updated_at: str
 
     def get_metrics(self):
-        return self.performance['metrics']
+        return self.performance["metrics"]
