@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = "0.1.0"
 import logging
 import sys
 from .client import Client
@@ -14,15 +14,13 @@ def enable_default_logger():
     """
     logging.root.handlers = []
 
-    if all(isinstance(handler, logging.NullHandler)
-           for handler in logger.handlers):
+    if all(isinstance(handler, logging.NullHandler) for handler in logger.handlers):
 
         logger.setLevel(logging.INFO)
         default_handler = logging.StreamHandler(sys.stderr)
         default_handler.setFormatter(
             logging.Formatter(
-                fmt='%(asctime)s [%(levelname)8s] '
-                    '%(message)s',
-                datefmt='%H:%M:%S')
+                fmt="%(asctime)s [%(levelname)8s] " "%(message)s", datefmt="%H:%M:%S"
+            )
         )
         logger.addHandler(default_handler)

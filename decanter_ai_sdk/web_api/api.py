@@ -44,7 +44,7 @@ class Api:
 
         return res.json()["experiment"]["_id"]
 
-    def post_predict_iid(self, data):
+    def post_predict(self, data):
 
         res = requests.post(
             f"{self.url}prediction/predict",

@@ -11,6 +11,10 @@ from decanter_ai_sdk.model import Model
 from decanter_ai_sdk.web_api.api import Api
 import logging
 
+from decanter_ai_sdk.enums.evaluators import Classification_enum
+from decanter_ai_sdk.enums.evaluators import Regression_enum
+from decanter_ai_sdk.enums.time_units import TimeUnit
+
 
 class Client:
     def __init__(self, auth_key, project_id, host):
@@ -56,9 +60,9 @@ class Client:
         stopping_metric: str = "auc",
         default_modes: str = None,
         algos: List[str] = ["DRF", "GBM", "XGBoost"],
-        max_model: int = 15,
+        max_model: int = 20,
         tolerance: int = 3,
-        nfold: int = 3,
+        nfold: int = 5,
         stacked_ensemble: bool = True,
         validation_percentage: int = 10,
         seed: int = 1111,
@@ -68,11 +72,13 @@ class Client:
     ) -> Experiment:
 
         data_column_info = self.api.get_table_info(table_id=table_id)
+
         features = [
             feature
             for feature in data_column_info.keys()
             if feature not in drop_features + [target]
         ]
+
         feature_types = [
             {"id": k, "data_type": j}
             for k, j in {key: data_column_info[key] for key in features}.items()
@@ -82,28 +88,14 @@ class Client:
             category = "regression"
             if evaluator is None:
                 evaluator = "wmape"
-            elif evaluator in [
-                "auc",
-                "logloss",
-                "mean_per_class_error",
-                "misclassification",
-                "lift_top_group",
-            ]:
+            elif evaluator not in Regression_enum:
                 raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
+
         else:
             category = "classification"
             if evaluator is None:
                 evaluator = "auc"
-            elif evaluator in [
-                "wmape",
-                "r2",
-                "mse",
-                "rmse",
-                "deviance",
-                "mae",
-                "rmsle",
-                "mape",
-            ]:
+            elif evaluator not in Classification_enum:
                 raise ValueError("Wrong evaluator, you need to fill auc, logloss...")
 
         holdout_dict = dict()
@@ -126,14 +118,13 @@ class Client:
             "stopping_metric": "auc",
             "is_binary_classification": True,
             "holdout": holdout_dict,
-            "tolerance": 7,
-            "nfold": 5,
-            "max_model": 5,
+            "tolerance": tolerance,
+            "nfold": nfold,
+            "max_model": max_model,
             "algos": algos,
             "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
-            # "trainMode": default_modes, -> cause error
-            "timeseriesValues": [],
+            "timeseriesValues": timeseriesValue,
         }
 
         exp_id = self.api.post_train_iid(dict_)
@@ -150,13 +141,13 @@ class Client:
         datetime: str,
         evaluator: str,
         time_groups: List[Any],
-        timeunit: str,
+        timeunit: TimeUnit,
         # enum
         exogeneous_columns_list: List[Any] = [],
         groupby_method: str = None,
         gap: int = 0,
-        feature_derivation_window: int = None,
-        horizon_window: int = 7,
+        feature_derivation_window: int = 60,
+        horizon_window: int = 1,
         validation_percentage: int = 10,
         nfold: int = 5,
         max_model: int = 20,
@@ -167,13 +158,7 @@ class Client:
     ):
         if evaluator is None:
             evaluator = "wmape"
-        elif evaluator in [
-            "auc",
-            "logloss",
-            "mean_per_class_error",
-            "misclassification",
-            "lift_top_group",
-        ]:
+        elif evaluator not in Regression_enum._value2member_map_:
             raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
 
         data_column_info = self.api.get_table_info(table_id=train_table_id)
@@ -247,7 +232,7 @@ class Client:
             "keep_columns": keep_columns,
         }
 
-        pred_id = self.api.post_predict_iid(data)
+        pred_id = self.api.post_predict(data)
 
         prediction = Prediction(self.wait_for_response("prediction", pred_id))
         prediction.predict_df = self.api.get_pred_data(
@@ -264,19 +249,23 @@ class Client:
         test_data_id: str,
     ) -> Prediction:
 
-        pred_id = self.api.post_predict_iid(
-            self.project_id,
-            model.experiment_id,
-            model.model_id,
-            test_data_id,
-            keep_columns,
-            non_negative,
-            is_multi_model=True,
-        )
+        data = {
+            "project_id": self.project_id,
+            "experiment_id": model.experiment_id,
+            "model_id": model.model_id,
+            "table_id": test_data_id,
+            "is_multi_model": True,
+            "non_negative": non_negative,
+            "keep_columns": keep_columns,
+        }
+
+        print('dat:', data)
+
+        pred_id = self.api.post_predict(data)
 
         prediction = Prediction(self.wait_for_response("prediction", pred_id))
         prediction.predict_df = self.api.get_pred_data(
-            prediction.Attributes.prediction_id
+            prediction.attributes.prediction_id
         )
 
         return prediction
@@ -286,16 +275,18 @@ class Client:
         while self.api.check(check_url=url, id=id)["status"] != "done":
             res = self.api.check(check_url=url, id=id)
 
-            print(
-                "Progress: ",
-                int(float(res["progress"]) * 100),
-                "%\nProgress Message: ",
-                res["progress_message"],
-            ) if res["status"] == "running" else print(
-                url, "task is now " + res["status"]
-            )
-
-            sleep(2)
+            if res["status"] == "fail":
+                raise AttributeError(res["progress_message"])
+            else:
+                print(
+                    "Progress: ",
+                    int(float(res["progress"]) * 100),
+                    "%\nProgress Message: ",
+                    res["progress_message"],
+                ) if res["status"] == "running" else print(
+                    url, "task is now " + res["status"]
+                )
+            sleep(3)
 
         print(url, "Done!")
 
