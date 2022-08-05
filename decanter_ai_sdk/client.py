@@ -1,7 +1,7 @@
 from ctypes import Union
 from io import StringIO
 from time import sleep
-from typing import List, Union, Any
+from typing import List, Union, Any, Optional
 import pandas as pd
 from tqdm import tqdm
 
@@ -12,7 +12,7 @@ from decanter_ai_sdk.web_api.api import Api
 import logging
 
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
-from decanter_ai_sdk.enums.evaluators import RegressionMetrix
+from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 
 logging.basicConfig(level=logging.INFO)
@@ -57,10 +57,11 @@ class Client:
     def train_iid(
         self,
         experiment_name: str,
-        table_id: str = None,
-        target: str = None,
-        drop_features: List[str] = None,
-        evaluator: str = None,
+        table_id: Optional[str],
+        target: Optional[str],
+        drop_features: Optional[List[str]] = None,
+        evaluator: Optional[str] = None,
+        holdout_table_id: Optional[str] = None,
         stopping_metric: str = "auc",
         algos: List[str] = ["DRF", "GBM", "XGBoost", "GLM"],
         max_model: int = 20,
@@ -71,7 +72,6 @@ class Client:
         seed: int = 1111,
         timeseries_value: List[str] = [],
         holdout_percentage: int = 10,
-        holdout_table_id: str = None,
     ) -> Experiment:
 
         data_column_info = self.api.get_table_info(table_id=table_id)
@@ -96,7 +96,7 @@ class Client:
             category = "regression"
             if evaluator is None:
                 evaluator = "wmape"
-            elif evaluator not in RegressionMetrix:
+            elif evaluator not in RegressionMetric:
                 raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
 
         else:
@@ -106,13 +106,13 @@ class Client:
             elif evaluator not in ClassificationMetric:
                 raise ValueError("Wrong evaluator, you need to fill auc, logloss...")
 
-        holdout_dict = dict()
+        holdout_config = dict()
         if holdout_percentage:
-            holdout_dict["percent"] = holdout_percentage
+            holdout_config["percent"] = holdout_percentage
         if holdout_table_id:
-            holdout_table_id["table"] = holdout_table_id
+            holdout_config["table"] = holdout_table_id
 
-        data = {
+        training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
             "gp_table_id": table_id,
@@ -125,7 +125,7 @@ class Client:
             "category": category,
             "stopping_metric": "auc",
             "is_binary_classification": True,
-            "holdout": holdout_dict,
+            "holdout": holdout_config,
             "tolerance": tolerance,
             "nfold": nfold,
             "max_model": max_model,
@@ -136,7 +136,7 @@ class Client:
             "stopping_metric": stopping_metric,
         }
 
-        exp_id = self.api.post_train_iid(data)
+        exp_id = self.api.post_train_iid(training_settings)
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
@@ -148,11 +148,11 @@ class Client:
         train_table_id: str,
         target: str,
         datetime: str,
-        evaluator: str,
-        time_groups: List[Any],
+        time_groups: List,
         timeunit: TimeUnit,
-        exogeneous_columns_list: List[Any] = [],
-        groupby_method: str = None,
+        groupby_method: Optional[str] = None,
+        evaluator: RegressionMetric = RegressionMetric.WMAPE,
+        exogeneous_columns_list: List = [],
         gap: int = 0,
         feature_derivation_window: int = 60,
         horizon_window: int = 1,
@@ -170,11 +170,11 @@ class Client:
                 "validation_percentage should be inside a range between 5 to 20."
             )
 
-        if evaluator is None:
-            evaluator = "wmape"
+        # if evaluator is None:
+        #     evaluator = "wmape"
 
-        elif evaluator not in RegressionMetrix._value2member_map_:
-            raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
+        # elif evaluator not in RegressionMetric._value2member_map_:
+        #     raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
 
         data_column_info = self.api.get_table_info(table_id=train_table_id)
 
@@ -189,7 +189,7 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        data = {
+        training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
             "gp_table_id": train_table_id,
@@ -222,7 +222,7 @@ class Client:
             "nfold": nfold,
         }
 
-        exp_id = self.api.post_train_ts(data)
+        exp_id = self.api.post_train_ts(training_settings)
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
@@ -233,46 +233,36 @@ class Client:
         keep_columns: List[str],
         non_negative: bool,
         test_data_id: str,
-        model_id: str = None,
-        experiment_id: str = None,
-        model: Union[Model, None] = None,
+        model_id: Optional[str] = None,
+        experiment_id: Optional[str] = None,
+        model: Optional[Model] = None,
     ) -> Prediction:
-        if model == None:
-            if model_id is None or experiment_id is None:
-                raise ValueError(
-                    "You should either input a Model object or both model_id and experiment_id."
-                )
-            else:
-                data = {
-                    "project_id": self.project_id,
-                    "experiment_id": experiment_id,
-                    "model_id": model_id,
-                    "table_id": test_data_id,
-                    "is_multi_model": False,
-                    "non_negative": non_negative,
-                    "keep_columns": keep_columns,
-                }
-        else:
-            if model_id != None or experiment_id != None:
-                raise ValueError(
-                    "You should either input a Model object or both model_id and experiment_id."
-                )
-            else:
-                data = {
-                    "project_id": self.project_id,
-                    "experiment_id": model.experiment_id,
-                    "model_id": model.model_id,
-                    "table_id": test_data_id,
-                    "is_multi_model": False,
-                    "non_negative": non_negative,
-                    "keep_columns": keep_columns,
-                }
 
-        pred_id = self.api.post_predict(data)
+        if model is None and (experiment_id is None or model_id is None):
+            raise ValueError(
+                "either model or both experiment_id and model_id should be defined"
+            )
 
-        prediction = Prediction(self.wait_for_response("prediction", pred_id))
+        mod_id = model.model_id if model is not None else model_id
+        exp_id = model.experiment_id if model is not None else experiment_id
+
+        prediction_settings = {
+            "project_id": self.project_id,
+            "experiment_id": exp_id,
+            "model_id": mod_id,
+            "table_id": test_data_id,
+            "is_multi_model": False,
+            "non_negative": non_negative,
+            "keep_columns": keep_columns,
+        }
+
+        pred_id = self.api.post_predict(prediction_settings)
+
+        prediction = Prediction(
+            attributes=self.wait_for_response("prediction", pred_id)
+        )
         prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes.prediction_id, data={"prediction_id": pred_id}
+            prediction.attributes["_id"], data={"prediction_id": pred_id}
         )
 
         return prediction
@@ -282,49 +272,37 @@ class Client:
         keep_columns: List[str],
         non_negative: bool,
         test_data_id: str,
-        model_id: str = None,
-        experiment_id: str = None,
-        model: Model = None,
+        model_id: Optional[str] = None,
+        experiment_id: Optional[str] = None,
+        model: Optional[Model] = None,
     ) -> Prediction:
 
-        if model == None:
-            if model_id == None or experiment_id == None:
-                raise ValueError(
-                    "You should either input a Model object or both model_id and experiment_id."
-                )
-            else:
-                data = {
-                    "project_id": self.project_id,
-                    "experiment_id": experiment_id,
-                    "model_id": model_id,
-                    "table_id": test_data_id,
-                    "is_multi_model": True,
-                    "non_negative": non_negative,
-                    "keep_columns": keep_columns,
-                }
-        else:
-            if model_id != None or experiment_id != None:
-                raise ValueError(
-                    "You should either input a Model object or both model_id and experiment_id."
-                )
-            else:
-                data = {
-                    "project_id": self.project_id,
-                    "experiment_id": model.experiment_id,
-                    "model_id": model.model_id,
-                    "table_id": test_data_id,
-                    "is_multi_model": True,
-                    "non_negative": non_negative,
-                    "keep_columns": keep_columns,
-                }
+        if model is None and (experiment_id is None or model_id is None):
+            raise ValueError(
+                "either model or both experiment_id and model_id should be defined"
+            )
 
-        pred_id = self.api.post_predict(data)
+        mod_id = model.model_id if model is not None else model_id
+        exp_id = model.experiment_id if model is not None else experiment_id
 
-        prediction = Prediction(self.wait_for_response("prediction", pred_id))
-        prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes.prediction_id, data={"prediction_id": pred_id}
+        prediction_settings = {
+            "project_id": self.project_id,
+            "experiment_id": exp_id,
+            "model_id": mod_id,
+            "table_id": test_data_id,
+            "is_multi_model": True,
+            "non_negative": non_negative,
+            "keep_columns": keep_columns,
+        }
+
+        pred_id = self.api.post_predict(prediction_settings)
+
+        prediction = Prediction(
+            attributes=self.wait_for_response("prediction", pred_id)
         )
-
+        prediction.predict_df = self.api.get_pred_data(
+            prediction.attributes["_id"], data={"prediction_id": pred_id}
+        )
         return prediction
 
     def wait_for_response(self, url, id):
@@ -355,8 +333,7 @@ class Client:
         """
         Return table dataframe.
         """
-        data = {"table_id": data_id}
-        return self.api.get_table(data_id=data_id, data=data)
+        return self.api.get_table(data_id=data_id)
 
     def get_table_list(self) -> List[str]:
         """

@@ -21,7 +21,7 @@ class ClassificationMetric(Enum):
     MEAN_PER_CLASS_ERROR = "mean_per_class_error"
 
 
-class RegressionMetrix(Enum):
+class RegressionMetric(Enum):
     """
     The Evaluator enumeration is the metrics currently
     supported by the Decanter AI Core SDK

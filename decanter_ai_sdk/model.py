@@ -8,4 +8,4 @@ class Model(BaseModel):
     metrics_score: Dict[str, float]
     experiment_id: str
     experiment_name: str
-    attributes: Any
+    attributes: Dict

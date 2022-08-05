@@ -1,15 +1,15 @@
 from unicodedata import category
 from attr import attributes
 from pydantic import BaseModel, Field
-from typing import Any, List, Dict
-from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetrix
+from typing import Any, List, Dict, Optional
+from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetric
 from decanter_ai_sdk.model import Model
 import sys
 
 
 class Experiment(BaseModel):
     algos: List[str]
-    attributes: Dict[str, Any]
+    attributes: Dict
     bagel_id: str
     best_model: str
     best_model_id: str
@@ -24,9 +24,9 @@ class Experiment(BaseModel):
     error: Dict[str, str]
     feature_types: List[Dict[str, str]]
     features: List[str]
-    forecast_column: str = None
-    forecast_exogeneous_columns: List[str] = None
-    forecast_time_group_columns: List[str] = None
+    forecast_column: Optional[str]
+    forecast_exogeneous_columns: Optional[List[str]] = None
+    forecast_time_group_columns: Optional[List[str]] = None
     gp_table_id: str
     holdout: Dict[str, str]
     holdout_percentage: float
@@ -41,7 +41,7 @@ class Experiment(BaseModel):
     progress: float
     progress_message: str
     project_id: str
-    recommendations: List[Dict[str, Any]]
+    recommendations: List[Dict]
     seed: int
     stacked_ensemble: bool
     started_at: str
@@ -50,9 +50,9 @@ class Experiment(BaseModel):
     target: str
     target_type: str
     task_id: str
-    timeseriesValues: Dict[str, Any]
+    timeseriesValues: Dict
     tolerance: float
-    train_table: Dict[str, Any]
+    train_table: Dict
     updated_at: str
     validation_percentage: float
     id: str = Field(..., alias="_id")
@@ -72,12 +72,11 @@ class Experiment(BaseModel):
         result = None
         if (
             metric == ClassificationMetric.AUC
-            or metric == RegressionMetrix.R2
+            or metric == RegressionMetric.R2
             or metric == ClassificationMetric.LIFT_TOP_GROUP
         ):
             score = 0
             for attr in self.attributes:
-                print(self.attributes[attr]["cv_averages"][metric])
                 if float(self.attributes[attr]["cv_averages"][metric]) > score:
                     score = float(self.attributes[attr]["cv_averages"][metric])
                     result = Model(
@@ -89,7 +88,7 @@ class Experiment(BaseModel):
                         attributes=self.attributes[attr],
                     )
         else:
-            score = sys.maxint
+            score = sys.maxsize
             for attr in self.attributes:
                 if float(self.attributes[attr]["cv_averages"][metric]) < score:
                     score = float(self.attributes[attr]["cv_averages"][metric])
