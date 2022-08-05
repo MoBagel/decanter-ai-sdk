@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Classification_enum(Enum):
+class ClassificationMetric(Enum):
     """
     The Evaluator enumeration is the metrics currently
     supported by the Decanter AI Core SDK
@@ -21,7 +21,7 @@ class Classification_enum(Enum):
     MEAN_PER_CLASS_ERROR = "mean_per_class_error"
 
 
-class Regression_enum(Enum):
+class RegressionMetrix(Enum):
     """
     The Evaluator enumeration is the metrics currently
     supported by the Decanter AI Core SDK

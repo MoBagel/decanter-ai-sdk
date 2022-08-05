@@ -2,6 +2,7 @@ from io import StringIO
 import json
 import requests
 import pandas as pd
+requests.packages.urllib3.disable_warnings()
 
 
 class Api:
@@ -21,6 +22,9 @@ class Api:
             verify=False,
         )
 
+        if not (res.json()["status_code"] == 201 or 200):
+            raise RuntimeError(res.json()["message"])
+
         return res.json()["table"]["_id"]
 
     def post_train_iid(self, data):
@@ -31,6 +35,8 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
+        if not (res.json()["status_code"] == 201 or 200):
+            raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
     def post_train_ts(self, data):
@@ -41,7 +47,8 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
-
+        if not (res.json()["status_code"] == 201 or 200):
+            raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
     def post_predict(self, data):
@@ -52,6 +59,10 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
+
+        if not (res.json()["status_code"] == 201 or 200):
+            raise RuntimeError(res.json()["message"])
+        print(res.json())
         return res.json()["prediction"]["_id"]
 
     def get_table_info(self, table_id):
@@ -59,12 +70,17 @@ class Api:
             f"{self.url}table/{table_id}/columns", headers=self.headers, verify=False
         )
         table_info = {}
+
+        if not (table_response.json()["status_code"] == 201 or 200):
+            raise RuntimeError(table_response.json()["message"])
+
         for column in table_response.json()["columns"]:
             table_info[column["id"]] = column["data_type"]
+
         return table_info
 
-    def check(self, check_url, id):
-        if check_url == "table":
+    def check(self, task, id):
+        if task == "table":
 
             res = requests.get(
                 f"{self.url}table/{id}",
@@ -74,7 +90,7 @@ class Api:
 
             return res["table"]
 
-        if check_url == "experiment":
+        if task == "experiment":
 
             res = requests.get(
                 f"{self.url}experiment/{id}", verify=False, headers=self.headers
@@ -82,7 +98,7 @@ class Api:
 
             return res["experiment"]
 
-        if check_url == "prediction":
+        if task == "prediction":
 
             res = requests.get(
                 f"{self.url}prediction/{id}", verify=False, headers=self.headers
@@ -90,8 +106,7 @@ class Api:
 
             return res["data"]
 
-    def get_pred_data(self, pred_id):
-        data = {"prediction_id": pred_id}
+    def get_pred_data(self, pred_id, data):
 
         prediction_get_response = requests.get(
             f"{self.url}/prediction/{pred_id}/download",
@@ -103,3 +118,26 @@ class Api:
         read_file = StringIO(prediction_get_response.text)
         prediction_df = pd.read_csv(read_file)
         return prediction_df
+
+    def get_table_list(self):
+
+        table_list_res = requests.get(
+            f"{self.url}/table/getlist/{self.project_id}",
+            headers=self.headers,
+            verify=False,
+        )
+
+        return table_list_res.json()["tables"]
+
+    def get_table(self, data_id, data):
+
+        table_res = requests.get(
+            f"{self.url}table/{data_id}/csv",
+            data=data,
+            headers=self.headers,
+            verify=False,
+        )
+
+        read_file = StringIO(table_res.text)
+        table_df = pd.read_csv(read_file)
+        return table_df

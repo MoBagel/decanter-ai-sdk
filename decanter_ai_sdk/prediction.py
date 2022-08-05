@@ -1,5 +1,4 @@
 from typing import Any, List
-import pandas
 from pydantic import BaseModel, Field
 import pandas as pd
 
@@ -21,8 +20,7 @@ class Attributes(BaseModel):
     created_at: str
     data_id: str = Field(..., alias="data_id")
     download_count: int
-    error: Any
-    # experiment_id: str
+    error: Dict[str, str]
     is_auto_predict: bool
     is_multi_model: bool
     keep_columns: List[str]

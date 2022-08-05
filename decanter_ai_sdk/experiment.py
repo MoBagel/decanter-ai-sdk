@@ -2,6 +2,7 @@ from unicodedata import category
 from attr import attributes
 from pydantic import BaseModel, Field
 from typing import Any, List, Dict
+from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetrix
 from decanter_ai_sdk.model import Model
 import sys
 
@@ -67,13 +68,12 @@ class Experiment(BaseModel):
             attributes=self.attributes[self.best_model],
         )
 
-    def get_best_model_by_metric(self, metric: str) -> Model:
+    def get_best_model_by_metric(self, metric: ClassificationMetric) -> Model:
         result = None
         if (
-            metric == "auc"
-            or metric == "r2"
-            or metric == "left_top_group"
-            or metric == "custom_increasing"
+            metric == ClassificationMetric.AUC
+            or metric == RegressionMetrix.R2
+            or metric == ClassificationMetric.LIFT_TOP_GROUP
         ):
             score = 0
             for attr in self.attributes:

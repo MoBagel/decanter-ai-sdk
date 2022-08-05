@@ -2,8 +2,6 @@ tests/__pycache__
 
 tests/.pytest_cache
 
-tests/__init__.py
-
 tests/test_ts.py
 
 # Byte-compiled / optimized / DLL files
