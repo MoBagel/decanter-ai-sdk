@@ -16,3 +16,5 @@ tests/test_ts.py
 *$py.class
 
 /tests/test_iid.py
+
+.DS_STORE

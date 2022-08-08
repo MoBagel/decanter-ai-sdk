@@ -25,8 +25,8 @@ class Experiment(BaseModel):
     feature_types: List[Dict[str, str]]
     features: List[str]
     forecast_column: Optional[str]
-    forecast_exogeneous_columns: Optional[List[str]] = None
-    forecast_time_group_columns: Optional[List[str]] = None
+    forecast_exogeneous_columns: List[str] = []
+    forecast_time_group_columns: List[str] = []
     gp_table_id: str
     holdout: Dict[str, str]
     holdout_percentage: float

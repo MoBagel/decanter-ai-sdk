@@ -29,13 +29,19 @@ echo push docker to our registry
 echo bundle images into tar file
 """
 
-[tool.poe.tasks.test]
+[tool.poe.tasks.test_iid]
 help = "say hi to the console"
 shell = """
 echo run unit tests
-pytest ...
+pytest -s ./tests/test_iid.py
 """
 
+[tool.poe.tasks.test_ts]
+help = "say hi to the console"
+shell = """
+echo run unit tests
+pytest -s ./tests/test_iid.py
+"""
 
 [tool.poe.tasks.lint]
 help = "say hi to the console. black, something else"

@@ -96,14 +96,14 @@ class Client:
             category = "regression"
             if evaluator is None:
                 evaluator = "wmape"
-            elif evaluator not in RegressionMetric:
+            elif evaluator not in RegressionMetric._value2member_map_:
                 raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
 
         else:
             category = "classification"
             if evaluator is None:
                 evaluator = "auc"
-            elif evaluator not in ClassificationMetric:
+            elif evaluator not in ClassificationMetric._value2member_map_:
                 raise ValueError("Wrong evaluator, you need to fill auc, logloss...")
 
         holdout_config = dict()
@@ -170,12 +170,6 @@ class Client:
                 "validation_percentage should be inside a range between 5 to 20."
             )
 
-        # if evaluator is None:
-        #     evaluator = "wmape"
-
-        # elif evaluator not in RegressionMetric._value2member_map_:
-        #     raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
-
         data_column_info = self.api.get_table_info(table_id=train_table_id)
 
         features = [
@@ -232,7 +226,7 @@ class Client:
         self,
         keep_columns: List[str],
         non_negative: bool,
-        test_data_id: str,
+        test_table_id: str,
         model_id: Optional[str] = None,
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
@@ -250,7 +244,7 @@ class Client:
             "project_id": self.project_id,
             "experiment_id": exp_id,
             "model_id": mod_id,
-            "table_id": test_data_id,
+            "table_id": test_table_id,
             "is_multi_model": False,
             "non_negative": non_negative,
             "keep_columns": keep_columns,
@@ -271,7 +265,7 @@ class Client:
         self,
         keep_columns: List[str],
         non_negative: bool,
-        test_data_id: str,
+        test_table_id: str,
         model_id: Optional[str] = None,
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
@@ -289,7 +283,7 @@ class Client:
             "project_id": self.project_id,
             "experiment_id": exp_id,
             "model_id": mod_id,
-            "table_id": test_data_id,
+            "table_id": test_table_id,
             "is_multi_model": True,
             "non_negative": non_negative,
             "keep_columns": keep_columns,

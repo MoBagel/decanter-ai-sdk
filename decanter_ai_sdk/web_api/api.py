@@ -23,7 +23,7 @@ class Api:
             verify=False,
         )
 
-        if int(res.json()["status_code"] / 100) != 2:
+        if not res.ok:
             raise RuntimeError(res.json()["message"])
 
         return res.json()["table"]["_id"]
@@ -36,7 +36,7 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
-        if int(res.json()["status_code"] / 100) != 2:
+        if not res.ok:
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
@@ -48,7 +48,7 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
-        if int(res.json()["status_code"] / 100) != 2:
+        if not res.ok:
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
@@ -60,7 +60,7 @@ class Api:
             data=json.dumps(data),
             verify=False,
         )
-        if int(res.json()["status_code"] / 100) != 2:
+        if not res.ok:
             raise RuntimeError(res.json()["message"])
 
         return res.json()["prediction"]["_id"]
@@ -71,7 +71,7 @@ class Api:
         )
         table_info = {}
 
-        if int(table_response.json()["status_code"] / 100) != 2:
+        if not table_response.ok:
             raise RuntimeError(table_response.json()["message"])
 
         for column in table_response.json()["columns"]:
