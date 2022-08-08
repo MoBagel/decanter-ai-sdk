@@ -1,0 +1,20 @@
+tests/__pycache__
+
+tests/.pytest_cache
+
+tests/test_ts.py
+
+# Byte-compiled / optimized / DLL files
+*/__pycache__
+
+*/.pytest_cache
+
+.pytest_cache
+
+*.py[cod]
+
+*$py.class
+
+/tests/test_iid.py
+
+.DS_STORE
