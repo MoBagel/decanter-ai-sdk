@@ -30,27 +30,27 @@ echo bundle images into tar file
 """
 
 [tool.poe.tasks.test_iid]
-help = "say hi to the console"
+help = "Testing iid tasks."
 shell = """
 echo run unit tests
 pytest -s ./tests/test_iid.py
 """
 
 [tool.poe.tasks.test_ts]
-help = "say hi to the console"
+help = "Testing time series tasks."
 shell = """
 echo run unit tests
 pytest -s ./tests/test_iid.py
 """
 
 [tool.poe.tasks.lint]
-help = "say hi to the console. black, something else"
+help = "Linter"
 shell = """
 echo run a linter on the repo
 """
 
 [tool.poe.tasks.format]
-help = "say hi to the console"
+help = "Formatting"
 shell = """
 echo run a formatter
 """

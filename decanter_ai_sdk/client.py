@@ -1,9 +1,10 @@
 from ctypes import Union
 from io import StringIO
 from time import sleep
-from typing import List, Union, Any, Optional
+from typing import Dict, List, Union, Any, Optional
 import pandas as pd
 from tqdm import tqdm
+from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
@@ -60,10 +61,16 @@ class Client:
         table_id: Optional[str],
         target: Optional[str],
         drop_features: Optional[List[str]] = None,
+        custom_feature_types: Optional[Dict] = [],
         evaluator: Optional[str] = None,
         holdout_table_id: Optional[str] = None,
         stopping_metric: str = "auc",
-        algos: List[str] = ["DRF", "GBM", "XGBoost", "GLM"],
+        algos: List[IIDAlgorithms] = [
+            IIDAlgorithms.DRF.value,
+            IIDAlgorithms.GBM.value,
+            IIDAlgorithms.XGBoost.value,
+            IIDAlgorithms.GLM.value,
+        ],
         max_model: int = 20,
         tolerance: int = 3,
         nfold: int = 5,
@@ -73,6 +80,10 @@ class Client:
         timeseries_value: List[str] = [],
         holdout_percentage: int = 10,
     ) -> Experiment:
+
+        for alg in algos:
+            if alg not in IIDAlgorithms._value2member_map_:
+                raise ValueError("Wrong alogrithm: " + alg)
 
         data_column_info = self.api.get_table_info(table_id=table_id)
 
@@ -91,6 +102,13 @@ class Client:
             {"id": k, "data_type": j}
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
+
+        for cft in custom_feature_types:
+            for feature in feature_types:
+                if feature["id"] == list(cft.keys())[0]:
+                    feature["data_type"] = list(cft.values())[0]
+
+        # print(feature_types)
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -150,8 +168,9 @@ class Client:
         datetime: str,
         time_groups: List,
         timeunit: TimeUnit,
+        algos: List[TSAlgorithms] = [TSAlgorithms.GBM.value],
         groupby_method: Optional[str] = None,
-        evaluator: RegressionMetric = RegressionMetric.WMAPE,
+        evaluator: RegressionMetric = RegressionMetric.WMAPE.value,
         exogeneous_columns_list: List = [],
         gap: int = 0,
         feature_derivation_window: int = 60,
@@ -160,10 +179,17 @@ class Client:
         nfold: int = 5,
         max_model: int = 20,
         tolerance: int = 3,
-        algos: List[str] = ["XGBoost"],
         seed: int = 1111,
         drop_features=[],
+        custom_feature_types: Optional[Dict] = [],
     ):
+
+        for alg in algos:
+            if alg not in TSAlgorithms._value2member_map_:
+                raise ValueError("Wrong alogrithm: " + alg)
+
+        if evaluator not in RegressionMetric._value2member_map_:
+            raise ValueError("Wrong evaluator: " + evaluator)
 
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
@@ -182,6 +208,11 @@ class Client:
             {"id": k, "data_type": j}
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
+
+        for cft in custom_feature_types:
+            for feature in feature_types:
+                if feature["id"] == list(cft.keys())[0]:
+                    feature["data_type"] = list(cft.values())[0]
 
         training_settings = {
             "project_id": self.project_id,
