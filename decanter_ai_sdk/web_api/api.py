@@ -1,3 +1,4 @@
+from email import header
 from io import StringIO
 import json
 import requests
@@ -7,11 +8,11 @@ requests.packages.urllib3.disable_warnings()
 
 
 class Api:
-    def __init__(self, host, headers, upload_headers, project_id):
+    def __init__(self, host, headers, auth_headers, project_id):
         self.url = host + "/v1/"
         self.headers = headers
         self.project_id = project_id
-        self.upload_headers = upload_headers
+        self.auth_headers = auth_headers
 
     def post_upload(self, file: str, name: str):
 
@@ -19,7 +20,7 @@ class Api:
             f"{self.url}table/upload",
             files=file,
             data={"name": name, "project_id": self.project_id},
-            headers=self.upload_headers,
+            headers=self.auth_headers,
             verify=False,
         )
 
@@ -139,6 +140,15 @@ class Api:
 
         read_file = StringIO(table_res.text)
         table_df = pd.read_csv(read_file)
+
         return table_df
 
+    def get_model_type(self, experiment_id, query):
 
+        res = requests.get(
+            f"{self.url}experiment/{experiment_id}/model/getlist?projectId={self.project_id}",
+            headers=self.auth_headers,
+            verify=False,
+        )
+
+        return res.json()["model_list"]

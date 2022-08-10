@@ -30,7 +30,7 @@ class Client:
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + auth_key,
             },
-            upload_headers={
+            auth_headers={
                 "Authorization": "Bearer " + auth_key,
             },
             project_id=project_id,
@@ -107,8 +107,6 @@ class Client:
             for feature in feature_types:
                 if feature["id"] == list(cft.keys())[0]:
                     feature["data_type"] = list(cft.values())[0]
-
-        # print(feature_types)
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -310,12 +308,21 @@ class Client:
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
 
+        for k in self.api.get_model_type(exp_id, {"projectId": self.project_id}):
+            if k["_id"] == mod_id:
+                is_multi_model = (
+                    True
+                    if k["model_type"]
+                    in ["ExodusModel", "MultiModel", "LeviticusModel"]
+                    else False
+                )
+
         prediction_settings = {
             "project_id": self.project_id,
             "experiment_id": exp_id,
             "model_id": mod_id,
             "table_id": test_table_id,
-            "is_multi_model": True,
+            "is_multi_model": is_multi_model,
             "non_negative": non_negative,
             "keep_columns": keep_columns,
         }
