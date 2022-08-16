@@ -1,9 +1,8 @@
+from typing import Dict
 from io import StringIO
 import json
 import requests
 import pandas as pd
-
-requests.packages.urllib3.disable_warnings()
 
 
 class Api:
@@ -13,7 +12,7 @@ class Api:
         self.project_id = project_id
         self.upload_headers = upload_headers
 
-    def post_upload(self, file: str, name: str):
+    def post_upload(self, file: Dict, name: str):
 
         res = requests.post(
             f"{self.url}table/upload",
@@ -25,7 +24,6 @@ class Api:
 
         if not res.ok:
             raise RuntimeError(res.json()["message"])
-
         return res.json()["table"]["_id"]
 
     def post_train_iid(self, data):
@@ -140,5 +138,3 @@ class Api:
         read_file = StringIO(table_res.text)
         table_df = pd.read_csv(read_file)
         return table_df
-
-

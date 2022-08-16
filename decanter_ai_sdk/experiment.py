@@ -69,13 +69,13 @@ class Experiment(BaseModel):
         )
 
     def get_best_model_by_metric(self, metric: ClassificationMetric) -> Model:
-        result = None
+
         if (
             metric == ClassificationMetric.AUC
             or metric == RegressionMetric.R2
             or metric == ClassificationMetric.LIFT_TOP_GROUP
         ):
-            score = 0
+            score = 0.0
             for attr in self.attributes:
                 if float(self.attributes[attr]["cv_averages"][metric]) > score:
                     score = float(self.attributes[attr]["cv_averages"][metric])

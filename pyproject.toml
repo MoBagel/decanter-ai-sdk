@@ -2,7 +2,7 @@
 name = "decanter-ai-sdk"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["senchao <senchao@mobagel.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -16,10 +16,22 @@ tqdm = "^4.64.0"
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
 pytest-xdist = "^2.5.0"
+mypy = "^0.971"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poe.env]
+
+SRC = "decanter_ai_sdk"
+DIFF.default = ""
+INPLACE.default = "--in-place"
+
+[tool.poe.tasks]
+_black = 'black $SRC $DIFF --color'
+_mypy-install-type = 'mypy $SRC --ignore-missing-imports --install-types --non-interactive'
+_mypy = 'mypy $SRC --ignore-missing-imports'
 
 [tool.poe.tasks.save]
 help = "say hi to the console"
@@ -40,17 +52,33 @@ pytest -s ./tests/test_iid.py
 help = "Testing time series tasks."
 shell = """
 echo run unit tests
-pytest -s ./tests/test_iid.py
+pytest -s ./tests/test_ts.py
+"""
+
+[tool.poe.tasks.test_upload_iid]
+help = "Testing uploading iid tasks."
+shell = """
+echo run unit tests
+pytest -s ./tests/test_upload_iid.py
+"""
+
+[tool.poe.tasks.test_upload_ts]
+help = "Testing uploading ts tasks."
+shell = """
+echo run unit tests
+pytest -s ./tests/test_upload_ts.py
 """
 
 [tool.poe.tasks.lint]
-help = "Linter"
-shell = """
-echo run a linter on the repo
-"""
+help = "Lints the `decanter_ai_sdk` directory"
+sequence = ["_mypy-install-type", "_mypy", "_black"]
+env = { DIFF = "--diff", INPLACE = "" }
+
 
 [tool.poe.tasks.format]
 help = "Formatting"
 shell = """
 echo run a formatter
+black ./decanter_ai_sdk
 """
+
