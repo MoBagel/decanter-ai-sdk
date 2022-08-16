@@ -13,7 +13,7 @@ from decanter_ai_sdk.web_api.api import Api
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
-from .enums.data_types import dataType
+from .enums.data_types import DataType
 
 logging.basicConfig(level=logging.INFO)
 
@@ -58,7 +58,7 @@ class Client:
         experiment_name: str,
         table_id: Optional[str],
         target: Optional[str],
-        custom_feature_types: Optional[List[Dict[str, dataType]]] = None,
+        custom_feature_types: Optional[List[Dict[str, DataType]]] = None,
         drop_features: Optional[List[str]] = None,
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
@@ -180,7 +180,7 @@ class Client:
         tolerance: int = 3,
         seed: int = 1111,
         drop_features=[],
-        custom_feature_types: Optional[List[Dict[str, dataType]]] = None,
+        custom_feature_types: Optional[List[Dict[str, DataType]]] = None,
     ):
 
         if validation_percentage < 5 or validation_percentage > 20:
