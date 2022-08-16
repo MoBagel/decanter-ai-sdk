@@ -17,4 +17,8 @@ tests/test_ts.py
 
 /tests/test_iid.py
 
+/tests/test_upload_iid.py
+/tests/test_upload_iid.py
+
 .DS_STORE
+tests/test_upload_ts.py
