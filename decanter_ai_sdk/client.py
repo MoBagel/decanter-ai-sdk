@@ -56,10 +56,10 @@ class Client:
     def train_iid(
         self,
         experiment_name: str,
-        table_id: Optional[str],
-        target: Optional[str],
-        custom_feature_types: Optional[List[Dict[str, DataType]]] = None,
-        drop_features: Optional[List[str]] = None,
+        table_id: str,
+        target: str,
+        custom_feature_types: List[Dict[str, DataType]] = [],
+        drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
         algos: List[IIDAlgorithms] = [
@@ -89,13 +89,10 @@ class Client:
         for algo in algos:
             algo_enum_values.append(algo.value)
 
-        if drop_features is None:
-            drop_features = []
-
         features = [
             feature
             for feature in data_column_info.keys()
-            if feature not in drop_features and [target]
+            if feature not in drop_features + [target]
         ]
 
         feature_types = [
@@ -103,11 +100,10 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        if custom_feature_types is not None:
-            for cft in custom_feature_types:
-                for feature in feature_types:
-                    if feature["id"] in cft:
-                        feature["data_type"] = cft.get(feature["id"]).value
+        for cft in custom_feature_types:
+            for feature in feature_types:
+                if feature["id"] in cft:
+                    feature["data_type"] = cft[feature["id"]].value
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -179,8 +175,8 @@ class Client:
         max_model: int = 20,
         tolerance: int = 3,
         seed: int = 1111,
-        drop_features=[],
-        custom_feature_types: Optional[List[Dict[str, DataType]]] = None,
+        drop_features: List[str] = [],
+        custom_feature_types: List[Dict[str, DataType]] = [],
     ):
 
         if validation_percentage < 5 or validation_percentage > 20:
@@ -204,11 +200,11 @@ class Client:
             {"id": k, "data_type": j}
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
-        if custom_feature_types is not None:
-            for cft in custom_feature_types:
-                for feature in feature_types:
-                    if feature["id"] in cft:
-                        feature["data_type"] = cft.get(feature["id"]).value
+
+        for cft in custom_feature_types:
+            for feature in feature_types:
+                if feature["id"] in cft:
+                    feature["data_type"] = cft[feature["id"]].value
 
         training_settings = {
             "project_id": self.project_id,
