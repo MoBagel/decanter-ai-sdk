@@ -304,7 +304,6 @@ class Client:
 
         for k in self.api.get_model_type(exp_id, {"projectId": self.project_id}):
             if k["_id"] == mod_id:
-
                 is_multi_model = k["model_type"] in [
                     "ExodusModel",
                     "MultiModel",
