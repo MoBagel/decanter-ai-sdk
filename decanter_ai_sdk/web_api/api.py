@@ -140,7 +140,7 @@ class Api:
 
         return table_df
 
-    def get_model_type(self, experiment_id, query):
+    def get_model_list(self, experiment_id, query):
 
         res = requests.get(
             f"{self.url}experiment/{experiment_id}/model/getlist?projectId={self.project_id}",
