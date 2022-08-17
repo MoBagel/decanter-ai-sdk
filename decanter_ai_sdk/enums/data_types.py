@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class dataType(Enum):
+class DataType(Enum):
     numerical = "numerical"
     categorical = "categorical"
     datetime = "datetime"

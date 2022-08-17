@@ -1,20 +1,19 @@
-from ctypes import Union
 from io import StringIO
 from time import sleep
-from typing import Dict, List, Union, Any, Optional
+from typing import Dict, List, Union, Optional, Any
+import logging
+
 import pandas as pd
 from tqdm import tqdm
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
-
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
 from decanter_ai_sdk.model import Model
 from decanter_ai_sdk.web_api.api import Api
-import logging
-
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
+from .enums.data_types import DataType
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,15 +40,14 @@ class Client:
         if data is None:
             raise ValueError("[Upload] Uploaded None file.")
 
-        elif isinstance(data, pd.DataFrame):
-            textStream = StringIO()
-            data.to_csv(textStream, index=False)
-            file = [("file", (name, textStream.getvalue(), "text/csv"))]
-            textStream.close()
+        if isinstance(data, pd.DataFrame):
+            text_stream = StringIO()
+            data.to_csv(text_stream, index=False)
+            file = [("file", (name, text_stream.getvalue(), "text/csv"))]
+            text_stream.close()
 
         else:
             file = [("file", (name, data, "text/csv"))]
-
         table_id = self.api.post_upload(file=file, name=name)
         res = self.wait_for_response("table", table_id)
 
@@ -58,32 +56,27 @@ class Client:
     def train_iid(
         self,
         experiment_name: str,
-        table_id: Optional[str],
-        target: Optional[str],
-        drop_features: Optional[List[str]] = None,
-        custom_feature_types: Optional[Dict] = [],
-        evaluator: Optional[str] = None,
+        table_id: str,
+        target: str,
+        custom_feature_types: List[Dict[str, DataType]] = [],
+        drop_features: List[str] = [],
+        evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
-        stopping_metric: str = "auc",
         algos: List[IIDAlgorithms] = [
-            IIDAlgorithms.DRF.value,
-            IIDAlgorithms.GBM.value,
-            IIDAlgorithms.XGBoost.value,
-            IIDAlgorithms.GLM.value,
+            IIDAlgorithms.DRF,
+            IIDAlgorithms.GBM,
+            IIDAlgorithms.XGBoost,
+            IIDAlgorithms.GLM,
         ],
         max_model: int = 20,
         tolerance: int = 3,
         nfold: int = 5,
         stacked_ensemble: bool = True,
         validation_percentage: int = 10,
-        seed: int = 1111,
+        seed: int = 1180,
         timeseries_value: List[str] = [],
         holdout_percentage: int = 10,
     ) -> Experiment:
-
-        for alg in algos:
-            if alg not in IIDAlgorithms._value2member_map_:
-                raise ValueError("Wrong alogrithm: " + alg)
 
         data_column_info = self.api.get_table_info(table_id=table_id)
 
@@ -91,6 +84,10 @@ class Client:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
             )
+
+        algo_enum_values = []
+        for algo in algos:
+            algo_enum_values.append(algo.value)
 
         features = [
             feature
@@ -105,26 +102,28 @@ class Client:
 
         for cft in custom_feature_types:
             for feature in feature_types:
-                if feature["id"] == list(cft.keys())[0]:
-                    feature["data_type"] = list(cft.values())[0]
+                if feature["id"] in cft:
+                    feature["data_type"] = cft[feature["id"]].value
 
         if data_column_info[target] == "numerical":
             category = "regression"
             if evaluator is None:
-                evaluator = "wmape"
-            elif evaluator not in RegressionMetric._value2member_map_:
+                evaluator = RegressionMetric.MAPE
+            elif evaluator.name not in RegressionMetric.__members__:
                 raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
 
         else:
             category = "classification"
             if evaluator is None:
-                evaluator = "auc"
-            elif evaluator not in ClassificationMetric._value2member_map_:
+                evaluator = ClassificationMetric.AUC
+            elif evaluator.name not in ClassificationMetric.__members__:
                 raise ValueError("Wrong evaluator, you need to fill auc, logloss...")
 
-        holdout_config = dict()
+        holdout_config: Dict[str, Any] = {}
+
         if holdout_percentage:
             holdout_config["percent"] = holdout_percentage
+
         if holdout_table_id:
             holdout_config["table"] = holdout_table_id
 
@@ -137,19 +136,17 @@ class Client:
             "targetType": data_column_info[target],
             "features": features,
             "feature_types": feature_types,
-            "evaluator": evaluator,
             "category": category,
-            "stopping_metric": "auc",
+            "stopping_metric": evaluator.value,
             "is_binary_classification": True,
             "holdout": holdout_config,
             "tolerance": tolerance,
             "nfold": nfold,
             "max_model": max_model,
-            "algos": algos,
+            "algos": algo_enum_values,
             "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
-            "stopping_metric": stopping_metric,
         }
 
         exp_id = self.api.post_train_iid(training_settings)
@@ -166,9 +163,9 @@ class Client:
         datetime: str,
         time_groups: List,
         timeunit: TimeUnit,
-        algos: List[TSAlgorithms] = [TSAlgorithms.GBM.value],
+        algos: List[TSAlgorithms] = [TSAlgorithms.GBM],
         groupby_method: Optional[str] = None,
-        evaluator: RegressionMetric = RegressionMetric.WMAPE.value,
+        evaluator: RegressionMetric = RegressionMetric.WMAPE,
         exogeneous_columns_list: List = [],
         gap: int = 0,
         feature_derivation_window: int = 60,
@@ -178,21 +175,18 @@ class Client:
         max_model: int = 20,
         tolerance: int = 3,
         seed: int = 1111,
-        drop_features=[],
-        custom_feature_types: Optional[Dict] = [],
+        drop_features: List[str] = [],
+        custom_feature_types: List[Dict[str, DataType]] = [],
     ):
-
-        for alg in algos:
-            if alg not in TSAlgorithms._value2member_map_:
-                raise ValueError("Wrong alogrithm: " + alg)
-
-        if evaluator not in RegressionMetric._value2member_map_:
-            raise ValueError("Wrong evaluator: " + evaluator)
 
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
             )
+        algo_enum_values = []
+
+        for algo in algos:
+            algo_enum_values.append(algo.value)
 
         data_column_info = self.api.get_table_info(table_id=train_table_id)
 
@@ -209,8 +203,8 @@ class Client:
 
         for cft in custom_feature_types:
             for feature in feature_types:
-                if feature["id"] == list(cft.keys())[0]:
-                    feature["data_type"] = list(cft.values())[0]
+                if feature["id"] in cft:
+                    feature["data_type"] = cft[feature["id"]].value
 
         training_settings = {
             "project_id": self.project_id,
@@ -222,12 +216,12 @@ class Client:
             "features": features,
             "feature_types": feature_types,
             "category": "regression",
-            "stopping_metric": evaluator,
+            "stopping_metric": evaluator.value,
             "is_binary_classification": True,
             "holdout": {"percent": 10},
             "tolerance": tolerance,
             "max_model": max_model,
-            "algos": algos,
+            "algos": algo_enum_values,
             "balance_class": True,
             "is_forecast": True,
             "stacked_ensemble": False,
@@ -310,12 +304,12 @@ class Client:
 
         for k in self.api.get_model_type(exp_id, {"projectId": self.project_id}):
             if k["_id"] == mod_id:
-                is_multi_model = (
-                    True
-                    if k["model_type"]
-                    in ["ExodusModel", "MultiModel", "LeviticusModel"]
-                    else False
-                )
+
+                is_multi_model = k["model_type"] in [
+                    "ExodusModel",
+                    "MultiModel",
+                    "LeviticusModel",
+                ]
 
         prediction_settings = {
             "project_id": self.project_id,
