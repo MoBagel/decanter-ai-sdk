@@ -23,7 +23,7 @@ class Client:
     Handle client side actions.
 
     Support actions sunch as upload data, iid train,
-    predict, time series train and predict...ect.
+    predict, time series train and predict...etc.
 
     Example:
     
@@ -31,7 +31,11 @@ class Client:
 
     from decanter_ai_sdk.client import Client
 
-    client = Client(auth_key="", project_id="", host="")
+    ...
+
+    train_file_path = os.path.join("path_to_file", "train.csv")
+
+    client = Client(auth_key="API key get from decanter", project_id="project id from decanter", host="decanter host")
     
     upload_id = client.upload(data=train_file, name="train_upload")
 
@@ -55,13 +59,19 @@ class Client:
 
     def upload(self, data: Union[str, pd.DataFrame], name: str) -> str:
         """
-        Upload csv file or pandas dataframe.
+        Upload csv file or pandas dataframe to gp.
 
-        Args:
-            data (csv-file, :obj:`pandas.DataFrame`): File uploaded to gp backend server.
-            name (:str:): Name for the upload action.
+        Parameters:
+        ----------
+            data Union(str, pandas.DataFrame)
+                Can be the path to a csv file or a pandas dataframe.
+            name (str)
+                Name for the upload action.
+
         Returns:
-            (:str:): Uploaded table id.
+        ----------
+            (str)
+                Uploaded table id.
 
         """
 
@@ -102,32 +112,52 @@ class Client:
         stacked_ensemble: bool = True,
         validation_percentage: int = 10,
         seed: int = 1180,
-        timeseries_value: List[Dict[Any, Any]] = [],
+        timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
     ) -> Experiment:
         """
         Train iid models.
         
-        Args:
-            experiment_name (:str:): Name for the training experiment action.
-            experiment_table_id (:str:): Id for the table used to train.
-            target (:str:): Target column.
-            custom_feature_types (:list:[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]]): Set customized feature types.
-            drop_features (:list:[str]): Features that are not going to be used during experiment.
-            evaluator (:class: `~decanter_ai_sdk.enums.evaluators.ClassificationMetric` or `~decanter_ai_sdk.enums.evaluators.RegressionMetric`): Evaluator used as stopping metric.
-            holdout_table_id (:str:): Holdout table id.
-            algos (:list:[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`] or :list:[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`]): Algorithms used for experiment.
-            max_model (:int:): Max model number for experiment.
-            tolerance (:int:): Experiment tolerance. (1~10)
-            nfold (:int:): Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
-            stacked_ensemble (:boolean:): If experiment has stack ensemble enabled.
-            validation_percentage (:int:): Validation percentage of experiment. (5~20)
-            seed (:int:): Random Seed of experiment. (1 ~ 65535)
-            timeseries_value (:list:[Dict[Any, Any]]:): Objects containing time series values for cross validation.
-            holdout_percentage (:int:): Holdout percentage for experiment.
+        Parameters:
+        ----------
+            experiment_name (str)
+                Name of the experiment.
+            experiment_table_id (str)
+                Id for the table used in experiment.
+            target (str)
+                Name of the target column.
+            custom_feature_types (List[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]])
+                Set customized feature types by inputting [feature name, feature type].
+            drop_features (List[str])
+                Feature names that are not going to be used during experiment.
+            evaluator (Union[`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`])
+                Evaluator used as stopping metric.
+            holdout_table_id (str)
+                Id of the table used to perform holdout.
+            algos (Union[List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`], List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`]])
+                Algorithms used for experiment.
+            max_model (int)
+                Limit for the number of models to train for this experiment.
+            tolerance (int)
+                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
+                (1~10)
+            nfold (int)
+                Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
+            stacked_ensemble (boolean)
+                If stacked ensemble models will be trained.
+            validation_percentage (int)
+                Validation percentage of experiment. (5~20)
+            seed (int)
+                Random Seed of experiment. (1 ~ 65535)
+            timeseries_value (List[Dict[Str, Any]])
+                Objects containing time series values(train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag) for cross validation.
+            holdout_percentage (int)
+                Holdout percentage for experiment.
         
         Returns:
-            (:class: `~decanter_ai_sdk.web_api.experiment.Experiment`): Experiment results.
+        ----------
+            (`~decanter_ai_sdk.web_api.experiment.Experiment`)
+                Experiment results.
         """
 
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
@@ -233,29 +263,54 @@ class Client:
         """
         Train timeseries models.
         
-        Args:
-            experiment_name (:str:): Name for the experiment action.
-            train_table_id (:str:): Id for the table used to experiment.
-            target (:str:): Target column.
-            custom_feature_types (:list:[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]]:): Set customized feature types.
-            evaluator (:class: `~decanter_ai_sdk.enums.evaluators.ClassificationMetric` or `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
-            algos (:list:[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`] or :list:[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
-            max_model (:int:): Max model number for experiment.
-            tolerance (:int:): Experiment tolerance. (1~10)
-            nfold (:int:): Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
-            validation_percentage (:int:): Validation percentage of experiment. (5~20)
-            seed (:int:): Random Seed of experiment. (1 ~ 65535)
-            holdout_percentage (:int:): Holdout percentage for experiment.
-            horizon_window (:int:): experiment forecast horizon window value.
-            gap (:int:): Forecast gap.
-            feature_derivation_window (:int:): Training forecast derivation window value.
-            groupby_method (:str:): Group by method used for forecast experiment.
-            exogeneous_columns_list (:list:[Dict[Any, Any]]): List of exogeneous columns.
-            timeunit (:class: `~decanter_ai_sdk.enums.time_units.TimeUnit`): Time unit to use for forecast experiment [`year`, `month`, `day`, `hour`].
-            time_groups (:list:[Dict[Any, Any]]): List of timegroup columns.
-            datetime (:str:): Date-time column for Time Series Forecast training.
+        Parameters:
+        ----------
+            experiment_name (str)
+                Name of the experiment.
+            experiment_table_id (str)
+                Id for the table used in experiment.
+            target (str)
+                Name of the target column.
+            custom_feature_types (List[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]])
+                Set customized feature types by inputting [feature name, feature type].
+            evaluator (`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
+                Evaluator used as stopping metric.
+            algos (List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`],  List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
+                Algorithms used for experiment.
+            max_model (int)
+                Limit for the number of models to train for this experiment.
+            tolerance (int)
+                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
+                (1~10)
+            nfold (int)
+                Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
+            validation_percentage (int)
+                Validation percentage of experiment. (5~20)
+            seed (int)
+                Random Seed of experiment. (1 ~ 65535)
+            holdout_percentage (int)
+                Holdout percentage for experiment.
+            horizon_window (int)
+                experiment forecast horizon window value.
+            gap (int)
+                Forecast gap.
+            feature_derivation_window (int)
+                Training forecast derivation window value.
+            groupby_method (str)
+                Group by method used for forecast experiment.
+            exogeneous_columns_list (List[Dict[Any, Any]])
+                List of exogeneous columns.
+            timeunit (`~decanter_ai_sdk.enums.time_units.TimeUnit`)
+                Time unit to use for forecast experiment [`year`, `month`, `day`, `hour`].
+            time_groups (List[Dict[Any, Any]])
+                List of timegroup columns.
+            datetime (str)
+                Date-time column for Time Series Forecast training.
+
         Returns:
-            (:class: `~decanter_ai_sdk.web_api.experiment.Experiment`): Experiment results.
+        ----------
+            (`~decanter_ai_sdk.web_api.experiment.Experiment`)
+                Experiment results.
         """
 
         if validation_percentage < 5 or validation_percentage > 20:
@@ -336,16 +391,25 @@ class Client:
         """
         Predict model with test iid data.
 
-        Args:
-            model (:class: `~decanter_ai_sdk.web_api.model.Model`): Model generated by train.
-            keep_columns (:list:[str]): Columns to keep while predicting.
-            non_negative (:bool:): Whether to convert all negative prediction to 0.
-            test_table_id (:str:): Id of table used to predict.
-            model_id (:str:): Model id generated by train.
-            experiment_id (:str:): Experiment id generated by train.
+        Parameters:
+        ----------
+            model (`~decanter_ai_sdk.web_api.model.Model`)
+                Model generated by train.
+            keep_columns (List[str])
+                Columns to include in the prediction result.
+            non_negative (bool)
+                Whether to convert all negative predictions to 0.
+            test_table_id (str)
+                Id of table used to predict.
+            model_id (str)
+                Id of model used to predict.
+            experiment_id (str)
+                Id of experiment used to predict.
 
         Returns:
-            (:class: `~decanter_ai_sdk.web_api.prediction.Prediction`): Prediction results.
+        ----------
+            (`~decanter_ai_sdk.web_api.prediction.Prediction`)
+                Prediction results.
         """
 
         if model is None and (experiment_id is None or model_id is None):
@@ -389,16 +453,25 @@ class Client:
         """
         Predict model with test timeseries data.
 
-        Args:
-            model (:class: `~decanter_ai_sdk.web_api.model.Model`): Model generated by train.
-            keep_columns (:list:[str]): Columns to keep while predicting.
-            non_negative (:bool:): Whether to convert all negative prediction to 0.
-            test_table_id (:str:): Id of table used to predict.
-            model_id (:str:): Model id generated by train.
-            experiment_id (:str:): Experiment id generated by train.
+        Parameters:
+        ----------
+            model (`~decanter_ai_sdk.web_api.model.Model`)
+                Model generated by train.
+            keep_columns (List[str])
+                Columns to include in the prediction result.
+            non_negative (bool)
+                Whether to convert all negative predictions to 0.
+            test_table_id (str)
+                Id of table used to predict.
+            model_id (str)
+                Id of model used to predict.
+            experiment_id (str)
+                Id of experiment used to predict.
 
         Returns:
-            (:class: `~decanter_ai_sdk.web_api.prediction.Prediction`): Prediction results.
+        ----------
+            (`~decanter_ai_sdk.web_api.prediction.Prediction`)
+                Prediction results.
         """
 
         if model is None and (experiment_id is None or model_id is None):
@@ -465,11 +538,15 @@ class Client:
         """
         Return table dataframe.
 
-        Args:
-            data_id (:str:): Uploaded table id.
+        Params:
+        ----------
+            data_id (str)
+                Uploaded table id.
         
         Returns:
-            (:pandas.DataFrame:): Uploaded table dataframe.
+        ----------
+            (pandas.DataFrame)
+                Uploaded table dataframe.
         """
         return self.api.get_table(data_id=data_id)
 
@@ -478,6 +555,8 @@ class Client:
         Return list of table information.
 
         Returns:
-            (:list:[str]): List of uploaded table information.
+        ----------
+            (List[str])
+                List of uploaded table information.
         """
         return self.api.get_table_list()

@@ -18,7 +18,13 @@ tests/test_ts.py
 /tests/test_iid.py
 
 /tests/test_upload_iid.py
+
 /tests/test_upload_iid.py
 
 .DS_STORE
+
 tests/test_upload_ts.py
+
+tests/test_demo1.py
+
+tests/test_decanter_ai_sdk.py
