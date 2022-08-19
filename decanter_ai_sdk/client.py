@@ -19,6 +19,28 @@ logging.basicConfig(level=logging.INFO)
 
 
 class Client:
+    """
+    Handle client side actions.
+
+    Support actions sunch as upload data, iid train,
+    predict, time series train and predict...etc.
+
+    Example:
+    
+    .. code-block:: python
+
+    from decanter_ai_sdk.client import Client
+
+    ...
+
+    train_file_path = os.path.join("path_to_file", "train.csv")
+
+    client = Client(auth_key="API key get from decanter", project_id="project id from decanter", host="decanter host")
+    
+    upload_id = client.upload(data=train_file, name="train_upload")
+
+    ...
+    """
     def __init__(self, auth_key, project_id, host):
         self.auth_key = auth_key
         self.project_id = project_id
@@ -36,6 +58,22 @@ class Client:
         )
 
     def upload(self, data: Union[str, pd.DataFrame], name: str) -> str:
+        """
+        Upload csv file or pandas dataframe to gp.
+
+        Parameters:
+        ----------
+            data Union(str, pandas.DataFrame)
+                Can be the path to a csv file or a pandas dataframe.
+            name (str)
+                Name for the upload action.
+
+        Returns:
+        ----------
+            (str)
+                Uploaded table id.
+
+        """
 
         if data is None:
             raise ValueError("[Upload] Uploaded None file.")
@@ -56,9 +94,9 @@ class Client:
     def train_iid(
         self,
         experiment_name: str,
-        table_id: str,
+        experiment_table_id: str,
         target: str,
-        custom_feature_types: List[Dict[str, DataType]] = [],
+        custom_feature_types: Dict[str, DataType] = {},
         drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
@@ -74,11 +112,54 @@ class Client:
         stacked_ensemble: bool = True,
         validation_percentage: int = 10,
         seed: int = 1180,
-        timeseries_value: List[str] = [],
+        timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
     ) -> Experiment:
+        """
+        Train iid models.
+        
+        Parameters:
+        ----------
+            experiment_name (str)
+                Name of the experiment.
+            experiment_table_id (str)
+                Id for the table used in experiment.
+            target (str)
+                Name of the target column.
+            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
+            drop_features (List[str])
+                Feature names that are not going to be used during experiment.
+            evaluator (Union[`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`])
+                Evaluator used as stopping metric.
+            holdout_table_id (str)
+                Id of the table used to perform holdout.
+            algos (Union[List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`], List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`]])
+                Algorithms used for experiment.
+            max_model (int)
+                Limit for the number of models to train for this experiment.
+            tolerance (int)
+                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
+            nfold (int)
+                Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
+            stacked_ensemble (boolean)
+                If stacked ensemble models will be trained.
+            validation_percentage (int)
+                Validation percentage of experiment. (5~20)
+            seed (int)
+                Random Seed of experiment. (1 ~ 65535)
+            timeseries_value (List[Dict[Str, Any]])
+                Objects containing time series values(train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag) for cross validation.
+            holdout_percentage (int)
+                Holdout percentage for experiment.
+        
+        Returns:
+        ----------
+            (`~decanter_ai_sdk.web_api.experiment.Experiment`)
+                Experiment results.
+        """
 
-        data_column_info = self.api.get_table_info(table_id=table_id)
+        data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
@@ -100,10 +181,9 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        for cft in custom_feature_types:
-            for feature in feature_types:
-                if feature["id"] in cft:
-                    feature["data_type"] = cft[feature["id"]].value
+        for feature in feature_types:
+            if(feature["id"] in custom_feature_types.keys()):
+                feature["data_type"] = custom_feature_types[feature["id"]].value
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -130,7 +210,7 @@ class Client:
         training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
-            "gp_table_id": table_id,
+            "gp_table_id": experiment_table_id,
             "seed": seed,
             "target": target,
             "targetType": data_column_info[target],
@@ -158,7 +238,7 @@ class Client:
     def train_ts(
         self,
         experiment_name: str,
-        train_table_id: str,
+        experiment_table_id: str,
         target: str,
         datetime: str,
         time_groups: List,
@@ -176,8 +256,61 @@ class Client:
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
-        custom_feature_types: List[Dict[str, DataType]] = [],
+        custom_feature_types: Dict[str, DataType] = {},
     ):
+        """
+        Train timeseries models.
+        
+        Parameters:
+        ----------
+            experiment_name (str)
+                Name of the experiment.
+            experiment_table_id (str)
+                Id for the table used in experiment.
+            target (str)
+                Name of the target column.
+            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
+            evaluator (`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
+                Evaluator used as stopping metric.
+            algos (List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`],  List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
+                Algorithms used for experiment.
+            max_model (int)
+                Limit for the number of models to train for this experiment.
+            tolerance (int)
+                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
+            nfold (int)
+                Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
+            validation_percentage (int)
+                Validation percentage of experiment. (5~20)
+            seed (int)
+                Random Seed of experiment. (1 ~ 65535)
+            holdout_percentage (int)
+                Holdout percentage for experiment.
+            horizon_window (int)
+                experiment forecast horizon window value.
+            gap (int)
+                Forecast gap.
+            feature_derivation_window (int)
+                Training forecast derivation window value.
+            groupby_method (str)
+                Group by method used for forecast experiment.
+            #TODO Discuss with Ken about this.
+            exogeneous_columns_list (List[Dict[Any, Any]])
+                List of exogeneous columns.
+            timeunit (`~decanter_ai_sdk.enums.time_units.TimeUnit`)
+                Time unit to use for forecast experiment [`year`, `month`, `day`, `hour`].
+            #TODO Discuss with Ken about this.
+            time_groups (List[Dict[Any, Any]])
+                List of timegroup columns.
+            datetime (str)
+                Date-time column for Time Series Forecast training.
+
+        Returns:
+        ----------
+            (`~decanter_ai_sdk.web_api.experiment.Experiment`)
+                Experiment results.
+        """
 
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
@@ -188,7 +321,7 @@ class Client:
         for algo in algos:
             algo_enum_values.append(algo.value)
 
-        data_column_info = self.api.get_table_info(table_id=train_table_id)
+        data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
         features = [
             feature
@@ -201,15 +334,14 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        for cft in custom_feature_types:
-            for feature in feature_types:
-                if feature["id"] in cft:
-                    feature["data_type"] = cft[feature["id"]].value
+        for feature in feature_types:
+            if(feature["id"] in custom_feature_types.keys()):
+                feature["data_type"] = custom_feature_types[feature["id"]].value
 
         training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
-            "gp_table_id": train_table_id,
+            "gp_table_id": experiment_table_id,
             "seed": seed,
             "target": target,
             "targetType": data_column_info[target],
@@ -254,6 +386,29 @@ class Client:
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
     ) -> Prediction:
+        """
+        Predict model with test iid data.
+
+        Parameters:
+        ----------
+            model (`~decanter_ai_sdk.web_api.model.Model`)
+                Model generated by train.
+            keep_columns (List[str])
+                Columns to include in the prediction result.
+            non_negative (bool)
+                Whether to convert all negative predictions to 0.
+            test_table_id (str)
+                Id of table used to predict.
+            model_id (str)
+                Id of model used to predict.
+            experiment_id (str)
+                Id of experiment used to predict.
+
+        Returns:
+        ----------
+            (`~decanter_ai_sdk.web_api.prediction.Prediction`)
+                Prediction results.
+        """
 
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
@@ -293,6 +448,29 @@ class Client:
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
     ) -> Prediction:
+        """
+        Predict model with test timeseries data.
+
+        Parameters:
+        ----------
+            model (`~decanter_ai_sdk.web_api.model.Model`)
+                Model generated by train.
+            keep_columns (List[str])
+                Columns to include in the prediction result.
+            non_negative (bool)
+                Whether to convert all negative predictions to 0.
+            test_table_id (str)
+                Id of table used to predict.
+            model_id (str)
+                Id of model used to predict.
+            experiment_id (str)
+                Id of experiment used to predict.
+
+        Returns:
+        ----------
+            (`~decanter_ai_sdk.web_api.prediction.Prediction`)
+                Prediction results.
+        """
 
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
@@ -357,11 +535,26 @@ class Client:
     def get_table(self, data_id: str) -> pd.DataFrame:
         """
         Return table dataframe.
+
+        Params:
+        ----------
+            data_id (str)
+                Uploaded table id.
+        
+        Returns:
+        ----------
+            (pandas.DataFrame)
+                Uploaded table dataframe.
         """
         return self.api.get_table(data_id=data_id)
 
     def get_table_list(self) -> List[str]:
         """
         Return list of table information.
+
+        Returns:
+        ----------
+            (List[str])
+                List of uploaded table information.
         """
         return self.api.get_table_list()

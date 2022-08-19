@@ -9,3 +9,6 @@ class Model(BaseModel):
     experiment_id: str
     experiment_name: str
     attributes: Dict
+    """
+    Model class returned by training action.
+    """
