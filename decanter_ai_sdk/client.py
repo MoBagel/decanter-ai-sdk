@@ -96,7 +96,7 @@ class Client:
         experiment_name: str,
         experiment_table_id: str,
         target: str,
-        custom_feature_types: List[Dict[str, DataType]] = [],
+        custom_feature_types: Dict[str, DataType] = {},
         drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
@@ -126,8 +126,8 @@ class Client:
                 Id for the table used in experiment.
             target (str)
                 Name of the target column.
-            custom_feature_types (List[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]])
-                Set customized feature types by inputting [feature name, feature type].
+            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             drop_features (List[str])
                 Feature names that are not going to be used during experiment.
             evaluator (Union[`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`])
@@ -140,7 +140,6 @@ class Client:
                 Limit for the number of models to train for this experiment.
             tolerance (int)
                 Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
-                (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             stacked_ensemble (boolean)
@@ -182,10 +181,9 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        for cft in custom_feature_types:
-            for feature in feature_types:
-                if feature["id"] in cft:
-                    feature["data_type"] = cft[feature["id"]].value
+        for feature in feature_types:
+            if(feature["id"] in custom_feature_types.keys()):
+                feature["data_type"] = custom_feature_types[feature["id"]].value
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -258,7 +256,7 @@ class Client:
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
-        custom_feature_types: List[Dict[str, DataType]] = [],
+        custom_feature_types: Dict[str, DataType] = {},
     ):
         """
         Train timeseries models.
@@ -271,8 +269,8 @@ class Client:
                 Id for the table used in experiment.
             target (str)
                 Name of the target column.
-            custom_feature_types (List[Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`]])
-                Set customized feature types by inputting [feature name, feature type].
+            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             evaluator (`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
                 Evaluator used as stopping metric.
             algos (List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`],  List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
@@ -281,7 +279,6 @@ class Client:
                 Limit for the number of models to train for this experiment.
             tolerance (int)
                 Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
-                (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             validation_percentage (int)
@@ -337,10 +334,9 @@ class Client:
             for k, j in {key: data_column_info[key] for key in features}.items()
         ]
 
-        for cft in custom_feature_types:
-            for feature in feature_types:
-                if feature["id"] in cft:
-                    feature["data_type"] = cft[feature["id"]].value
+        for feature in feature_types:
+            if(feature["id"] in custom_feature_types.keys()):
+                feature["data_type"] = custom_feature_types[feature["id"]].value
 
         training_settings = {
             "project_id": self.project_id,
