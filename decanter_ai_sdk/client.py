@@ -298,10 +298,12 @@ class Client:
                 Training forecast derivation window value.
             groupby_method (str)
                 Group by method used for forecast experiment.
+            #TODO Discuss with Ken about this.
             exogeneous_columns_list (List[Dict[Any, Any]])
                 List of exogeneous columns.
             timeunit (`~decanter_ai_sdk.enums.time_units.TimeUnit`)
                 Time unit to use for forecast experiment [`year`, `month`, `day`, `hour`].
+            #TODO Discuss with Ken about this.
             time_groups (List[Dict[Any, Any]])
                 List of timegroup columns.
             datetime (str)
