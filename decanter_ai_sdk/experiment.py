@@ -77,7 +77,9 @@ class Experiment(BaseModel):
             attributes=self.attributes[self.best_model],
         )
 
-    def get_best_model_by_metric(self, metric: Union[ClassificationMetric, RegressionMetric]) -> Model:
+    def get_best_model_by_metric(
+        self, metric: Union[ClassificationMetric, RegressionMetric]
+    ) -> Model:
         """
         Return best model by input metric.
 
@@ -85,7 +87,7 @@ class Experiment(BaseModel):
         ----------
             metric(`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `decanter_ai_sdk.enums.evaluators.RegressionMetric`)
                 Standard metric.
-        
+
         Returns:
         ----------
             (`~decanter_ai_sdk.web_api.model.Model`)

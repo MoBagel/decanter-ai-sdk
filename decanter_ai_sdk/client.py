@@ -9,7 +9,8 @@ from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
 from decanter_ai_sdk.model import Model
-from decanter_ai_sdk.web_api.api import Api
+from decanter_ai_sdk.web_api.testing_api import TestingApi as MockApi
+from decanter_ai_sdk.web_api.decanter_api import DecanterApi as Api
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
@@ -26,7 +27,7 @@ class Client:
     predict, time series train and predict...etc.
 
     Example:
-    
+
     .. code-block:: python
 
     from decanter_ai_sdk.client import Client
@@ -36,25 +37,30 @@ class Client:
     train_file_path = os.path.join("path_to_file", "train.csv")
 
     client = Client(auth_key="API key get from decanter", project_id="project id from decanter", host="decanter host")
-    
+
     upload_id = client.upload(data=train_file, name="train_upload")
 
     ...
     """
-    def __init__(self, auth_key, project_id, host):
+
+    def __init__(self, auth_key, project_id, host, test):
         self.auth_key = auth_key
         self.project_id = project_id
         self.host = host
-        self.api = Api(
-            host=host,
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + auth_key,
-            },
-            auth_headers={
-                "Authorization": "Bearer " + auth_key,
-            },
-            project_id=project_id,
+        self.api = (
+            Api(
+                host=host,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + auth_key,
+                },
+                auth_headers={
+                    "Authorization": "Bearer " + auth_key,
+                },
+                project_id=project_id,
+            )
+            if test == False
+            else MockApi()
         )
 
     def upload(self, data: Union[str, pd.DataFrame], name: str) -> str:
@@ -117,7 +123,7 @@ class Client:
     ) -> Experiment:
         """
         Train iid models.
-        
+
         Parameters:
         ----------
             experiment_name (str)
@@ -126,7 +132,7 @@ class Client:
                 Id for the table used in experiment.
             target (str)
                 Name of the target column.
-            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+            custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             drop_features (List[str])
                 Feature names that are not going to be used during experiment.
@@ -152,7 +158,7 @@ class Client:
                 Objects containing time series values(train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag) for cross validation.
             holdout_percentage (int)
                 Holdout percentage for experiment.
-        
+
         Returns:
         ----------
             (`~decanter_ai_sdk.web_api.experiment.Experiment`)
@@ -182,7 +188,7 @@ class Client:
         ]
 
         for feature in feature_types:
-            if(feature["id"] in custom_feature_types.keys()):
+            if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
 
         if data_column_info[target] == "numerical":
@@ -260,7 +266,7 @@ class Client:
     ):
         """
         Train timeseries models.
-        
+
         Parameters:
         ----------
             experiment_name (str)
@@ -269,7 +275,9 @@ class Client:
                 Id for the table used in experiment.
             target (str)
                 Name of the target column.
-            custom_feature_types (Dict[str, `~decanter_ai_sdk.enums.data_type.DataType`])
+            datetime (str)
+                Date-time column for Time Series Forecast training.
+            custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             evaluator (`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
                 Evaluator used as stopping metric.
@@ -303,8 +311,7 @@ class Client:
             #TODO Discuss with Ken about this.
             time_groups (List[Dict[Any, Any]])
                 List of timegroup columns.
-            datetime (str)
-                Date-time column for Time Series Forecast training.
+
 
         Returns:
         ----------
@@ -335,7 +342,7 @@ class Client:
         ]
 
         for feature in feature_types:
-            if(feature["id"] in custom_feature_types.keys()):
+            if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
 
         training_settings = {
@@ -366,7 +373,7 @@ class Client:
             "forecast_horizon_start": gap,
             "forecast_horizon_window": horizon_window,
             "forecast_time_group_columns": time_groups,
-            "forecast_timeunit": timeunit,
+            "forecast_timeunit": timeunit.value,
             "validation_percentage": validation_percentage,
             "nfold": nfold,
         }
@@ -540,7 +547,7 @@ class Client:
         ----------
             data_id (str)
                 Uploaded table id.
-        
+
         Returns:
         ----------
             (pandas.DataFrame)
