@@ -30,6 +30,8 @@ def test_ts():
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "ts_test_file")
 
+    assert isinstance(client.get_table_list(), List)
+
     exp_name = "exp_name"
     experiment = client.train_ts(
         experiment_name=exp_name,
@@ -45,7 +47,17 @@ def test_ts():
     )
 
     best_model = experiment.get_best_model()
+    assert isinstance(experiment.get_model_list(), List)
+    assert experiment.experiment_info()["name"] == exp_name
+
+    for metric in RegressionMetric:
+        assert (
+            experiment.get_best_model_by_metric(metric).model_id
+            == "63044b72ed266c3d7b2f895f"
+        )
 
     predict = client.predict_ts(
         keep_columns=[], non_negative=False, test_table_id=test_id, model=best_model
     )
+
+    assert isinstance(predict.get_predict_df(), pd.DataFrame)
