@@ -2,6 +2,7 @@ from io import StringIO
 from time import sleep
 from typing import Dict, List, Union, Optional, Any
 import logging
+import json
 
 import pandas as pd
 from tqdm import tqdm
@@ -9,8 +10,9 @@ from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
 from decanter_ai_sdk.model import Model
-from decanter_ai_sdk.web_api.testing_api import TestingApi as MockApi
-from decanter_ai_sdk.web_api.decanter_api import DecanterApi as Api
+from decanter_ai_sdk.web_api.iid_testing_api import TestingIidApiClient as IidMockApi
+from decanter_ai_sdk.web_api.decanter_api import DecanterApiClient as Api
+from decanter_ai_sdk.web_api.ts_testing_api import TestingTsApiClient as TsMockApi
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
@@ -43,12 +45,16 @@ class Client:
     ...
     """
 
-    def __init__(self, auth_key, project_id, host, test):
-        self.auth_key = auth_key
-        self.project_id = project_id
-        self.host = host
-        self.api = (
-            Api(
+    def __init__(self, auth_key, project_id, host, dry_run_type=None):
+        self.auth_key: str = auth_key
+        self.project_id: str = project_id
+        self.host: str = host
+        if dry_run_type == "ts":
+            self.api = TsMockApi()
+        elif dry_run_type == "iid":
+            self.api = IidMockApi()
+        else:
+            self.api = Api(
                 host=host,
                 headers={
                     "Content-Type": "application/json",
@@ -59,9 +65,6 @@ class Client:
                 },
                 project_id=project_id,
             )
-            if test == False
-            else MockApi()
-        )
 
     def upload(self, data: Union[str, pd.DataFrame], name: str) -> str:
         """
@@ -382,6 +385,9 @@ class Client:
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
+        with open("ts_exp.json", "w") as outfile:
+            outfile.write(json.dumps(self.wait_for_response("experiment", exp_id)))
+
         return experiment
 
     def predict_iid(
@@ -486,7 +492,7 @@ class Client:
 
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
-
+        is_multi_model = False
         for k in self.api.get_model_list(exp_id, {"projectId": self.project_id}):
             if k["_id"] == mod_id:
                 is_multi_model = k["model_type"] in [

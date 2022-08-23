@@ -1,9 +1,7 @@
 from typing import Dict
-from io import StringIO
 import json
-import requests
 import pandas as pd
-from decanter_ai_sdk.web_api.api import Api
+from decanter_ai_sdk.web_api.api import ApiClient
 import sys
 import os
 
@@ -12,7 +10,7 @@ sys.path.append("..")
 current_path = os.path.dirname(os.path.abspath(__file__))
 
 
-class TestingApi(Api):
+class TestingTsApiClient(ApiClient):
     def __init__(self):
         self.url = None
         self.headers = None
@@ -20,13 +18,16 @@ class TestingApi(Api):
         self.auth_headers = None
 
     def post_upload(self, file: Dict, name: str):
-        return "62ff59883a6eef99be6e8e86"
+        if name == "ts_train_file":
+            return "63044594818547e247f5aa44"
+        else:
+            return "6304459bf52233e377e53a41"
 
     def post_train_iid(self, data):
-        return "6302f089818547e247f5aa26"
+        return "6304459bf52233e377e53a41"
 
     def post_train_ts(self, data):
-        return "6302f089818547e247f5aa26"
+        return "63044594818547e247f5aa44"
 
     def post_predict(self, data):
         return "6302f53cf52233e377e53a37"
@@ -38,19 +39,22 @@ class TestingApi(Api):
 
     def check(self, task, id):
         if task == "table":
-            f = open(current_path + "/data/table.json")
-            table_data = json.load(f)
+            if id == "63044594818547e247f5aa44":
+                f = open(current_path + "/data/ts_train_table.json")
+                table_data = json.load(f)
+            elif id == "6304459bf52233e377e53a41":
+                f = open(current_path + "/data/ts_test_table.json")
+                table_data = json.load(f)
+
             return table_data
 
         if task == "experiment":
-            f = open(current_path + "/data/experiment.json")
-            experiment_data = json.load(f)
-            return experiment_data
+            f = open(current_path + "/data/ts_exp.json")
+            return json.load(f)
 
         if task == "prediction":
             f = open(current_path + "/data/predict.json")
-            pred_data = json.load(f)
-            return pred_data
+            return json.load(f)
 
     def get_pred_data(self, pred_id, data):
         data = {"Name": ["Tom", "nick", "krish", "jack"], "Age": [20, 21, 19, 18]}

@@ -4,10 +4,10 @@ import json
 import requests
 import pandas as pd
 
-from decanter_ai_sdk.web_api.api import Api
+from decanter_ai_sdk.web_api.api import ApiClient
 
 
-class DecanterApi(Api):
+class DecanterApiClient(ApiClient):
     def __init__(self, host, headers, auth_headers, project_id):
         self.url = host + "/v1/"
         self.headers = headers

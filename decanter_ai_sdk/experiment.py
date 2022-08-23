@@ -98,26 +98,32 @@ class Experiment(BaseModel):
             or metric == RegressionMetric.R2
             or metric == ClassificationMetric.LIFT_TOP_GROUP
         ):
-            score = 0.0
+            score = None
             for attr in self.attributes:
-                if float(self.attributes[attr]["cv_averages"][metric.value]) > score:
+                if (
+                    score == None
+                    or float(self.attributes[attr]["cv_averages"][metric.value]) > score
+                ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
-                        model_name=self.attributes[attr]["name"],
+                        model_name=attr,
                         metrics_score=self.attributes[attr]["cv_averages"],
                         experiment_id=self.id,
                         experiment_name=self.name,
                         attributes=self.attributes[attr],
                     )
         else:
-            score = sys.maxsize
+            score = None
             for attr in self.attributes:
-                if float(self.attributes[attr]["cv_averages"][metric.value]) < score:
+                if (
+                    score == None
+                    or float(self.attributes[attr]["cv_averages"][metric.value]) < score
+                ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
-                        model_name=self.attributes[attr]["name"],
+                        model_name=attr,
                         metrics_score=self.attributes[attr]["cv_averages"],
                         experiment_id=self.id,
                         experiment_name=self.name,
@@ -141,7 +147,7 @@ class Experiment(BaseModel):
             list.append(
                 Model(
                     model_id=self.attributes[attr]["model_id"],
-                    model_name=self.attributes[attr]["name"],
+                    model_name=attr,
                     metrics_score=self.attributes[attr]["cv_averages"],
                     experiment_id=self.id,
                     experiment_name=self.name,
