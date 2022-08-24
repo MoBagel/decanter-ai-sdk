@@ -54,7 +54,7 @@ class TestingIidApiClient(ApiClient):
             return json.load(f)
 
         if task == "prediction":
-            f = open(current_path + "/data/predict.json")
+            f = open(current_path + "/data/iid_predict.json")
             return json.load(f)
 
     def get_pred_data(self, pred_id, data):

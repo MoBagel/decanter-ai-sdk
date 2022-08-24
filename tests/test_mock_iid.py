@@ -23,13 +23,16 @@ def test_iid():
 
     train_file_path = os.path.join(current_path, "train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "test_file")
+    train_id = client.upload(train_file, "train_file")
 
     test_file_path = os.path.join(current_path, "test.csv")
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
 
     assert isinstance(client.get_table_list(), List)
+    assert client.get_table_list().__len__() == 2
+    assert client.get_table_list()[0]["name"] == "train_file"
+    assert client.get_table_list()[1]["name"] == "test_file"
 
     exp_name = "exp_name"
     experiment = client.train_iid(
@@ -72,6 +75,9 @@ def test_iid():
     )
 
     assert isinstance(experiment.get_model_list(), List)
+    assert experiment.get_model_list().__len__() == 7
+    for model in experiment.get_model_list():
+        assert model.experiment_id == "630439e3818547e247f5aa3d"
     assert experiment.experiment_info()["name"] == exp_name
 
     predict = client.predict_iid(
@@ -79,3 +85,5 @@ def test_iid():
     )
 
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
+    assert predict.attributes['model_id'] == best_model.model_id
+    assert predict.attributes['table_id'] == test_id

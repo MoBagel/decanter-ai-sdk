@@ -16,7 +16,7 @@
     "keep_columns":[
        
     ],
-    "model_id":"6303172dc4f10cea106ed821",
+    "model_id":"630439ffc4f10cea106ed841",
     "plot_key":"630317d14d2c953e1e358288",
     "progress":1.0,
     "progress_message":"task completed",
@@ -24,7 +24,7 @@
     "shapley_only":false,
     "started_at":"2022-08-22T05:44:40.000000Z",
     "status":"done",
-    "table_id":"630316ecf52233e377e53a39",
+    "table_id":"630473803a6eef99be6e8e9c",
     "task_id":"6303172fea117c7b1f931488",
     "updated_at":"2022-08-22T05:42:07.617000Z"
  }

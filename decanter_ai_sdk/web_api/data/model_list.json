@@ -617,7 +617,7 @@
        "corex_model_id":"6303212815c6b04efa91d8c9",
        "created_at":"2022-08-22T06:22:06.951000Z",
        "download_count":0,
-       "experiment_id":"63032077818547e247f5aa33",
+       "experiment_id":"630439e3818547e247f5aa3d",
        "hyperparameters":{
           "auto_regressive_feature_gene":{
              "feature_to_lags_map":{
@@ -2467,5 +2467,6 @@
           
        ],
        "updated_at":"2022-08-22T06:22:06.951000Z"
-    }
+      }
+
  ]

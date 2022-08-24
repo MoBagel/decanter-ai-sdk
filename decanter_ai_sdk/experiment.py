@@ -1,10 +1,7 @@
-from unicodedata import category
-from attr import attributes
 from pydantic import BaseModel, Field
 from typing import Any, List, Dict, Optional, Union
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetric
 from decanter_ai_sdk.model import Model
-import sys
 
 
 class Experiment(BaseModel):
@@ -143,7 +140,7 @@ class Experiment(BaseModel):
         list = []
 
         for attr in self.attributes:
-
+            
             list.append(
                 Model(
                     model_id=self.attributes[attr]["model_id"],
