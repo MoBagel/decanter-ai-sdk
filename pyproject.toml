@@ -46,14 +46,14 @@ echo bundle images into tar file
 help = "Testing iid tasks."
 shell = """
 echo run unit tests
-pytest -s ./tests/test_iid.py
+pytest -s ./tests/test_mock_iid.py
 """
 
 [tool.poe.tasks.test_ts]
 help = "Testing time series tasks."
 shell = """
 echo run unit tests
-pytest -s ./tests/test_ts.py
+pytest -s ./tests/test_mock_ts.py
 """
 
 [tool.poe.tasks.test_upload_iid]

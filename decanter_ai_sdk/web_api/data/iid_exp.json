@@ -1,0 +1,456 @@
+{
+   "_id": "630439e3818547e247f5aa3d",
+   "algos": ["DRF", "GBM", "XGBoost", "GLM", "StackedEnsemble"],
+   "attributes": {
+     "Generalized Linear Model 1": {
+       "cv_averages": {
+         "auc": 0.825257362,
+         "lift_top_group": 2.2901321599999998,
+         "logloss": 0.48888567599999994,
+         "mean_per_class_error": 0.21511627,
+         "misclassification": 0.21403509
+       },
+       "cv_deviations": {
+         "auc": 0.03528556115925289,
+         "lift_top_group": 0.6529043413036051,
+         "logloss": 0.03473366501537353,
+         "mean_per_class_error": 0.023618301935536355,
+         "misclassification": 0.026951395897863998
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.9004255319148936,
+         "lift_top_group": 2.88,
+         "logloss": 0.37999926483000573,
+         "mean_per_class_error": 0.10127659574468086,
+         "misclassification": 0.08333333333333337
+       },
+       "model_id": "630439e8ed266c3d7b2f83f5",
+       "name": "Generalized Linear Model 1",
+       "validation_scores": {
+         "auc": 0.9078014184397163,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.37622956971998983,
+         "mean_per_class_error": 0.12632978723404253,
+         "misclassification": 0.12676056338028174
+       }
+     },
+     "Gradient Boosting Machine 1": {
+       "cv_averages": {
+         "auc": 0.835380432,
+         "lift_top_group": 2.51813216,
+         "logloss": 0.49399143600000006,
+         "mean_per_class_error": 0.20098824999999998,
+         "misclassification": 0.19473684
+       },
+       "cv_deviations": {
+         "auc": 0.05356356624005628,
+         "lift_top_group": 0.3313001870405364,
+         "logloss": 0.0876548332464821,
+         "mean_per_class_error": 0.03604548485721563,
+         "misclassification": 0.04054112953222838
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.8527659574468085,
+         "lift_top_group": 2.88,
+         "logloss": 0.4506543736141079,
+         "mean_per_class_error": 0.17063829787234042,
+         "misclassification": 0.125
+       },
+       "model_id": "630439f6ed266c3d7b2f83f9",
+       "name": "Gradient Boosting Machine 1",
+       "validation_scores": {
+         "auc": 0.8723404255319149,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.44824401089063626,
+         "mean_per_class_error": 0.17952127659574468,
+         "misclassification": 0.19718309859154926
+       }
+     },
+     "Random Forest 1": {
+       "cv_averages": {
+         "auc": 0.843453988,
+         "lift_top_group": 2.51813216,
+         "logloss": 0.48562886799999994,
+         "mean_per_class_error": 0.193015552,
+         "misclassification": 0.178947368
+       },
+       "cv_deviations": {
+         "auc": 0.04955177794314204,
+         "lift_top_group": 0.3313001870405364,
+         "logloss": 0.06849816311582856,
+         "mean_per_class_error": 0.035871668480878555,
+         "misclassification": 0.034018807109901655
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.8914893617021277,
+         "lift_top_group": 2.88,
+         "logloss": 0.4299377558965441,
+         "mean_per_class_error": 0.15191489361702126,
+         "misclassification": 0.125
+       },
+       "model_id": "630439f2ed266c3d7b2f83f7",
+       "name": "Random Forest 1",
+       "validation_scores": {
+         "auc": 0.8838652482269503,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.43351452952189423,
+         "mean_per_class_error": 0.1777482269503546,
+         "misclassification": 0.14084507042253525
+       }
+     },
+     "Random Forest 2": {
+       "cv_averages": {
+         "auc": 0.84505921,
+         "lift_top_group": 2.21002404,
+         "logloss": 0.479779282,
+         "mean_per_class_error": 0.191240884,
+         "misclassification": 0.187719298
+       },
+       "cv_deviations": {
+         "auc": 0.043823908961118464,
+         "lift_top_group": 0.37760287026507416,
+         "logloss": 0.06438630286949029,
+         "mean_per_class_error": 0.044951270697094474,
+         "misclassification": 0.03621011555254603
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.8774468085106384,
+         "lift_top_group": 2.88,
+         "logloss": 0.4508743934819806,
+         "mean_per_class_error": 0.14127659574468085,
+         "misclassification": 0.11111111111111116
+       },
+       "model_id": "630439f2ed266c3d7b2f83f8",
+       "name": "Random Forest 2",
+       "validation_scores": {
+         "auc": 0.8812056737588652,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.44435758160599437,
+         "mean_per_class_error": 0.16799645390070922,
+         "misclassification": 0.15492957746478875
+       }
+     },
+     "Stacked Ensemble 1": {
+       "cv_averages": {
+         "auc": 0.849219222,
+         "lift_top_group": 2.48923316,
+         "logloss": 0.44721362200000003,
+         "mean_per_class_error": 0.183799494,
+         "misclassification": 0.185968262
+       },
+       "cv_deviations": {
+         "auc": 0.04383202497905813,
+         "lift_top_group": 0.16534426314331682,
+         "logloss": 0.05129953510265152,
+         "mean_per_class_error": 0.03525886599039487,
+         "misclassification": 0.04025185341510197
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.8868085106382979,
+         "lift_top_group": 2.88,
+         "logloss": 0.39896273010783145,
+         "mean_per_class_error": 0.15191489361702126,
+         "misclassification": 0.125
+       },
+       "model_id": "630439f8ed266c3d7b2f83fa",
+       "name": "Stacked Ensemble 1",
+       "validation_scores": {
+         "auc": 0.8953900709219859,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.4025181967455647,
+         "mean_per_class_error": 0.1777482269503546,
+         "misclassification": 0.14084507042253525
+       }
+     },
+     "Stacked Ensemble 2": {
+       "cv_averages": {
+         "auc": 0.849186868,
+         "lift_top_group": 2.48923316,
+         "logloss": 0.44663623399999997,
+         "mean_per_class_error": 0.18168125799999998,
+         "misclassification": 0.182454118
+       },
+       "cv_deviations": {
+         "auc": 0.04313417616282448,
+         "lift_top_group": 0.16534426314331682,
+         "logloss": 0.05217395025841289,
+         "mean_per_class_error": 0.03812469131716683,
+         "misclassification": 0.04488989921970706
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.883404255319149,
+         "lift_top_group": 2.88,
+         "logloss": 0.39959925619944375,
+         "mean_per_class_error": 0.15191489361702126,
+         "misclassification": 0.125
+       },
+       "model_id": "630439fbed266c3d7b2f83fb",
+       "name": "Stacked Ensemble 2",
+       "validation_scores": {
+         "auc": 0.8936170212765957,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.40163761479427795,
+         "mean_per_class_error": 0.14804964539007093,
+         "misclassification": 0.16901408450704225
+       }
+     },
+     "XGBoost 1": {
+       "cv_averages": {
+         "auc": 0.8462527999999999,
+         "lift_top_group": 2.51813216,
+         "logloss": 0.45909429,
+         "mean_per_class_error": 0.18831113400000002,
+         "misclassification": 0.178947366
+       },
+       "cv_deviations": {
+         "auc": 0.04283318280174844,
+         "lift_top_group": 0.3313001870405364,
+         "logloss": 0.04609573980255007,
+         "mean_per_class_error": 0.04010515478680296,
+         "misclassification": 0.04354271348421575
+       },
+       "feature_explanations": [],
+       "holdout_scores": {
+         "auc": 0.8706382978723405,
+         "lift_top_group": 2.88,
+         "logloss": 0.40412231796577935,
+         "mean_per_class_error": 0.1425531914893617,
+         "misclassification": 0.125
+       },
+       "model_id": "630439eced266c3d7b2f83f6",
+       "name": "XGBoost 1",
+       "validation_scores": {
+         "auc": 0.8874113475177305,
+         "lift_top_group": 2.9583333333333335,
+         "logloss": 0.4110345790648638,
+         "mean_per_class_error": 0.1671099290780142,
+         "misclassification": 0.12676056338028174
+       }
+     }
+   },
+   "bagel_id": "M042",
+   "balance_class": false,
+   "best_model": "Stacked Ensemble 1",
+   "best_model_id": "630439ffc4f10cea106ed841",
+   "best_score": 0.849219222,
+   "category": "classification",
+   "company_id": "5d568e63bfd7f0000a45d74e",
+   "completed_at": "2022-08-23T02:22:55.000000Z",
+   "corex_models": [
+     "630439eced266c3d7b2f83f6",
+     "630439f8ed266c3d7b2f83fa",
+     "630439fbed266c3d7b2f83fb",
+     "630439f2ed266c3d7b2f83f8",
+     "630439f6ed266c3d7b2f83f9",
+     "630439f2ed266c3d7b2f83f7",
+     "630439e8ed266c3d7b2f83f5"
+   ],
+   "created_at": "2022-08-23T02:22:27.875000Z",
+   "created_by": {
+     "_id": "62c7be0d36de78d7f435f193",
+     "active_project_id": "62c7c899f7fa03a303695fc8",
+     "company_id": "5d568e63bfd7f0000a45d74e",
+     "created_at": "2022-07-08T05:18:05.724000Z",
+     "expiry_date": "2022-09-30T23:59:59.000000Z",
+     "is_active": true,
+     "is_removed": false,
+     "last_login": "2022-08-22T06:20:41.933000Z",
+     "login_attempts": 0,
+     "mfa_code": "",
+     "mfa_email": "",
+     "mfa_email_verify": false,
+     "need_new_pass": false,
+     "need_onboarding": true,
+     "need_pass_reset": false,
+     "role": 1,
+     "unlocked_at": null,
+     "updated_at": "2022-08-22T06:20:41.936000Z",
+     "username": "Sen"
+   },
+   "data_id": "630439e4ed266c3d7b2f83f4",
+   "error": {},
+   "feature_types": [
+     { "data_type": "numerical", "id": "PassengerId" },
+     { "data_type": "categorical", "id": "Pclass" },
+     { "data_type": "categorical", "id": "Name" },
+     { "data_type": "categorical", "id": "Sex" },
+     { "data_type": "numerical", "id": "Age" },
+     { "data_type": "numerical", "id": "SibSp" },
+     { "data_type": "categorical", "id": "Parch" },
+     { "data_type": "categorical", "id": "Ticket" },
+     { "data_type": "numerical", "id": "Fare" },
+     { "data_type": "categorical", "id": "Cabin" },
+     { "data_type": "categorical", "id": "Embarked" }
+   ],
+   "features": [
+     "PassengerId",
+     "Pclass",
+     "Name",
+     "Sex",
+     "Age",
+     "SibSp",
+     "Parch",
+     "Ticket",
+     "Fare",
+     "Cabin",
+     "Embarked"
+   ],
+   "forecast_column": null,
+   "forecast_exogeneous_columns": [],
+   "forecast_time_group_columns": [],
+   "gp_table_id": "62ff59883a6eef99be6e8e86",
+   "holdout": { "percent": 10 },
+   "holdout_percentage": 0.1,
+   "hyperparameters": {
+     "algos": "StackedEnsemble,GLM,XGBoost,GBM,DRF",
+     "apu_name": null,
+     "balance_class": false,
+     "data_rows": 713,
+     "endogenous_features": [],
+     "exogenous_features": [],
+     "feature_types": [
+       { "data_type": "numerical", "id": "PassengerId" },
+       { "data_type": "categorical", "id": "Pclass" },
+       { "data_type": "categorical", "id": "Name" },
+       { "data_type": "categorical", "id": "Sex" },
+       { "data_type": "numerical", "id": "Age" },
+       { "data_type": "numerical", "id": "SibSp" },
+       { "data_type": "categorical", "id": "Parch" },
+       { "data_type": "categorical", "id": "Ticket" },
+       { "data_type": "numerical", "id": "Fare" },
+       { "data_type": "categorical", "id": "Cabin" },
+       { "data_type": "categorical", "id": "Embarked" },
+       { "data_type": "categorical", "id": "Survived" }
+     ],
+     "holdout_percentage": 0.1,
+     "max_model": 5,
+     "max_runtime": 259200,
+     "model_type": "binary classification",
+     "nfold": 5,
+     "preprocessing": null,
+     "seed": 1180,
+     "stopping_metric": "auc",
+     "target": "Survived",
+     "time_group": [],
+     "time_series_split": null,
+     "tolerance": 0.0001,
+     "transformed_features": [
+       "PassengerId",
+       "Pclass",
+       "Sex",
+       "Age",
+       "SibSp",
+       "Parch",
+       "Fare",
+       "Cabin",
+       "Embarked"
+     ],
+     "validation_percentage": 0.1
+   },
+   "is_binary_classification": true,
+   "is_favorited": false,
+   "is_forecast": false,
+   "is_starred": false,
+   "max_model": 5,
+   "name": "exp_name",
+   "nfold": 5,
+   "preprocessing": {},
+   "progress": 1.0,
+   "progress_message": "task completed",
+   "project_id": "62c7c899f7fa03a303695fc8",
+   "recommendations": [
+     {
+       "cv_average": 0.849219222,
+       "cv_deviation": 0.04383202497905813,
+       "evaluator": "auc",
+       "model_id": "630439f8ed266c3d7b2f83fa",
+       "name": "Stacked Ensemble 1"
+     },
+     {
+       "cv_average": 0.18168125799999998,
+       "cv_deviation": 0.03812469131716683,
+       "evaluator": "mean_per_class_error",
+       "model_id": "630439fbed266c3d7b2f83fb",
+       "name": "Stacked Ensemble 2"
+     },
+     {
+       "cv_average": 0.44721362200000003,
+       "cv_deviation": 0.05129953510265152,
+       "evaluator": "logloss",
+       "model_id": "630439f8ed266c3d7b2f83fa",
+       "name": "Stacked Ensemble 1"
+     },
+     {
+       "cv_average": 0.178947366,
+       "cv_deviation": 0.04354271348421575,
+       "evaluator": "misclassification",
+       "model_id": "630439eced266c3d7b2f83f6",
+       "name": "XGBoost 1"
+     },
+     {
+       "cv_average": 2.51813216,
+       "cv_deviation": 0.3313001870405364,
+       "evaluator": "lift_top_group",
+       "model_id": "630439f2ed266c3d7b2f83f7",
+       "name": "Random Forest 1"
+     }
+   ],
+   "seed": 1180,
+   "stacked_ensemble": true,
+   "started_at": "2022-08-23T02:22:27.000000Z",
+   "status": "done",
+   "stopping_metric": "auc",
+   "target": "Survived",
+   "target_type": "categorical",
+   "task_id": "630439e3ea117c7b1f9314bd",
+   "timeseriesValues": {},
+   "tolerance": 0.0001,
+   "train_table": {
+     "_id": "62ff59883a6eef99be6e8e86",
+     "celery_task_id": "aa860a67-9a6e-439f-a53d-937798900d2e",
+     "columns": [
+       "62ff598fceef5f1a202c4643",
+       "62ff598fceef5f1a202c4644",
+       "62ff598fceef5f1a202c4645",
+       "62ff598fceef5f1a202c4646",
+       "62ff598fceef5f1a202c4647",
+       "62ff598fceef5f1a202c4648",
+       "62ff598fceef5f1a202c4649",
+       "62ff598fceef5f1a202c464a",
+       "62ff598fceef5f1a202c464b",
+       "62ff598fceef5f1a202c464c",
+       "62ff598fceef5f1a202c464d",
+       "62ff598fceef5f1a202c464e"
+     ],
+     "company_id": "5d568e63bfd7f0000a45d74e",
+     "completed_at": "2022-08-19T09:38:46.000000Z",
+     "created_at": "2022-08-19T09:36:08.372000Z",
+     "data_id": "62ff5a20023a4a19cb3fb7e3",
+     "eda_id": "62ff5a20023a4a19cb3fb7e3",
+     "eda_status": "done",
+     "error": null,
+     "file_size": 49047,
+     "is_active": true,
+     "name": "test_upload(20)",
+     "progress": 1.0,
+     "progress_message": "task completed",
+     "project_id": "62c7c899f7fa03a303695fc8",
+     "rows": 713,
+     "started_at": "2022-08-19T09:38:40.000000Z",
+     "status": "done",
+     "tag": "all",
+     "task_id": "62ff5988ea117c7b1f93146e",
+     "updated_at": "2022-08-19T09:36:08.382000Z",
+     "upload_uid": "4Nom25Uwgf26",
+     "uploaded_by": "62c7be0d36de78d7f435f193"
+   },
+   "updated_at": "2022-08-23T02:22:55.533000Z",
+   "validation_percentage": 0.1
+ }
+ 

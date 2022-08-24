@@ -1,0 +1,30 @@
+{
+    "_id":"6303172ff52233e377e53a3a",
+    "apu_mock_model":false,
+    "company_id":"5d568e63bfd7f0000a45d74e",
+    "compared_to_what":"cv",
+    "completed_at":"2022-08-22T05:44:49.000000Z",
+    "created_at":"2022-08-22T05:42:07.617000Z",
+    "data_id":"630317c94d2c953e1e35827b",
+    "download_count":0,
+    "error":{
+       
+    },
+    "experiment_id":"630316f5818547e247f5aa2b",
+    "is_auto_predict":false,
+    "is_multi_model":false,
+    "keep_columns":[
+       
+    ],
+    "model_id":"63044b72c4f10cea106ed84e",
+    "plot_key":"630317d14d2c953e1e358288",
+    "progress":1.0,
+    "progress_message":"task completed",
+    "project_id":"62c7c899f7fa03a303695fc8",
+    "shapley_only":false,
+    "started_at":"2022-08-22T05:44:40.000000Z",
+    "status":"done",
+    "table_id":"6304459bf52233e377e53a41",
+    "task_id":"6303172fea117c7b1f931488",
+    "updated_at":"2022-08-22T05:42:07.617000Z"
+ }

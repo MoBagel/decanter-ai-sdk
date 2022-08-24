@@ -1,0 +1,1054 @@
+{
+  "_id": "63044b583a6eef99be6e8e9b",
+  "algos": ["GBM"],
+  "attributes": {
+    "Deep Meta-Learning Ensemble 1": {
+      "cv_averages": {
+        "deviance": 278.5806058951084,
+        "mae": 15.441051227057415,
+        "mape": 3.683548687638428,
+        "mse": 278.5806058951084,
+        "r2": -1.7976931348623157e308,
+        "rmse": 15.441051227057415,
+        "rmsle": 0.0371681236300951,
+        "wmape": 3.683548687638427
+      },
+      "cv_deviations": {},
+      "feature_explanations": [
+        {
+          "name": "Passengers_3",
+          "value": "lag 3 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_2",
+          "value": "lag 2 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_12",
+          "value": "lag 12 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_24",
+          "value": "lag 24 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_48",
+          "value": "lag 48 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_36",
+          "value": "lag 36 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_1",
+          "value": "lag 1 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_7",
+          "value": "the rolling rollingMean of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_14",
+          "value": "the rolling rollingMean of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_30",
+          "value": "the rolling rollingMean of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_7",
+          "value": "the rolling rollingSum of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_14",
+          "value": "the rolling rollingSum of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_30",
+          "value": "the rolling rollingSum of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_7",
+          "value": "the rolling rollingStdDev of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_14",
+          "value": "the rolling rollingStdDev of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_30",
+          "value": "the rolling rollingStdDev of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_7",
+          "value": "the rolling rollingKurtosis of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_14",
+          "value": "the rolling rollingKurtosis of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_30",
+          "value": "the rolling rollingKurtosis of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_7",
+          "value": "the rolling rollingSkewness of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_14",
+          "value": "the rolling rollingSkewness of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_30",
+          "value": "the rolling rollingSkewness of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_7",
+          "value": "the rolling rollingMin of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_14",
+          "value": "the rolling rollingMin of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_30",
+          "value": "the rolling rollingMin of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_7",
+          "value": "the rolling rollingMax of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_14",
+          "value": "the rolling rollingMax of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_30",
+          "value": "the rolling rollingMax of window 30 and lag 1 for feature Passengers"
+        },
+        { "name": "Month_y", "value": "the year component of Month" },
+        { "name": "Month_m", "value": "the month component of Month" },
+        {
+          "name": "Month_weekOfMonth",
+          "value": "the week of month component of Month"
+        },
+        { "name": "Month_d", "value": "the day of month component of Month" },
+        { "name": "Month_h", "value": "the hour of day component of Month" },
+        {
+          "name": "Month_mm",
+          "value": "the minute of hour component of Month"
+        },
+        {
+          "name": "Month_s",
+          "value": "the second of minute component of Month"
+        },
+        {
+          "name": "Month_dayOfWeek",
+          "value": "the day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_sin_m",
+          "value": "the sine transformation of month component of Month"
+        },
+        {
+          "name": "Month_sin_h",
+          "value": "the sine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_sin_dayOfWeek",
+          "value": "the sine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_cos_m",
+          "value": "the cosine transformation of month component of Month"
+        },
+        {
+          "name": "Month_cos_h",
+          "value": "the cosine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_cos_dayOfWeek",
+          "value": "the cosine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Passengers_lag5_timepattern_mean3",
+          "value": "the lag 5 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag6_timepattern_mean4",
+          "value": "the lag 6 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag9_timepattern_mean3",
+          "value": "the lag 9 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag8_timepattern_mean3",
+          "value": "the lag 8 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag1_timepattern_mean3",
+          "value": "the lag 1 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag2_timepattern_mean4",
+          "value": "the lag 2 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag7_timepattern_mean4",
+          "value": "the lag 7 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag2_timepattern_mean3",
+          "value": "the lag 2 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag11_timepattern_mean4",
+          "value": "the lag 11 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag4_timepattern_mean4",
+          "value": "the lag 4 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag10_timepattern_mean4",
+          "value": "the lag 10 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag9_timepattern_mean4",
+          "value": "the lag 9 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag8_timepattern_mean4",
+          "value": "the lag 8 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag11_timepattern_mean3",
+          "value": "the lag 11 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag12_timepattern_mean4",
+          "value": "the lag 12 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag1_timepattern_mean4",
+          "value": "the lag 1 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag12_timepattern_mean3",
+          "value": "the lag 12 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag10_timepattern_mean3",
+          "value": "the lag 10 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag6_timepattern_mean3",
+          "value": "the lag 6 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag4_timepattern_mean3",
+          "value": "the lag 4 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag5_timepattern_mean4",
+          "value": "the lag 5 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag3_timepattern_mean4",
+          "value": "the lag 3 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag7_timepattern_mean3",
+          "value": "the lag 7 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag3_timepattern_mean3",
+          "value": "the lag 3 period value in window 3 for feature Passengers"
+        }
+      ],
+      "model_id": "63044b72ed266c3d7b2f895f",
+      "validation_scores": {
+        "deviance": 65.19672098954437,
+        "mae": 6.967446025092784,
+        "mse": 65.19672098954437,
+        "r2": 0.9892839051627967,
+        "rmse": 8.074448649260479,
+        "rmsle": 0.034302782773467856
+      }
+    },
+    "Deep Meta-Learning Ensemble 2": {
+      "cv_averages": {
+        "deviance": 11834.930143582158,
+        "mae": 106.52224507710096,
+        "mape": 25.24010012641798,
+        "mse": 11834.930143582158,
+        "r2": -1.7976931348623157e308,
+        "rmse": 106.52224507710096,
+        "rmsle": 0.2913512623960379,
+        "wmape": 25.24010012641798
+      },
+      "cv_deviations": {},
+      "feature_explanations": [
+        {
+          "name": "Passengers_3",
+          "value": "lag 3 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_2",
+          "value": "lag 2 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_12",
+          "value": "lag 12 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_24",
+          "value": "lag 24 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_48",
+          "value": "lag 48 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_36",
+          "value": "lag 36 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_1",
+          "value": "lag 1 value of feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_7",
+          "value": "the rolling rollingMean of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_14",
+          "value": "the rolling rollingMean of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMean_1_30",
+          "value": "the rolling rollingMean of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_7",
+          "value": "the rolling rollingSum of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_14",
+          "value": "the rolling rollingSum of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSum_1_30",
+          "value": "the rolling rollingSum of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_7",
+          "value": "the rolling rollingStdDev of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_14",
+          "value": "the rolling rollingStdDev of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingStdDev_1_30",
+          "value": "the rolling rollingStdDev of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_7",
+          "value": "the rolling rollingKurtosis of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_14",
+          "value": "the rolling rollingKurtosis of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingKurtosis_1_30",
+          "value": "the rolling rollingKurtosis of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_7",
+          "value": "the rolling rollingSkewness of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_14",
+          "value": "the rolling rollingSkewness of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingSkewness_1_30",
+          "value": "the rolling rollingSkewness of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_7",
+          "value": "the rolling rollingMin of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_14",
+          "value": "the rolling rollingMin of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMin_1_30",
+          "value": "the rolling rollingMin of window 30 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_7",
+          "value": "the rolling rollingMax of window 7 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_14",
+          "value": "the rolling rollingMax of window 14 and lag 1 for feature Passengers"
+        },
+        {
+          "name": "Passengers_rollingMax_1_30",
+          "value": "the rolling rollingMax of window 30 and lag 1 for feature Passengers"
+        },
+        { "name": "Month_y", "value": "the year component of Month" },
+        { "name": "Month_m", "value": "the month component of Month" },
+        {
+          "name": "Month_weekOfMonth",
+          "value": "the week of month component of Month"
+        },
+        { "name": "Month_d", "value": "the day of month component of Month" },
+        { "name": "Month_h", "value": "the hour of day component of Month" },
+        {
+          "name": "Month_mm",
+          "value": "the minute of hour component of Month"
+        },
+        {
+          "name": "Month_s",
+          "value": "the second of minute component of Month"
+        },
+        {
+          "name": "Month_dayOfWeek",
+          "value": "the day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_sin_m",
+          "value": "the sine transformation of month component of Month"
+        },
+        {
+          "name": "Month_sin_h",
+          "value": "the sine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_sin_dayOfWeek",
+          "value": "the sine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_cos_m",
+          "value": "the cosine transformation of month component of Month"
+        },
+        {
+          "name": "Month_cos_h",
+          "value": "the cosine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_cos_dayOfWeek",
+          "value": "the cosine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Passengers_lag5_timepattern_mean3",
+          "value": "the lag 5 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag6_timepattern_mean4",
+          "value": "the lag 6 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag9_timepattern_mean3",
+          "value": "the lag 9 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag8_timepattern_mean3",
+          "value": "the lag 8 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag1_timepattern_mean3",
+          "value": "the lag 1 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag2_timepattern_mean4",
+          "value": "the lag 2 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag7_timepattern_mean4",
+          "value": "the lag 7 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag2_timepattern_mean3",
+          "value": "the lag 2 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag11_timepattern_mean4",
+          "value": "the lag 11 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag4_timepattern_mean4",
+          "value": "the lag 4 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag10_timepattern_mean4",
+          "value": "the lag 10 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag9_timepattern_mean4",
+          "value": "the lag 9 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag8_timepattern_mean4",
+          "value": "the lag 8 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag11_timepattern_mean3",
+          "value": "the lag 11 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag12_timepattern_mean4",
+          "value": "the lag 12 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag1_timepattern_mean4",
+          "value": "the lag 1 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag12_timepattern_mean3",
+          "value": "the lag 12 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag10_timepattern_mean3",
+          "value": "the lag 10 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag6_timepattern_mean3",
+          "value": "the lag 6 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag4_timepattern_mean3",
+          "value": "the lag 4 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag5_timepattern_mean4",
+          "value": "the lag 5 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag3_timepattern_mean4",
+          "value": "the lag 3 period value in window 4 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag7_timepattern_mean3",
+          "value": "the lag 7 period value in window 3 for feature Passengers"
+        },
+        {
+          "name": "Passengers_lag3_timepattern_mean3",
+          "value": "the lag 3 period value in window 3 for feature Passengers"
+        }
+      ],
+      "model_id": "63044b79ed266c3d7b2f89b5",
+      "validation_scores": {
+        "deviance": 5999.43400495996,
+        "mae": 77.42061645687306,
+        "mse": 5999.43400495996,
+        "r2": 0.013899736199872392,
+        "rmse": 77.45601335571021,
+        "rmsle": 0.25492686606761267
+      }
+    },
+    "Deep Meta-Learning Ensemble 3": {
+      "cv_averages": {
+        "deviance": 766.2418131757646,
+        "mae": 25.055707073220606,
+        "mape": 5.941930568048224,
+        "mse": 766.2418131757646,
+        "r2": -1.7976931348623157e308,
+        "rmse": 25.055707073220606,
+        "rmsle": 0.06061336410207385,
+        "wmape": 5.941930568048224
+      },
+      "cv_deviations": {},
+      "feature_explanations": [
+        {
+          "name": "delta1_Passengers_3",
+          "value": "lag 3 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_2",
+          "value": "lag 2 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_12",
+          "value": "lag 12 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_24",
+          "value": "lag 24 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_48",
+          "value": "lag 48 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_36",
+          "value": "lag 36 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_1",
+          "value": "lag 1 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMean_1_7",
+          "value": "the rolling rollingMean of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMean_1_14",
+          "value": "the rolling rollingMean of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMean_1_30",
+          "value": "the rolling rollingMean of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingSum_1_7",
+          "value": "the rolling rollingSum of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingSum_1_14",
+          "value": "the rolling rollingSum of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingSum_1_30",
+          "value": "the rolling rollingSum of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingStdDev_1_7",
+          "value": "the rolling rollingStdDev of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingStdDev_1_14",
+          "value": "the rolling rollingStdDev of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingStdDev_1_30",
+          "value": "the rolling rollingStdDev of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingKurtosis_1_7",
+          "value": "the rolling rollingKurtosis of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingKurtosis_1_14",
+          "value": "the rolling rollingKurtosis of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingKurtosis_1_30",
+          "value": "the rolling rollingKurtosis of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingSkewness_1_7",
+          "value": "the rolling rollingSkewness of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingSkewness_1_14",
+          "value": "the rolling rollingSkewness of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingSkewness_1_30",
+          "value": "the rolling rollingSkewness of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMin_1_7",
+          "value": "the rolling rollingMin of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMin_1_14",
+          "value": "the rolling rollingMin of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMin_1_30",
+          "value": "the rolling rollingMin of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMax_1_7",
+          "value": "the rolling rollingMax of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMax_1_14",
+          "value": "the rolling rollingMax of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMax_1_30",
+          "value": "the rolling rollingMax of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        { "name": "Month_y", "value": "the year component of Month" },
+        { "name": "Month_m", "value": "the month component of Month" },
+        {
+          "name": "Month_weekOfMonth",
+          "value": "the week of month component of Month"
+        },
+        { "name": "Month_d", "value": "the day of month component of Month" },
+        { "name": "Month_h", "value": "the hour of day component of Month" },
+        {
+          "name": "Month_mm",
+          "value": "the minute of hour component of Month"
+        },
+        {
+          "name": "Month_s",
+          "value": "the second of minute component of Month"
+        },
+        {
+          "name": "Month_dayOfWeek",
+          "value": "the day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_sin_m",
+          "value": "the sine transformation of month component of Month"
+        },
+        {
+          "name": "Month_sin_h",
+          "value": "the sine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_sin_dayOfWeek",
+          "value": "the sine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_cos_m",
+          "value": "the cosine transformation of month component of Month"
+        },
+        {
+          "name": "Month_cos_h",
+          "value": "the cosine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_cos_dayOfWeek",
+          "value": "the cosine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        }
+      ],
+      "model_id": "63044b8ced266c3d7b2f8a1e",
+      "validation_scores": {
+        "deviance": 561.5081428707977,
+        "mae": 23.65867568552494,
+        "mse": 561.5081428707977,
+        "r2": -61.38979365231085,
+        "rmse": 23.696163041108527,
+        "rmsle": 0.0761630096072684
+      }
+    },
+    "Deep Meta-Learning Ensemble 4": {
+      "cv_averages": {
+        "deviance": 701.6343323134163,
+        "mae": 23.675775626772655,
+        "mape": 5.626379579852266,
+        "mse": 701.6343323134163,
+        "r2": -1.7976931348623157e308,
+        "rmse": 23.675775626772655,
+        "rmsle": 0.05711229913324427,
+        "wmape": 5.626379579852265
+      },
+      "cv_deviations": {},
+      "feature_explanations": [
+        {
+          "name": "delta1_Passengers_3",
+          "value": "lag 3 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_2",
+          "value": "lag 2 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_12",
+          "value": "lag 12 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_24",
+          "value": "lag 24 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_48",
+          "value": "lag 48 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_36",
+          "value": "lag 36 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta1_Passengers_1",
+          "value": "lag 1 value of feature Passengers with 1 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMean_1_7",
+          "value": "the rolling rollingMean of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMean_1_14",
+          "value": "the rolling rollingMean of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMean_1_30",
+          "value": "the rolling rollingMean of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingSum_1_7",
+          "value": "the rolling rollingSum of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingSum_1_14",
+          "value": "the rolling rollingSum of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingSum_1_30",
+          "value": "the rolling rollingSum of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingStdDev_1_7",
+          "value": "the rolling rollingStdDev of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingStdDev_1_14",
+          "value": "the rolling rollingStdDev of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingStdDev_1_30",
+          "value": "the rolling rollingStdDev of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingKurtosis_1_7",
+          "value": "the rolling rollingKurtosis of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingKurtosis_1_14",
+          "value": "the rolling rollingKurtosis of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingKurtosis_1_30",
+          "value": "the rolling rollingKurtosis of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingSkewness_1_7",
+          "value": "the rolling rollingSkewness of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingSkewness_1_14",
+          "value": "the rolling rollingSkewness of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingSkewness_1_30",
+          "value": "the rolling rollingSkewness of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMin_1_7",
+          "value": "the rolling rollingMin of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMin_1_14",
+          "value": "the rolling rollingMin of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMin_1_30",
+          "value": "the rolling rollingMin of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        {
+          "name": "delta7_Passengers_rollingMax_1_7",
+          "value": "the rolling rollingMax of window 7 and lag 1 for feature Passengers with 7 step differencing"
+        },
+        {
+          "name": "delta14_Passengers_rollingMax_1_14",
+          "value": "the rolling rollingMax of window 14 and lag 1 for feature Passengers with 14 step differencing"
+        },
+        {
+          "name": "delta30_Passengers_rollingMax_1_30",
+          "value": "the rolling rollingMax of window 30 and lag 1 for feature Passengers with 30 step differencing"
+        },
+        { "name": "Month_y", "value": "the year component of Month" },
+        { "name": "Month_m", "value": "the month component of Month" },
+        {
+          "name": "Month_weekOfMonth",
+          "value": "the week of month component of Month"
+        },
+        { "name": "Month_d", "value": "the day of month component of Month" },
+        { "name": "Month_h", "value": "the hour of day component of Month" },
+        {
+          "name": "Month_mm",
+          "value": "the minute of hour component of Month"
+        },
+        {
+          "name": "Month_s",
+          "value": "the second of minute component of Month"
+        },
+        {
+          "name": "Month_dayOfWeek",
+          "value": "the day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_sin_m",
+          "value": "the sine transformation of month component of Month"
+        },
+        {
+          "name": "Month_sin_h",
+          "value": "the sine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_sin_dayOfWeek",
+          "value": "the sine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        },
+        {
+          "name": "Month_cos_m",
+          "value": "the cosine transformation of month component of Month"
+        },
+        {
+          "name": "Month_cos_h",
+          "value": "the cosine transformation of hour of day component of Month"
+        },
+        {
+          "name": "Month_cos_dayOfWeek",
+          "value": "the cosine transformation of day of week (1 is Monday, 7 is Sunday) component of Month"
+        }
+      ],
+      "model_id": "63044b96ed266c3d7b2f8a85",
+      "validation_scores": {
+        "deviance": 1103.5154752261874,
+        "mae": 31.55614394202169,
+        "mse": 1103.5154752261874,
+        "r2": -5.054954596577262,
+        "rmse": 33.21920341047009,
+        "rmsle": 0.10922589537929629
+      }
+    }
+  },
+  "bagel_id": "M051",
+  "balance_class": true,
+  "best_model": "Deep Meta-Learning Ensemble 1",
+  "best_model_id": "63044b72c4f10cea106ed84e",
+  "best_score": 3.683548687638428,
+  "category": "regression",
+  "company_id": "5d568e63bfd7f0000a45d74e",
+  "completed_at": "2022-08-23T03:37:58.000000Z",
+  "corex_models": [
+    "63044b72ed266c3d7b2f895f",
+    "63044b79ed266c3d7b2f89b5",
+    "63044b8ced266c3d7b2f8a1e",
+    "63044b96ed266c3d7b2f8a85"
+  ],
+  "created_at": "2022-08-23T03:36:56.684000Z",
+  "created_by": {
+    "_id": "62c7be0d36de78d7f435f193",
+    "active_project_id": "62c7c899f7fa03a303695fc8",
+    "company_id": "5d568e63bfd7f0000a45d74e",
+    "created_at": "2022-07-08T05:18:05.724000Z",
+    "expiry_date": "2022-09-30T23:59:59.000000Z",
+    "is_active": true,
+    "is_removed": false,
+    "last_login": "2022-08-23T03:24:45.681000Z",
+    "login_attempts": 0,
+    "mfa_code": "",
+    "mfa_email": "",
+    "mfa_email_verify": false,
+    "need_new_pass": false,
+    "need_onboarding": true,
+    "need_pass_reset": false,
+    "role": 1,
+    "unlocked_at": null,
+    "updated_at": "2022-08-23T03:24:45.683000Z",
+    "username": "Sen"
+  },
+  "data_id": "63044b59ed266c3d7b2f88ea",
+  "error": {},
+  "feature_derivation_start": 0,
+  "feature_derivation_window": 60,
+  "feature_types": [{ "data_type": "datetime", "id": "Month" }],
+  "features": ["Month"],
+  "forecast_column": "Month",
+  "forecast_exogeneous_columns": [],
+  "forecast_gap": 0,
+  "forecast_groupby_method": "sum",
+  "forecast_horizon_start": 0,
+  "forecast_horizon_window": 1,
+  "forecast_time_group_columns": [],
+  "forecast_timeunit": "month",
+  "gp_table_id": "63044594818547e247f5aa44",
+  "holdout": { "percent": 10 },
+  "holdout_percentage": 0.1,
+  "hyperparameters": {
+    "algos": "GBM",
+    "data_rows": 136,
+    "datetime_column": "Month",
+    "endogenous_features": ["Passengers"],
+    "exogenous_features": [],
+    "forecast_gap": 0,
+    "forecast_horizon": 1,
+    "gap": 0,
+    "group_by": {
+      "categorical_endo_groupby_method": "count",
+      "categorical_exo_groupby_method": "mode",
+      "categorical_groupby_method": "count",
+      "numerical_groupby_method": "sum",
+      "time_unit": "month",
+      "valid": true
+    },
+    "max_iteration": 10,
+    "max_model": 5,
+    "max_runtime": 259200,
+    "max_window_for_feature_derivation": 60,
+    "model_type": "time series regression",
+    "nfold": 5,
+    "seed": 1111,
+    "stopping_metric": "mape",
+    "target": "Passengers",
+    "time_group": [],
+    "time_group_unique_count": 1.0,
+    "time_unit": "month",
+    "tolerance": 0.01,
+    "transformed_features": [],
+    "validation_percentage": 0.1
+  },
+  "is_binary_classification": true,
+  "is_favorited": false,
+  "is_forecast": true,
+  "is_starred": false,
+  "max_model": 5,
+  "name": "exp_name",
+  "nfold": 5,
+  "preprocessing": {},
+  "progress": 0.78,
+  "progress_message": "0 iterations finished, 4 Multi Models trained, 0 Multi Models remain in this iteration",
+  "project_id": "62c7c899f7fa03a303695fc8",
+  "recommendations": [],
+  "seed": 1111,
+  "stacked_ensemble": false,
+  "started_at": "2022-08-23T03:36:56.000000Z",
+  "status": "done",
+  "stopping_metric": "mape",
+  "target": "Passengers",
+  "target_type": "numerical",
+  "task_id": "63044b58ea117c7b1f9314e4",
+  "timeseriesValues": {},
+  "tolerance": 0.01,
+  "train_table": {
+    "_id": "63044594818547e247f5aa44",
+    "celery_task_id": "26a2f7fb-9e14-40f2-ae81-5e68fb4165e2",
+    "columns": ["63044598ceef5f1a206c006c", "63044598ceef5f1a206c006d"],
+    "company_id": "5d568e63bfd7f0000a45d74e",
+    "completed_at": "2022-08-23T03:14:57.000000Z",
+    "created_at": "2022-08-23T03:12:20.051000Z",
+    "data_id": "6304462e023a4a19cb3fba83",
+    "eda_id": "6304462e023a4a19cb3fba83",
+    "eda_status": "done",
+    "error": null,
+    "file_size": 2057,
+    "is_active": true,
+    "name": "train_file(8)",
+    "progress": 1.0,
+    "progress_message": "task completed",
+    "project_id": "62c7c899f7fa03a303695fc8",
+    "rows": 136,
+    "started_at": "2022-08-23T03:14:54.000000Z",
+    "status": "done",
+    "tag": "all",
+    "task_id": "63044594ea117c7b1f9314d5",
+    "updated_at": "2022-08-23T03:12:20.057000Z",
+    "upload_uid": "SGBMoBDyFfGZ",
+    "uploaded_by": "62c7be0d36de78d7f435f193"
+  },
+  "updated_at": "2022-08-23T03:37:58.867000Z",
+  "validation_percentage": 0.1
+}

@@ -1,10 +1,7 @@
-from unicodedata import category
-from attr import attributes
 from pydantic import BaseModel, Field
 from typing import Any, List, Dict, Optional, Union
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetric
 from decanter_ai_sdk.model import Model
-import sys
 
 
 class Experiment(BaseModel):
@@ -77,7 +74,9 @@ class Experiment(BaseModel):
             attributes=self.attributes[self.best_model],
         )
 
-    def get_best_model_by_metric(self, metric: Union[ClassificationMetric, RegressionMetric]) -> Model:
+    def get_best_model_by_metric(
+        self, metric: Union[ClassificationMetric, RegressionMetric]
+    ) -> Model:
         """
         Return best model by input metric.
 
@@ -85,7 +84,7 @@ class Experiment(BaseModel):
         ----------
             metric(`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `decanter_ai_sdk.enums.evaluators.RegressionMetric`)
                 Standard metric.
-        
+
         Returns:
         ----------
             (`~decanter_ai_sdk.web_api.model.Model`)
@@ -96,26 +95,32 @@ class Experiment(BaseModel):
             or metric == RegressionMetric.R2
             or metric == ClassificationMetric.LIFT_TOP_GROUP
         ):
-            score = 0.0
+            score = None
             for attr in self.attributes:
-                if float(self.attributes[attr]["cv_averages"][metric.value]) > score:
+                if (
+                    score is None
+                    or float(self.attributes[attr]["cv_averages"][metric.value]) > score
+                ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
-                        model_name=self.attributes[attr]["name"],
+                        model_name=attr,
                         metrics_score=self.attributes[attr]["cv_averages"],
                         experiment_id=self.id,
                         experiment_name=self.name,
                         attributes=self.attributes[attr],
                     )
         else:
-            score = sys.maxsize
+            score = None
             for attr in self.attributes:
-                if float(self.attributes[attr]["cv_averages"][metric.value]) < score:
+                if (
+                    score is None
+                    or float(self.attributes[attr]["cv_averages"][metric.value]) < score
+                ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])
                     result = Model(
                         model_id=self.attributes[attr]["model_id"],
-                        model_name=self.attributes[attr]["name"],
+                        model_name=attr,
                         metrics_score=self.attributes[attr]["cv_averages"],
                         experiment_id=self.id,
                         experiment_name=self.name,
@@ -135,11 +140,11 @@ class Experiment(BaseModel):
         list = []
 
         for attr in self.attributes:
-
+            
             list.append(
                 Model(
                     model_id=self.attributes[attr]["model_id"],
-                    model_name=self.attributes[attr]["name"],
+                    model_name=attr,
                     metrics_score=self.attributes[attr]["cv_averages"],
                     experiment_id=self.id,
                     experiment_name=self.name,
