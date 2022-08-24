@@ -39,7 +39,8 @@ class TestingIidApiClient(ApiClient):
 
     def check(self, task, id):
         if task == "table":
-            if id=="63047377818547e247f5aa4e":
+            # Decide which json file (train or test) should be returned by checking id.
+            if id == "63047377818547e247f5aa4e":
                 f = open(current_path + "/data/iid_train_table.json")
                 table_data = json.load(f)
             else:

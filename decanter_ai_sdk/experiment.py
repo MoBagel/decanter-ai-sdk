@@ -101,7 +101,7 @@ class Experiment(BaseModel):
             score = None
             for attr in self.attributes:
                 if (
-                    score == None
+                    score is None
                     or float(self.attributes[attr]["cv_averages"][metric.value]) > score
                 ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])
@@ -117,7 +117,7 @@ class Experiment(BaseModel):
             score = None
             for attr in self.attributes:
                 if (
-                    score == None
+                    score is None
                     or float(self.attributes[attr]["cv_averages"][metric.value]) < score
                 ):
                     score = float(self.attributes[attr]["cv_averages"][metric.value])

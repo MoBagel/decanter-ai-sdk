@@ -11,7 +11,7 @@ import pandas as pd
 
 
 def test_ts():
-    print("---From test iid---")
+    print("---From test ts---")
 
     client = Client(
         auth_key="auth_API_key",

@@ -39,6 +39,7 @@ class TestingTsApiClient(ApiClient):
 
     def check(self, task, id):
         if task == "table":
+            # Decide which json file (train or test) should be returned by checking id.
             if id == "63044594818547e247f5aa44":
                 f = open(current_path + "/data/ts_train_table.json")
                 table_data = json.load(f)
