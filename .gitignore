@@ -2,8 +2,6 @@ tests/__pycache__
 
 tests/.pytest_cache
 
-tests/test_ts.py
-
 # Byte-compiled / optimized / DLL files
 */__pycache__
 
@@ -14,8 +12,6 @@ tests/test_ts.py
 *.py[cod]
 
 *$py.class
-
-/tests/test_iid.py
 
 /tests/test_upload_iid.py
 
