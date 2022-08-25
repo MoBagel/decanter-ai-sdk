@@ -1,8 +1,9 @@
 # Mobagel decanter ai sdk
 
-This repo is an SDK that you can use to easily manipulate Decanter ai services.
+This repo is a python sdk for the Decanter AI api.
 
 ## How it works
+---
 
 - Upload train and test files in both csv and pandas dataframe.
 - Setup different standards and conduct customized experiments on uploaded data.
@@ -10,19 +11,16 @@ This repo is an SDK that you can use to easily manipulate Decanter ai services.
 - Get predict data in pandas dataframe form.
 
 ## Requirements
+---
 
 - [Python >= 3.10](https://www.python.org/downloads/release/python-3100/)
 - [poetry](https://python-poetry.org/)
 
-## Installation
-
-1. `pip install decanter-ai-sdk`
-2. `pip install poetry toml poethepoet`
-3. `poetry install --no-root`
-4. `poetry shell` #Start your project in poetry env.
-
 ## Usage
+---
+### Installation
 
+`pip install decanter-ai-sdk`
 ### Constructor
 To use this sdk, you must first construct a client object.
 ```python
@@ -47,7 +45,7 @@ train_id = client.upload(train_file, "train_file")
 ```
 
 ### Experiment
-To conduct an experiment, you need to first specie out which type of data you are going to use , i.e., iid or ts, then you can input parameters by following our pyhint to customize your experiment.
+To conduct an experiment, you need to first specify which type of data you are going to use , i.e., iid or ts, then you can input parameters by following our pyhint to customize your experiment.
 After the experiment, the function will return an object which you can get experiment attributes from it.
 ```python
 # Training iid data
@@ -85,7 +83,8 @@ best_model = experiment.get_best_model()
 model_list = experiment.get_model_list()
 best_auc_model = experiment.get_best_model_by_metric(ClassificationMetric.AUC)
 ```
-Now you can use this model data to run prediction.
+### Prediction
+Now you can use model data to run prediction.
 ```python
 # Predicting iid data
 predict = client.predict_iid(
@@ -109,6 +108,15 @@ To get prediction result, do
 ```python
 predict_data = predict.get_predict_df()
 ```
+## Development
+---
+### Installing poetry
+
+1. `pip install poetry toml poethepoet`
+2. `poetry install` #Project setup.
+3. `poetry shell` #Start your project in poetry env.
+
+Now you can create your own branch to start developing new feature.
 
 ### Testing
 To run iid test, do:
@@ -131,7 +139,15 @@ To reformat, do:
 ```
 poe format
 ```
-## License
 
-Not yet.
+## Releasing
+#TODO
+
+## License
+#TODO
+
+## TODO
+#TODO
+
+
 
