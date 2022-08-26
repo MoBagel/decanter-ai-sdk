@@ -1,6 +1,10 @@
 # Mobagel decanter ai sdk
 
-This repo is a python sdk for the Decanter AI api.
+Decanter AI is a powerful AutoML tool which enables everyone to build ML models and make predictions without data science background. With Decanter AI SDK, you can integrate Decanter AI into your application more easily with Python.
+
+It supports actions such as data uploading, model training, and prediction to run in a more efficient way and access results more easily.
+
+To know more about Decanter AI and how you can be benefited with AutoML, visit [MoBagel website](https://mobagel.com/tw/) and contact us to try it out!
 
 ## How it works
 ---
