@@ -41,11 +41,11 @@ jobs:
       
       - name: Run Test
         run: |
-          poetry run poe test_iid
-          poetry run poe test_ts
+          poetry run poe test
       
       - name: Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: poetry run coveralls
             

@@ -385,9 +385,6 @@ class Client:
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
-        with open("ts_exp.json", "w") as outfile:
-            outfile.write(json.dumps(self.wait_for_response("experiment", exp_id)))
-
         return experiment
 
     def predict_iid(
