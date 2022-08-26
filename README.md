@@ -112,7 +112,7 @@ predict_data = predict.get_predict_df()
 ---
 ### Installing poetry
 
-1. `pip install poetry toml poethepoet`
+1. `pip install poetry poethepoet`
 2. `poetry install` #Project setup.
 3. `poetry shell` #Start your project in poetry env.
 
