@@ -157,7 +157,7 @@ class Client:
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
-            timeseries_value (List[Dict[Str, Any]])
+            timeseries_value (List[Dict[str, Any]])
                 Objects containing time series values(train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag) for cross validation.
             holdout_percentage (int)
                 Holdout percentage for experiment.
