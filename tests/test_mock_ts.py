@@ -23,8 +23,8 @@ def test_ts():
     current_path = os.path.dirname(os.path.abspath(__file__))
 
     train_file_path = os.path.join(current_path, "ts_train.csv")
-    train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "train_file")
+    train_file_df = pd.read_csv(open(train_file_path, "rb"))
+    train_id = client.upload(train_file_df, "train_file")
 
     test_file_path = os.path.join(current_path, "ts_test.csv")
     test_file = open(test_file_path, "rb")
