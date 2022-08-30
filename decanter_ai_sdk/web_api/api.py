@@ -5,40 +5,40 @@ from abc import ABC, abstractmethod
 class ApiClient(ABC):
     @abstractmethod
     def post_upload(self, file: Dict, name: str):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def post_train_iid(self, data):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def post_train_ts(self, data):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def post_predict(self, data):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_table_info(self, table_id):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def check(self, task, id):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_pred_data(self, pred_id, data):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_table_list(self):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_table(self, data_id):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def get_model_list(self, experiment_id, query):
-        pass
+        raise NotImplementedError

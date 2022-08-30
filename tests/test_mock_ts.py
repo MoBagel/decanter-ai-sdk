@@ -1,13 +1,13 @@
 import sys
+import os
+import pandas as pd
+from decanter_ai_sdk.enums.time_units import TimeUnit
+from decanter_ai_sdk.client import Client
+from decanter_ai_sdk.enums.evaluators import RegressionMetric
+from decanter_ai_sdk.enums.data_types import DataType
 from typing import List
 
 sys.path.append("..")
-from decanter_ai_sdk.enums.time_units import TimeUnit
-from decanter_ai_sdk.client import Client
-import os
-from decanter_ai_sdk.enums.evaluators import RegressionMetric
-from decanter_ai_sdk.enums.data_types import DataType
-import pandas as pd
 
 
 def test_ts():
@@ -30,6 +30,7 @@ def test_ts():
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
 
+    assert client.get_table(train_id)["name"][0] == "Tom"
     assert isinstance(client.get_table_list(), List)
     assert client.get_table_list().__len__() == 2
     assert client.get_table_list()[0]["name"] == "train_file"
@@ -56,7 +57,6 @@ def test_ts():
             experiment.get_best_model_by_metric(metric).model_id
             == "63044b72ed266c3d7b2f895f"
         )
-
     assert isinstance(experiment.get_model_list(), List)
     assert experiment.get_model_list().__len__() == 4
     for model in experiment.get_model_list():
@@ -68,5 +68,5 @@ def test_ts():
     )
 
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
-    assert predict.attributes['model_id'] == best_model.model_id
-    assert predict.attributes['table_id'] == test_id
+    assert predict.attributes["model_id"] == best_model.model_id
+    assert predict.attributes["table_id"] == test_id

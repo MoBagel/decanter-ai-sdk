@@ -36,21 +36,6 @@ _black = 'black $SRC $DIFF --color'
 _mypy-install-type = 'mypy $SRC --ignore-missing-imports --install-types --non-interactive'
 _mypy = 'mypy $SRC --ignore-missing-imports'
 
-
-[tool.poe.tasks.test_iid]
-help = "Testing iid tasks."
-shell = """
-echo run unit tests
-pytest -s ./tests/test_mock_iid.py
-"""
-
-[tool.poe.tasks.test_ts]
-help = "Testing time series tasks."
-shell = """
-echo run unit tests
-pytest -s ./tests/test_mock_ts.py
-"""
-
 [tool.poe.tasks.test]
 help = "Testing tasks."
 shell = """
