@@ -140,7 +140,7 @@ class Experiment(BaseModel):
         list = []
 
         for attr in self.attributes:
-            
+
             list.append(
                 Model(
                     model_id=self.attributes[attr]["model_id"],

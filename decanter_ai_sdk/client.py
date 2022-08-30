@@ -1,11 +1,6 @@
 from io import StringIO
 from time import sleep
 from typing import Dict, List, Union, Optional, Any
-import logging
-import json
-
-import pandas as pd
-from tqdm import tqdm
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
@@ -17,6 +12,9 @@ from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from .enums.data_types import DataType
+from tqdm import tqdm
+import logging
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 
@@ -53,7 +51,7 @@ class Client:
             self.api = TsMockApi()
         elif dry_run_type == "iid":
             self.api = IidMockApi()
-        else: # pragma: no cover
+        else:  # pragma: no cover
             self.api = Api(
                 host=host,
                 headers={
@@ -84,8 +82,8 @@ class Client:
 
         """
 
-        if data is None: 
-            raise ValueError("[Upload] Uploaded None file.") # pragma: no cover
+        if data is None:
+            raise ValueError("[Upload] Uploaded None file.")  # pragma: no cover
 
         if isinstance(data, pd.DataFrame):
             text_stream = StringIO()
@@ -173,7 +171,7 @@ class Client:
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
-            ) # pragma: no cover
+            )  # pragma: no cover
 
         algo_enum_values = []
         for algo in algos:
@@ -199,14 +197,18 @@ class Client:
             if evaluator is None:
                 evaluator = RegressionMetric.MAPE
             elif evaluator.name not in RegressionMetric.__members__:
-                raise ValueError("Wrong evaluator, you need to fill wmape, mse ...") # pragma: no cover
+                raise ValueError(
+                    "Wrong evaluator, you need to fill wmape, mse ..."
+                )  # pragma: no cover
 
         else:
             category = "classification"
             if evaluator is None:
                 evaluator = ClassificationMetric.AUC
             elif evaluator.name not in ClassificationMetric.__members__:
-                raise ValueError("Wrong evaluator, you need to fill auc, logloss...") # pragma: no cover
+                raise ValueError(
+                    "Wrong evaluator, you need to fill auc, logloss..."
+                )  # pragma: no cover
 
         holdout_config: Dict[str, Any] = {}
 
@@ -325,7 +327,7 @@ class Client:
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
-            ) # pragma: no cover
+            )  # pragma: no cover
         algo_enum_values = []
 
         for algo in algos:
@@ -423,7 +425,7 @@ class Client:
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
                 "either model or both experiment_id and model_id should be defined"
-            ) # pragma: no cover
+            )  # pragma: no cover
 
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
@@ -485,7 +487,7 @@ class Client:
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
                 "either model or both experiment_id and model_id should be defined"
-            ) # pragma: no cover
+            )  # pragma: no cover
 
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
@@ -525,7 +527,7 @@ class Client:
             res = self.api.check(task=url, id=id)
 
             if res["status"] == "fail":
-                raise RuntimeError(res["progress_message"]) 
+                raise RuntimeError(res["progress_message"])
             else:
                 if res["status"] == "running":
                     pbar.set_description("[" + url + "] " + res["progress_message"])

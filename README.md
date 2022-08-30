@@ -1,3 +1,6 @@
+[![Coverage Status](https://coveralls.io/repos/github/MoBagel/decanter-ai-sdk/badge.svg?branch=coveralls)](https://coveralls.io/github/MoBagel/decanter-ai-sdk?branch=coveralls)
+[![tests](https://github.com/MoBagel/decanter-ai-sdk/workflows/main/badge.svg)](https://github.com/MoBagel/awesome-sso)
+
 # Mobagel decanter ai sdk
 
 This repo is a python sdk for the Decanter AI api.
@@ -119,14 +122,9 @@ predict_data = predict.get_predict_df()
 Now you can create your own branch to start developing new feature.
 
 ### Testing
-To run iid test, do:
+To run test, do:
 ```
-poe test_iid
-```
-
-To run ts test, do:
-```
-poe test_ts
+poe test
 ```
 
 ### Lint and format
