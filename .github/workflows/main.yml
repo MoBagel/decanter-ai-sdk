@@ -3,7 +3,7 @@ name: main
 on:
   push:
     branches:
-      - 'coveralls'
+      - 'main'
 
 jobs:
   main:
