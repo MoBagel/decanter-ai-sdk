@@ -1,12 +1,13 @@
-name: main
+name: publish
 
 on:
-  push:
-    branches:
-      - 'main'
+  release:
+    types:
+      - created
 
 jobs:
-  main:
+  build:
+    name: release
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -16,6 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -26,18 +29,17 @@ jobs:
         with:
           poetry-version: ${{ matrix.poetry-version }}
 
-      - name: Install dependencies
-        run: poetry install
-
-      - name: Run Test
+      - name: Create Release Branch
         run: |
-          poetry run poe test
+          git checkout -b release/$GITHUB_REF_NAME
+          git push origin release/$GITHUB_REF_NAME
 
-      - name: Coveralls
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: poetry run coveralls --service=github
-
-      - name: Build test
+      - name: Install dependencies
         run: poetry build
+
+      - name: Build and publish package
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          rm -rf dist
+          poetry publish --build --username __token__ --password $PYPI_TOKEN
