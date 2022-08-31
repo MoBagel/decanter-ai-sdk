@@ -15,13 +15,13 @@ def test_iid():
 
     current_path = os.path.dirname(os.path.abspath(__file__))
 
-    train_file_path = os.path.join(current_path, "ts_train.csv")
+    train_file_path = os.path.join(current_path, "../data/ts_train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "train_file")
+    train_id = client.upload(train_file, "../data/train_file")
 
-    test_file_path = os.path.join(current_path, "ts_test.csv")
+    test_file_path = os.path.join(current_path, "../data/ts_test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "test_file")
+    test_id = client.upload(test_file, "../data/test_file")
 
     print("This will show top 2 uploaded table names and ids: \n")
 

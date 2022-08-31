@@ -14,13 +14,13 @@ def test_iid():
 
     current_path = os.path.dirname(os.path.abspath(__file__))
 
-    train_file_path = os.path.join(current_path, "data/train.csv")
+    train_file_path = os.path.join(current_path, "../data/train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "data/test_file")
+    train_id = client.upload(train_file, "../data/test_file")
 
-    test_file_path = os.path.join(current_path, "data/test.csv")
+    test_file_path = os.path.join(current_path, "../data/test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "data/test_file")
+    test_id = client.upload(test_file, "../data/test_file")
 
     print("This will show top 2 uploaded table names and ids: \n")
 
@@ -63,5 +63,7 @@ def test_iid():
         keep_columns=[], non_negative=False, test_table_id=test_id, model=m
     )
 
-    print("This will show the id of tested data:", predict.attributes["table_id"], "\n")
-    print("Head of the prediction data:\n", predict.get_predict_df().head())
+    print(
+        "This will show the id of tested ../data:", predict.attributes["table_id"], "\n"
+    )
+    print("Head of the prediction ../data:\n", predict.get_predict_df().head())
