@@ -1,7 +1,4 @@
-import sys
-
 from decanter_ai_sdk.enums.time_units import TimeUnit
-sys.path.append("..")
 from decanter_ai_sdk.client import Client
 import os
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
@@ -9,12 +6,12 @@ from decanter_ai_sdk.enums.data_types import DataType
 
 
 def test_iid():
+    auth_key = ""  # TODO fill in real authorization key
+    project_id = ""  # TODO fill in real project id
+    host = ""  # TODO fill in real host
     print("---From test iid---")
 
-    client = Client(
-        auth_key="auth_key", 
-        project_id="project_id", 
-        host="host")
+    client = Client(auth_key=auth_key, project_id=project_id, host=host)
 
     current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -26,25 +23,22 @@ def test_iid():
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
 
-    print("This will show top 5 uploaded table names and ids: \n")
-    
-    count = 0
-    while count < 5:
+    print("This will show top 2 uploaded table names and ids: \n")
+
+    for count in range(0, 2):
         table = client.get_table_list()[count]
         print(count, "name:", table["name"], ",id:", table["_id"])
-        count = count + 1
 
     print(
         "\nThis will show the info of the first table:",
         client.get_table(client.get_table_list()[0]["_id"]),
     )
 
-
     client.get_table_list()
 
     experiment = client.train_ts(
-        experiment_name="exp_name", 
-        experiment_table_id=train_id, 
+        experiment_name="exp_name",
+        experiment_table_id=train_id,
         target="Passengers",
         datetime="Month",
         time_groups=[],
@@ -52,24 +46,26 @@ def test_iid():
         groupby_method="sum",
         max_model=5,
         evaluator=RegressionMetric.MAPE,
-        custom_feature_types={"Pclass" : DataType.numerical}
+        custom_feature_types={"Pclass": DataType.numerical},
     )
-    
+
     print("This will show the info of the experiment:\n", experiment.experiment_info())
 
     m = experiment.get_best_model()
     print("This will show the best model id:", m.model_id, "name:", m.model_name, "\n")
 
     model = experiment.get_best_model_by_metric(RegressionMetric.MAPE)
-    print("This will show the best model evaluated by MAPE. id:", model.model_id, "name:", model.model_name, "\n")
+    print(
+        "This will show the best model evaluated by MAPE. id:",
+        model.model_id,
+        "name:",
+        model.model_name,
+        "\n",
+    )
 
     predict = client.predict_ts(
-        keep_columns=[],
-        non_negative= False,
-        test_table_id= test_id,
-        model = m
+        keep_columns=[], non_negative=False, test_table_id=test_id, model=m
     )
 
     print("This will show the id of tested data:", predict.attributes["table_id"], "\n")
     print("Head of the prediction data:\n", predict.get_predict_df().head())
-    
