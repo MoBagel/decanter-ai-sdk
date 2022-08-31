@@ -1,12 +1,14 @@
 [![Coverage Status](https://coveralls.io/repos/github/MoBagel/decanter-ai-sdk/badge.svg?branch=coveralls)](https://coveralls.io/github/MoBagel/decanter-ai-sdk?branch=coveralls)
 [![tests](https://github.com/MoBagel/decanter-ai-sdk/workflows/main/badge.svg)](https://github.com/MoBagel/awesome-sso)
-
 # Mobagel decanter ai sdk
 
-This repo is a python sdk for the Decanter AI api.
+Decanter AI is a powerful AutoML tool which enables everyone to build ML models and make predictions without data science background. With Decanter AI SDK, you can integrate Decanter AI into your application more easily with Python.
+
+It supports actions such as data uploading, model training, and prediction to run in a more efficient way and access results more easily.
+
+To know more about Decanter AI and how you can be benefited with AutoML, visit [MoBagel website](https://mobagel.com/tw/) and contact us to try it out!
 
 ## How it works
----
 
 - Upload train and test files in both csv and pandas dataframe.
 - Setup different standards and conduct customized experiments on uploaded data.
@@ -14,13 +16,12 @@ This repo is a python sdk for the Decanter AI api.
 - Get predict data in pandas dataframe form.
 
 ## Requirements
----
 
 - [Python >= 3.10](https://www.python.org/downloads/release/python-3100/)
 - [poetry](https://python-poetry.org/)
 
 ## Usage
----
+
 ### Installation
 
 `pip install decanter-ai-sdk`
@@ -36,7 +37,7 @@ from decanter_ai_sdk.client import Client
 ```
 
 ### Upload
-After the client is constructed, now you can use it to upload your training and testing files. This function will return uploaded data id in Decanter server.
+After the client is constructed, now you can use it to upload your training and testing files in both csv and pandas dataframe. This function will return uploaded data id in Decanter server.
 ```python
 import os
 sys.path.append("..")
@@ -112,7 +113,7 @@ To get prediction result, do
 predict_data = predict.get_predict_df()
 ```
 ## Development
----
+
 ### Installing poetry
 
 1. `pip install poetry poethepoet`
