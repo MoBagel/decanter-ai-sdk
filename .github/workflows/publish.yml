@@ -42,4 +42,4 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           rm -rf dist
-          poetry publish --build --username __token__ --password $PYPI_TOKEN
+          poetry publish --build --username = __token__ --password = $PYPI_TOKEN
