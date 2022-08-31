@@ -7,7 +7,6 @@ It supports actions such as data uploading, model training, and prediction to ru
 To know more about Decanter AI and how you can be benefited with AutoML, visit [MoBagel website](https://mobagel.com/tw/) and contact us to try it out!
 
 ## How it works
----
 
 - Upload train and test files in both csv and pandas dataframe.
 - Setup different standards and conduct customized experiments on uploaded data.
@@ -15,13 +14,12 @@ To know more about Decanter AI and how you can be benefited with AutoML, visit [
 - Get predict data in pandas dataframe form.
 
 ## Requirements
----
 
 - [Python >= 3.10](https://www.python.org/downloads/release/python-3100/)
 - [poetry](https://python-poetry.org/)
 
 ## Usage
----
+
 ### Installation
 
 `pip install decanter-ai-sdk`
@@ -113,7 +111,7 @@ To get prediction result, do
 predict_data = predict.get_predict_df()
 ```
 ## Development
----
+
 ### Installing poetry
 
 1. `pip install poetry poethepoet`
