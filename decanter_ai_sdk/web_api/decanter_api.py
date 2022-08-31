@@ -8,13 +8,13 @@ from decanter_ai_sdk.web_api.api import ApiClient
 
 
 class DecanterApiClient(ApiClient):
-    def __init__(self, host, headers, auth_headers, project_id):
+    def __init__(self, host, headers, auth_headers, project_id):  # pragma: no cover
         self.url = host + "/v1/"
         self.headers = headers
         self.project_id = project_id
         self.auth_headers = auth_headers
 
-    def post_upload(self, file: Dict, name: str):
+    def post_upload(self, file: Dict, name: str):  # pragma: no cover
 
         res = requests.post(
             f"{self.url}table/upload",
@@ -28,7 +28,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["table"]["_id"]
 
-    def post_train_iid(self, data):
+    def post_train_iid(self, data):  # pragma: no cover
 
         res = requests.post(
             f"{self.url}experiment/create",
@@ -40,7 +40,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
-    def post_train_ts(self, data):
+    def post_train_ts(self, data):  # pragma: no cover
 
         res = requests.post(
             f"{self.url}experiment/create",
@@ -52,7 +52,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
-    def post_predict(self, data):
+    def post_predict(self, data):  # pragma: no cover
 
         res = requests.post(
             f"{self.url}prediction/predict",
@@ -65,7 +65,7 @@ class DecanterApiClient(ApiClient):
 
         return res.json()["prediction"]["_id"]
 
-    def get_table_info(self, table_id):
+    def get_table_info(self, table_id):  # pragma: no cover
 
         table_response = requests.get(
             f"{self.url}table/{table_id}/columns", headers=self.headers, verify=False
@@ -79,7 +79,7 @@ class DecanterApiClient(ApiClient):
             table_info[column["id"]] = column["data_type"]
         return table_info
 
-    def check(self, task, id):
+    def check(self, task, id):  # pragma: no cover
         if task == "table":
 
             res = requests.get(
@@ -103,7 +103,7 @@ class DecanterApiClient(ApiClient):
             ).json()
             return res["data"]
 
-    def get_pred_data(self, pred_id, data):
+    def get_pred_data(self, pred_id, data):  # pragma: no cover
 
         prediction_get_response = requests.get(
             f"{self.url}/prediction/{pred_id}/download",
@@ -117,7 +117,7 @@ class DecanterApiClient(ApiClient):
 
         return prediction_df
 
-    def get_table_list(self):
+    def get_table_list(self):  # pragma: no cover
 
         table_list_res = requests.get(
             f"{self.url}/table/getlist/{self.project_id}",
@@ -126,7 +126,7 @@ class DecanterApiClient(ApiClient):
         )
         return table_list_res.json()["tables"]
 
-    def get_table(self, data_id):
+    def get_table(self, data_id):  # pragma: no cover
 
         table_res = requests.get(
             f"{self.url}table/{data_id}/csv",
@@ -139,7 +139,7 @@ class DecanterApiClient(ApiClient):
 
         return table_df
 
-    def get_model_list(self, experiment_id, query):
+    def get_model_list(self, experiment_id, query):  # pragma: no cover
 
         res = requests.get(
             f"{self.url}experiment/{experiment_id}/model/getlist?projectId={self.project_id}",

@@ -1,11 +1,8 @@
-import sys
-
-sys.path.append("..")
-from decanter_ai_sdk.client import Client
 import os
+import pandas as pd
+from decanter_ai_sdk.client import Client
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.data_types import DataType
-import pandas as pd
 from typing import List
 
 
@@ -28,7 +25,7 @@ def test_iid():
     test_file_path = os.path.join(current_path, "test.csv")
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
-
+    assert client.get_table(train_id)["name"][0] == "Tom"
     assert isinstance(client.get_table_list(), List)
     assert client.get_table_list().__len__() == 2
     assert client.get_table_list()[0]["name"] == "train_file"
@@ -85,5 +82,5 @@ def test_iid():
     )
 
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
-    assert predict.attributes['model_id'] == best_model.model_id
-    assert predict.attributes['table_id'] == test_id
+    assert predict.attributes["model_id"] == best_model.model_id
+    assert predict.attributes["table_id"] == test_id

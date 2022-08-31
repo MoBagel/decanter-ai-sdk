@@ -1,11 +1,8 @@
 from io import StringIO
 from time import sleep
 from typing import Dict, List, Union, Optional, Any
-import logging
-import json
-
-import pandas as pd
 from tqdm import tqdm
+import pandas as pd
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
@@ -17,6 +14,7 @@ from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from .enums.data_types import DataType
+import logging
 
 logging.basicConfig(level=logging.INFO)
 
@@ -53,7 +51,7 @@ class Client:
             self.api = TsMockApi()
         elif dry_run_type == "iid":
             self.api = IidMockApi()
-        else:
+        else:  # pragma: no cover
             self.api = Api(
                 host=host,
                 headers={
@@ -85,7 +83,7 @@ class Client:
         """
 
         if data is None:
-            raise ValueError("[Upload] Uploaded None file.")
+            raise ValueError("[Upload] Uploaded None file.")  # pragma: no cover
 
         if isinstance(data, pd.DataFrame):
             text_stream = StringIO()
@@ -157,7 +155,7 @@ class Client:
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
-            timeseries_value (List[Dict[Str, Any]])
+            timeseries_value (List[Dict[str, Any]])
                 Objects containing time series values(train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag) for cross validation.
             holdout_percentage (int)
                 Holdout percentage for experiment.
@@ -173,7 +171,7 @@ class Client:
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
-            )
+            )  # pragma: no cover
 
         algo_enum_values = []
         for algo in algos:
@@ -199,14 +197,18 @@ class Client:
             if evaluator is None:
                 evaluator = RegressionMetric.MAPE
             elif evaluator.name not in RegressionMetric.__members__:
-                raise ValueError("Wrong evaluator, you need to fill wmape, mse ...")
+                raise ValueError(
+                    "Wrong evaluator, you need to fill wmape, mse ..."
+                )  # pragma: no cover
 
         else:
             category = "classification"
             if evaluator is None:
                 evaluator = ClassificationMetric.AUC
             elif evaluator.name not in ClassificationMetric.__members__:
-                raise ValueError("Wrong evaluator, you need to fill auc, logloss...")
+                raise ValueError(
+                    "Wrong evaluator, you need to fill auc, logloss..."
+                )  # pragma: no cover
 
         holdout_config: Dict[str, Any] = {}
 
@@ -325,7 +327,7 @@ class Client:
         if validation_percentage < 5 or validation_percentage > 20:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
-            )
+            )  # pragma: no cover
         algo_enum_values = []
 
         for algo in algos:
@@ -385,9 +387,6 @@ class Client:
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
-        with open("ts_exp.json", "w") as outfile:
-            outfile.write(json.dumps(self.wait_for_response("experiment", exp_id)))
-
         return experiment
 
     def predict_iid(
@@ -426,7 +425,7 @@ class Client:
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
                 "either model or both experiment_id and model_id should be defined"
-            )
+            )  # pragma: no cover
 
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
@@ -488,7 +487,7 @@ class Client:
         if model is None and (experiment_id is None or model_id is None):
             raise ValueError(
                 "either model or both experiment_id and model_id should be defined"
-            )
+            )  # pragma: no cover
 
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
@@ -524,16 +523,16 @@ class Client:
     def wait_for_response(self, url, id):
         pbar = tqdm(total=100, desc=url + " task is now pending")
         progress = 0
-        while self.api.check(task=url, id=id)["status"] != "done":
+        while self.api.check(task=url, id=id)["status"] != "done":  # pragma: no cover
             res = self.api.check(task=url, id=id)
 
             if res["status"] == "fail":
                 raise RuntimeError(res["progress_message"])
-            else:
-                if res["status"] == "running":
-                    pbar.set_description("[" + url + "] " + res["progress_message"])
-                    pbar.update(int(float(res["progress"]) * 100) - progress)
-                    progress = int(float(res["progress"]) * 100)
+
+            if res["status"] == "running":
+                pbar.set_description("[" + url + "] " + res["progress_message"])
+                pbar.update(int(float(res["progress"]) * 100) - progress)
+                progress = int(float(res["progress"]) * 100)
 
             sleep(3)
 

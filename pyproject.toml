@@ -18,6 +18,8 @@ pydantic = "^1.9.2"
 pytest = "^7.1.2"
 pytest-xdist = "^2.5.0"
 mypy = "^0.971"
+coveralls = "^3.3.1"
+pytest-cov = "^3.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -34,47 +36,17 @@ _black = 'black $SRC $DIFF --color'
 _mypy-install-type = 'mypy $SRC --ignore-missing-imports --install-types --non-interactive'
 _mypy = 'mypy $SRC --ignore-missing-imports'
 
-[tool.poe.tasks.save]
-help = "say hi to the console"
-shell = """
-echo docker build
-echo push docker to our registry
-echo bundle images into tar file
-"""
-
-[tool.poe.tasks.test_iid]
-help = "Testing iid tasks."
+[tool.poe.tasks.test]
+help = "Testing tasks."
 shell = """
 echo run unit tests
-pytest -s ./tests/test_mock_iid.py
-"""
-
-[tool.poe.tasks.test_ts]
-help = "Testing time series tasks."
-shell = """
-echo run unit tests
-pytest -s ./tests/test_mock_ts.py
-"""
-
-[tool.poe.tasks.test_upload_iid]
-help = "Testing uploading iid tasks."
-shell = """
-echo run unit tests
-pytest -s ./tests/test_upload_iid.py
-"""
-
-[tool.poe.tasks.test_upload_ts]
-help = "Testing uploading ts tasks."
-shell = """
-echo run unit tests
-pytest -s ./tests/test_upload_ts.py
+pytest --cov=$SRC --cov-report term-missing
 """
 
 [tool.poe.tasks.lint]
 help = "Lints the `decanter_ai_sdk` directory"
 sequence = ["_mypy-install-type", "_mypy", "_black"]
 env = { DIFF = "--diff", INPLACE = "" }
-
 
 [tool.poe.tasks.format]
 help = "Formatting"
