@@ -1,6 +1,8 @@
 from io import StringIO
 from time import sleep
 from typing import Dict, List, Union, Optional, Any
+from tqdm import tqdm
+import pandas as pd
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms, TSAlgorithms
 from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.prediction import Prediction
@@ -12,9 +14,7 @@ from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from .enums.data_types import DataType
-from tqdm import tqdm
 import logging
-import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 
@@ -528,11 +528,11 @@ class Client:
 
             if res["status"] == "fail":
                 raise RuntimeError(res["progress_message"])
-            else:
-                if res["status"] == "running":
-                    pbar.set_description("[" + url + "] " + res["progress_message"])
-                    pbar.update(int(float(res["progress"]) * 100) - progress)
-                    progress = int(float(res["progress"]) * 100)
+
+            if res["status"] == "running":
+                pbar.set_description("[" + url + "] " + res["progress_message"])
+                pbar.update(int(float(res["progress"]) * 100) - progress)
+                progress = int(float(res["progress"]) * 100)
 
             sleep(3)
 
