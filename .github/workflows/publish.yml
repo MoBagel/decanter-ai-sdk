@@ -43,8 +43,8 @@ jobs:
         run: |
           rm -rf dist
           if [ -f "$PYPI_TOKEN" ]; then
-              echo "$FILE exists."
+              echo "Token exists."
           else 
-              echo "$FILE does not exist."
+              echo "Token does not exist."
           fi
           poetry publish --build --username=__token__ --password=$PYPI_TOKEN
