@@ -42,4 +42,9 @@ jobs:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
           rm -rf dist
-          poetry publish --build --username = __token__ --password = $PYPI_TOKEN
+          if [ -f "$PYPI_TOKEN" ]; then
+              echo "Token exists."
+          else 
+              echo "Token does not exist."
+          fi
+          poetry publish --build --username=__token__ --password=$PYPI_TOKEN
