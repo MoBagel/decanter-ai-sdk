@@ -7,6 +7,8 @@ tests/test_ts.py
 # Byte-compiled / optimized / DLL files
 */__pycache__
 
+.mypy_cache
+
 */.pytest_cache
 
 .pytest_cache
@@ -29,3 +31,4 @@ tests/test_demo1.py
 
 tests/test_decanter_ai_sdk.py
 
+.coverage

@@ -67,7 +67,7 @@ class TestingIidApiClient(ApiClient):
         return data_list
 
     def get_table(self, data_id):
-        table_data = {"Name": ["Tom", "nick", "krish", "jack"], "Age": [20, 21, 19, 18]}
+        table_data = {"name": ["Tom", "nick", "krish", "jack"], "Age": [20, 21, 19, 18]}
         return pd.DataFrame(table_data)
 
     def get_model_list(self, experiment_id, query):
