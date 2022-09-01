@@ -21,11 +21,11 @@ def test_ts():
 
     train_file_path = os.path.join(current_path, "../data/ts_train.csv")
     train_file_df = pd.read_csv(open(train_file_path, "rb"))
-    train_id = client.upload(train_file_df, "../data/train_file")
+    train_id = client.upload(train_file_df, "train_file")
 
     test_file_path = os.path.join(current_path, "../data/ts_test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "../data/test_file")
+    test_id = client.upload(test_file, "test_file")
 
     assert client.get_table(train_id)["name"][0] == "Tom"
     assert isinstance(client.get_table_list(), List)

@@ -20,11 +20,11 @@ def test_iid():
 
     train_file_path = os.path.join(current_path, "../data/train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "../data/train_file")
+    train_id = client.upload(train_file, "train_file")
 
     test_file_path = os.path.join(current_path, "../data/test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "../data/test_file")
+    test_id = client.upload(test_file, "test_file")
     assert client.get_table(train_id)["name"][0] == "Tom"
     assert isinstance(client.get_table_list(), List)
     assert client.get_table_list().__len__() == 2
