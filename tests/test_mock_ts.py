@@ -23,6 +23,8 @@ def test_ts():
     train_file_df = pd.read_csv(open(train_file_path, "rb"))
     train_id = client.upload(train_file_df, "train_file")
 
+    client.stop_uploading(train_id)
+    
     test_file_path = os.path.join(current_path, "../data/ts_test.csv")
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
@@ -46,6 +48,8 @@ def test_ts():
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
     )
+
+    client.stop_training(experiment.id)
 
     best_model = experiment.get_best_model()
 

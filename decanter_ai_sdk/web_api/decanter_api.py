@@ -148,7 +148,7 @@ class DecanterApiClient(ApiClient):
         )
         return res.json()["model_list"]
 
-    def stop_uploading(self, id):
+    def stop_uploading(self, id):  # pragma: no cover
         res = requests.post(
             f"{self.url}table/stop",
             headers=self.auth_headers,
@@ -159,7 +159,7 @@ class DecanterApiClient(ApiClient):
             return "This task has already stopped or doesn't exist."
         return res.json()["message"]
 
-    def stop_training(self, id):
+    def stop_training(self, id):  # pragma: no cover
         res = requests.post(
             f"{self.url}experiment/stop",
             headers=self.auth_headers,
