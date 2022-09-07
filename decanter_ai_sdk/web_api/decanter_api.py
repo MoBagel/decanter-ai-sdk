@@ -147,3 +147,26 @@ class DecanterApiClient(ApiClient):
             verify=False,
         )
         return res.json()["model_list"]
+
+    def stop_uploading(self, id):
+        res = requests.post(
+            f"{self.url}table/stop",
+            headers=self.auth_headers,
+            verify=False,
+            data={"table_id": id, "project_id": self.project_id},
+        )
+        if not res.ok:
+            return "This task has already stopped or doesn't exist."
+        return res.json()["message"]
+
+    def stop_training(self, id):
+        res = requests.post(
+            f"{self.url}experiment/stop",
+            headers=self.auth_headers,
+            verify=False,
+            data={"experiment_id": id, "project_id": self.project_id},
+        )
+        if not res.ok:
+            return "This task has already stopped or doesn't exist."
+        else:
+            return res.json()["message"]

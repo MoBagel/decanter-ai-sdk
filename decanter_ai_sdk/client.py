@@ -520,6 +520,14 @@ class Client:
         )
         return prediction
 
+    def stop_uploading(self, id):
+        logging.info(self.api.stop_uploading(id))
+        return
+
+    def stop_training(self, id):
+        logging.info(self.api.stop_training(id))
+        return
+
     def wait_for_response(self, url, id):
         pbar = tqdm(total=100, desc=url + " task is now pending")
         progress = 0
@@ -530,7 +538,9 @@ class Client:
                 raise RuntimeError(res["progress_message"])
 
             if res["status"] == "running":
-                pbar.set_description("[" + url + "] " + res["progress_message"])
+                pbar.set_description(
+                    "[" + url + "] " + "id: " + id + " " + res["progress_message"]
+                )
                 pbar.update(int(float(res["progress"]) * 100) - progress)
                 progress = int(float(res["progress"]) * 100)
 

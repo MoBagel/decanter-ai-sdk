@@ -42,3 +42,11 @@ class ApiClient(ABC):
     @abstractmethod
     def get_model_list(self, experiment_id, query):
         raise NotImplementedError
+
+    @abstractmethod
+    def stop_uploading(self, id):
+        raise NotImplementedError
+
+    @abstractmethod
+    def stop_training(self, id):
+        raise NotImplementedError
