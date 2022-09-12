@@ -1,6 +1,7 @@
 from decanter_ai_sdk.client import Client
 import os
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
+from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
 
 
@@ -43,6 +44,7 @@ def test_iid():
             "Parch": DataType.categorical,
         },
         max_model=5,
+        algos=["DRF", "GBM", IIDAlgorithms.DRF]
     )
 
     print("This will show info of the experiment:\n", experiment.experiment_info())

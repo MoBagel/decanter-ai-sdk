@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.client import Client
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
@@ -45,6 +46,7 @@ def test_ts():
         max_model=5,
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
+        algos=["GLM", TSAlgorithms.XGBoost]
     )
 
     best_model = experiment.get_best_model()

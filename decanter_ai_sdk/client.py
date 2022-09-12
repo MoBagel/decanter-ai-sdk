@@ -107,7 +107,7 @@ class Client:
         drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
-        algos: List[IIDAlgorithms] = [
+        algos: List[Union[IIDAlgorithms, str]] = [
             IIDAlgorithms.DRF,
             IIDAlgorithms.GBM,
             IIDAlgorithms.XGBoost,
@@ -175,7 +175,10 @@ class Client:
 
         algo_enum_values = []
         for algo in algos:
-            algo_enum_values.append(algo.value)
+            if type(algo) == str:
+                algo_enum_values.append(algo)
+            elif type(algo) == IIDAlgorithms:
+                algo_enum_values.append(algo.value)
 
         features = [
             feature
@@ -254,7 +257,7 @@ class Client:
         datetime: str,
         time_groups: List,
         timeunit: TimeUnit,
-        algos: List[TSAlgorithms] = [TSAlgorithms.GBM],
+        algos: List[Union[TSAlgorithms, str]] = [TSAlgorithms.GBM],
         groupby_method: Optional[str] = None,
         evaluator: RegressionMetric = RegressionMetric.WMAPE,
         exogeneous_columns_list: List = [],
@@ -328,10 +331,13 @@ class Client:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
             )  # pragma: no cover
-        algo_enum_values = []
 
+        algo_enum_values = []
         for algo in algos:
-            algo_enum_values.append(algo.value)
+            if type(algo) == str:
+                algo_enum_values.append(algo)
+            elif type(algo) == TSAlgorithms:
+                algo_enum_values.append(algo.value)
 
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
