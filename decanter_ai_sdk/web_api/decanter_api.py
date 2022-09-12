@@ -155,9 +155,7 @@ class DecanterApiClient(ApiClient):
             verify=False,
             data={"table_id": id, "project_id": self.project_id},
         )
-        if not res.ok:
-            return "This task has already stopped or doesn't exist."
-        return res.json()["message"]
+        return res.ok
 
     def stop_training(self, id):  # pragma: no cover
         res = requests.post(
@@ -166,7 +164,4 @@ class DecanterApiClient(ApiClient):
             verify=False,
             data={"experiment_id": id, "project_id": self.project_id},
         )
-        if not res.ok:
-            return "This task has already stopped or doesn't exist."
-        else:
-            return res.json()["message"]
+        return res.ok

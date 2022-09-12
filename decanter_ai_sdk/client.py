@@ -520,12 +520,18 @@ class Client:
         )
         return prediction
 
-    def stop_uploading(self, id):
-        logging.info(self.api.stop_uploading(id))
+    def stop_uploading(self, id: str):
+        if self.api.stop_uploading(id):
+            logging.info("Uploading stopped successfully.")
+        else:
+            logging.info("This task has already stopped or doesn't exist.")
         return
 
-    def stop_training(self, id):
-        logging.info(self.api.stop_training(id))
+    def stop_training(self, id: str):
+        if self.api.stop_training(id):
+            logging.info("Experiment stopped successfully.")
+        else:
+            logging.info("This task has already stopped or doesn't exist.")
         return
 
     def wait_for_response(self, url, id):

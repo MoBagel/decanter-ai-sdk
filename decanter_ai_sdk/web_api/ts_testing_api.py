@@ -76,7 +76,11 @@ class TestingTsApiClient(ApiClient):
         return model_list_data
 
     def stop_uploading(self, id):
-        return "root:Table stop successful"
+        if id == "":
+            return False
+        return True
 
     def stop_training(self, id):
-        return "root:Experiment stop successful"
+        if id == "":
+            return False
+        return True

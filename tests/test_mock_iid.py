@@ -23,6 +23,7 @@ def test_iid():
     train_id = client.upload(train_file, "train_file")
 
     client.stop_uploading(train_id)
+    client.stop_uploading("")
 
     test_file_path = os.path.join(current_path, "../data/test.csv")
     test_file = open(test_file_path, "rb")
@@ -46,6 +47,7 @@ def test_iid():
     )
 
     client.stop_training(experiment.id)
+    client.stop_training("")
 
     best_model = experiment.get_best_model()
     assert (
