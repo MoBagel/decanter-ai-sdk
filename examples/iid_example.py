@@ -1,4 +1,3 @@
-import sys
 from decanter_ai_sdk.client import Client
 import os
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
