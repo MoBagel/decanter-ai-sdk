@@ -2,6 +2,7 @@ from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.client import Client
 import os
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
+from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
 
 
@@ -47,6 +48,7 @@ def test_iid():
         max_model=5,
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
+        algos=["GLM", TSAlgorithms.XGBoost]
     )
 
     print("This will show the info of the experiment:\n", experiment.experiment_info())

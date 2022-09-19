@@ -107,7 +107,7 @@ class Client:
         drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
-        algos: List[IIDAlgorithms] = [
+        algos: Union[List[IIDAlgorithms], List[str]] = [
             IIDAlgorithms.DRF,
             IIDAlgorithms.GBM,
             IIDAlgorithms.XGBoost,
@@ -173,9 +173,12 @@ class Client:
                 "validation_percentage should be inside a range between 5 to 20."
             )  # pragma: no cover
 
-        algo_enum_values = []
+        algo_values = []
         for algo in algos:
-            algo_enum_values.append(algo.value)
+            if type(algo) == str:
+                algo_values.append(algo)
+            elif type(algo) == IIDAlgorithms:
+                algo_values.append(algo.value)
 
         features = [
             feature
@@ -234,7 +237,7 @@ class Client:
             "tolerance": tolerance,
             "nfold": nfold,
             "max_model": max_model,
-            "algos": algo_enum_values,
+            "algos": algo_values,
             "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
@@ -254,7 +257,7 @@ class Client:
         datetime: str,
         time_groups: List,
         timeunit: TimeUnit,
-        algos: List[TSAlgorithms] = [TSAlgorithms.GBM],
+        algos: Union[List[TSAlgorithms], List[str]] = [TSAlgorithms.GBM],
         groupby_method: Optional[str] = None,
         evaluator: RegressionMetric = RegressionMetric.WMAPE,
         exogeneous_columns_list: List = [],
@@ -328,10 +331,13 @@ class Client:
             raise ValueError(
                 "validation_percentage should be inside a range between 5 to 20."
             )  # pragma: no cover
-        algo_enum_values = []
 
+        algo_values = []
         for algo in algos:
-            algo_enum_values.append(algo.value)
+            if type(algo) == str:
+                algo_values.append(algo)
+            elif type(algo) == TSAlgorithms:
+                algo_values.append(algo.value)
 
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
@@ -365,7 +371,7 @@ class Client:
             "holdout": {"percent": 10},
             "tolerance": tolerance,
             "max_model": max_model,
-            "algos": algo_enum_values,
+            "algos": algo_values,
             "balance_class": True,
             "is_forecast": True,
             "stacked_ensemble": False,

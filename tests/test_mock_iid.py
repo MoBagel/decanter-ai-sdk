@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 from decanter_ai_sdk.client import Client
+from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.data_types import DataType
 from typing import List
@@ -41,6 +42,7 @@ def test_iid():
             "Pclass": DataType.categorical,
             "Parch": DataType.categorical,
         },
+        algos=["DRF", "GBM", IIDAlgorithms.DRF]
     )
 
     best_model = experiment.get_best_model()
