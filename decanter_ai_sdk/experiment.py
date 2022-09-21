@@ -34,7 +34,7 @@ class Experiment(BaseModel):
     max_model: int
     name: str
     nfold: int
-    preprocessing: Dict[str, str]
+    preprocessing: Dict[str, Any]
     progress: float
     progress_message: str
     project_id: str

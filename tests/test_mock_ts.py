@@ -48,7 +48,7 @@ def test_ts():
         custom_feature_types={"Pclass": DataType.numerical},
         algos=["GLM", TSAlgorithms.XGBoost],
         missing_value_settings={
-            "Passenger": "0"
+            "Passengers": "0"
         }
     )
 

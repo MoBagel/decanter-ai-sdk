@@ -17,11 +17,11 @@ def test_iid():
 
     train_file_path = os.path.join(current_path, "../data/train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "../data/test_file")
+    train_id = client.upload(train_file, "train_file")
 
     test_file_path = os.path.join(current_path, "../data/test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "../data/test_file")
+    test_id = client.upload(test_file, "test_file")
 
     print("This will show top 2 uploaded table names and ids: \n")
 
@@ -30,7 +30,9 @@ def test_iid():
         print(count, "name:", table["name"], ",id:", table["_id"])
 
     print(
-        "\nThis will show the info of the first table:",
+        "\nThis will show the info of the first table: \n id:",
+        client.get_table_list()[0]["_id"],
+        "\ndata: \n",
         client.get_table(client.get_table_list()[0]["_id"]),
     )
 
@@ -44,7 +46,8 @@ def test_iid():
             "Parch": DataType.categorical,
         },
         max_model=5,
-        algos=["DRF", "GBM", IIDAlgorithms.DRF]
+        algos=["DRF", "GBM", IIDAlgorithms.DRF],
+        missing_value_settings={"Age": "mean", "Cabin":"mode"}
     )
 
     print("This will show info of the experiment:\n", experiment.experiment_info())

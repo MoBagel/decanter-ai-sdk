@@ -121,6 +121,7 @@ class Client:
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
+        missing_value_settings: Dict[str, Any] = {},
     ) -> Experiment:
         """
         Train iid models.
@@ -135,6 +136,8 @@ class Client:
                 Name of the target column.
             custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
+            missing_value_settings (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set missing value handling method by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             drop_features (List[str])
                 Feature names that are not going to be used during experiment.
             evaluator (Union[`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`])
@@ -195,6 +198,15 @@ class Client:
             if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
 
+        column_list = []
+        for column in missing_value_settings.keys():
+            column_list.append(
+                {
+                    "columnName": column,
+                    "method": {"imputation": missing_value_settings[column]},
+                }
+            )
+
         if data_column_info[target] == "numerical":
             category = "regression"
             if evaluator is None:
@@ -241,6 +253,7 @@ class Client:
             "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
+            "preprocessing": {"columnWise": column_list},
         }
 
         exp_id = self.api.post_train_iid(training_settings)
@@ -271,6 +284,7 @@ class Client:
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_feature_types: Dict[str, DataType] = {},
+        missing_value_settings: Dict[str, Any] = {},
     ):
         """
         Train timeseries models.
@@ -311,6 +325,8 @@ class Client:
                 Training forecast derivation window value.
             groupby_method (str)
                 Group by method used for forecast experiment.
+            missing_value_settings (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set missing value handling method by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             #TODO Discuss with Ken about this.
             exogeneous_columns_list (List[Dict[Any, Any]])
                 List of exogeneous columns.
@@ -356,6 +372,15 @@ class Client:
             if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
 
+        column_list = []
+        for column in missing_value_settings.keys():
+            column_list.append(
+                {
+                    "columnName": column,
+                    "method": {"imputation": missing_value_settings[column]},
+                }
+            )
+
         training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
@@ -387,12 +412,11 @@ class Client:
             "forecast_timeunit": timeunit.value,
             "validation_percentage": validation_percentage,
             "nfold": nfold,
+            "preprocessing": {"columnWise": column_list},
         }
 
         exp_id = self.api.post_train_ts(training_settings)
-
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
-
         return experiment
 
     def predict_iid(
