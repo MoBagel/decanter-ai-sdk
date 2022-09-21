@@ -148,7 +148,7 @@ class DecanterApiClient(ApiClient):
         )
         return res.json()["model_list"]
 
-    def stop_uploading(self, id):  # pragma: no cover
+    def stop_uploading(self, id) -> bool:  # pragma: no cover
         res = requests.post(
             f"{self.url}table/stop",
             headers=self.auth_headers,
@@ -157,7 +157,7 @@ class DecanterApiClient(ApiClient):
         )
         return res.ok
 
-    def stop_training(self, id):  # pragma: no cover
+    def stop_training(self, id) -> bool:  # pragma: no cover
         res = requests.post(
             f"{self.url}experiment/stop",
             headers=self.auth_headers,
