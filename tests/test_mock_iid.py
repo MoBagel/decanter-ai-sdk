@@ -23,6 +23,9 @@ def test_iid():
     train_file = open(train_file_path, "rb")
     train_id = client.upload(train_file, "train_file")
 
+    client.stop_uploading(train_id)
+    client.stop_uploading("")
+
     test_file_path = os.path.join(current_path, "../data/test.csv")
     test_file = open(test_file_path, "rb")
     test_id = client.upload(test_file, "test_file")
@@ -44,6 +47,9 @@ def test_iid():
         },
         algos=["DRF", "GBM", IIDAlgorithms.DRF]
     )
+
+    client.stop_training(experiment.id)
+    client.stop_training("")
 
     best_model = experiment.get_best_model()
     assert (

@@ -526,6 +526,20 @@ class Client:
         )
         return prediction
 
+    def stop_uploading(self, id: str) -> None:
+        if self.api.stop_uploading(id):
+            logging.info("Uploading task: " + id + " stopped successfully.")
+        else:
+            logging.info("This task has already stopped or doesn't exist.")
+        return None
+
+    def stop_training(self, id: str) -> None:
+        if self.api.stop_training(id):
+            logging.info("Experiment: " + id + " stopped successfully.")
+        else:
+            logging.info("This task has already stopped or doesn't exist.")
+        return None
+
     def wait_for_response(self, url, id):
         pbar = tqdm(total=100, desc=url + " task is now pending")
         progress = 0
@@ -536,7 +550,9 @@ class Client:
                 raise RuntimeError(res["progress_message"])
 
             if res["status"] == "running":
-                pbar.set_description("[" + url + "] " + res["progress_message"])
+                pbar.set_description(
+                    "[" + url + "] " + "id: " + id + " " + res["progress_message"]
+                )
                 pbar.update(int(float(res["progress"]) * 100) - progress)
                 progress = int(float(res["progress"]) * 100)
 

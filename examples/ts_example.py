@@ -10,7 +10,7 @@ def test_iid():
     auth_key = ""  # TODO fill in real authorization key
     project_id = ""  # TODO fill in real project id
     host = ""  # TODO fill in real host
-    print("---From test iid---")
+    print("---From test ts---")
 
     client = Client(auth_key=auth_key, project_id=project_id, host=host)
 

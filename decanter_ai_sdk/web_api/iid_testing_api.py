@@ -74,3 +74,13 @@ class TestingIidApiClient(ApiClient):
         f = open(current_path + "/data/model_list.json")
         model_list_data = json.load(f)
         return model_list_data
+
+    def stop_uploading(self, id):
+        if id == "":
+            return False
+        return True
+
+    def stop_training(self, id):
+        if id == "":
+            return False
+        return True
