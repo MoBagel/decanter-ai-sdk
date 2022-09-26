@@ -5,7 +5,7 @@ import os
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
-from decanter_ai_sdk.enums.missing_value_handling import Missing_Value_Handling
+from decanter_ai_sdk.enums.missing_value_handling import MissingValueHandling
 
 def test_ts():
     auth_key = ""  # TODO fill in real authorization key
@@ -52,7 +52,7 @@ def test_ts():
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
         algos=["GLM", TSAlgorithms.XGBoost],
-        missing_value_settings={"Passengers": Missing_Value_Handling.Zero}
+        missing_value_settings={"Passengers": MissingValueHandling.zero}
     )
 
     print("This will show the info of the experiment:\n", experiment.experiment_info())

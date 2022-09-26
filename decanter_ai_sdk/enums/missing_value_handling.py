@@ -1,20 +1,22 @@
 from enum import Enum
 
 
-class Missing_Value_Handling(Enum):
+class MissingValueHandling(Enum):
     """
     Numerical missing value handling.
-        - Automatic
-        - Mean
-        - Median
-        - Zero
-        - DropRows
+        - automatic
+        - mean
+        - median
+        - zero
+        - droprows
+        - na
+        - mode
     """
 
-    Automatic = "automatic"
-    Mean = "mean"
-    Median = "median"
-    Zero = "zero"
-    DropRows = "drop_rows"
-    NA = "na"
-    Mode = "mode"
+    automatic = "automatic"
+    mean = "mean"
+    median = "median"
+    zero = "zero"
+    droprows = "drop_rows"
+    na = "na"
+    mode = "mode"
