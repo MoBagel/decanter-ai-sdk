@@ -13,7 +13,9 @@ from decanter_ai_sdk.web_api.ts_testing_api import TestingTsApiClient as TsMockA
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
-from .enums.data_types import DataType
+from decanter_ai_sdk.enums.data_types import DataType
+from decanter_ai_sdk.enums.missing_value_handling import Missing_Value_Handling
+
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -121,7 +123,7 @@ class Client:
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
-        missing_value_settings: Dict[str, Any] = {},
+        missing_value_settings: Dict[str, Missing_Value_Handling] = {},
     ) -> Experiment:
         """
         Train iid models.
@@ -203,7 +205,7 @@ class Client:
             column_list.append(
                 {
                     "columnName": column,
-                    "method": {"imputation": missing_value_settings[column]},
+                    "method": {"imputation": missing_value_settings[column].value},
                 }
             )
 
@@ -284,7 +286,7 @@ class Client:
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_feature_types: Dict[str, DataType] = {},
-        missing_value_settings: Dict[str, Any] = {},
+        missing_value_settings: Dict[str, Missing_Value_Handling] = {},
     ):
         """
         Train timeseries models.

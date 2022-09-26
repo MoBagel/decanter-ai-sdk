@@ -3,7 +3,7 @@ import os
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
-
+from decanter_ai_sdk.enums.missing_value_handling import Missing_Value_Handling
 
 def test_iid():
     auth_key = ""  # TODO fill in real authorization key
@@ -47,7 +47,7 @@ def test_iid():
         },
         max_model=5,
         algos=["DRF", "GBM", IIDAlgorithms.DRF],
-        missing_value_settings={"Age": "mean", "Cabin":"mode"}
+        missing_value_settings={"Age": Missing_Value_Handling.Mean, "Cabin":Missing_Value_Handling.Mode}
     )
 
     print("This will show info of the experiment:\n", experiment.experiment_info())
