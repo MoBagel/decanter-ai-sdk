@@ -49,7 +49,10 @@ def test_ts():
         max_model=5,
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
-        algos=["GLM", TSAlgorithms.XGBoost]
+        algos=["GLM", TSAlgorithms.XGBoost],
+        missing_value_settings={
+            "Passengers": "0"
+        }
     )
 
     client.stop_training(experiment.id)

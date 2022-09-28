@@ -1,12 +1,13 @@
+import imp
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.client import Client
 import os
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
+from decanter_ai_sdk.enums.missing_value_handling import MissingValueHandling
 
-
-def test_iid():
+def test_ts():
     auth_key = ""  # TODO fill in real authorization key
     project_id = ""  # TODO fill in real project id
     host = ""  # TODO fill in real host
@@ -18,11 +19,11 @@ def test_iid():
 
     train_file_path = os.path.join(current_path, "../data/ts_train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "../data/train_file")
+    train_id = client.upload(train_file, "train_file")
 
     test_file_path = os.path.join(current_path, "../data/ts_test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "../data/test_file")
+    test_id = client.upload(test_file, "test_file")
 
     print("This will show top 2 uploaded table names and ids: \n")
 
@@ -31,7 +32,9 @@ def test_iid():
         print(count, "name:", table["name"], ",id:", table["_id"])
 
     print(
-        "\nThis will show the info of the first table:",
+        "\nThis will show the info of the first table: \n id:",
+        client.get_table_list()[0]["_id"],
+        "\ndata: \n",
         client.get_table(client.get_table_list()[0]["_id"]),
     )
 
@@ -48,7 +51,8 @@ def test_iid():
         max_model=5,
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
-        algos=["GLM", TSAlgorithms.XGBoost]
+        algos=["GLM", TSAlgorithms.XGBoost],
+        missing_value_settings={"Passengers": MissingValueHandling.zero}
     )
 
     print("This will show the info of the experiment:\n", experiment.experiment_info())
