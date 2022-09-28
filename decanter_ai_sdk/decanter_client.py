@@ -14,13 +14,12 @@ from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from .enums.data_types import DataType
-from .client import AbstractClient
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
 
-class Client(AbstractClient):
+class Client:
     """
     Handle client side actions.
 
