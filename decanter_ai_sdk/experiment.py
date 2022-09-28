@@ -168,3 +168,8 @@ class Experiment(BaseModel):
             "created_at": self.created_at,
             "completed_at": self.completed_at,
         }
+
+
+class ExperimentResult(BaseModel):
+    result: Experiment
+    status: str

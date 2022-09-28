@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 import pandas as pd
 
 
@@ -23,3 +23,8 @@ class Prediction(BaseModel):
 
         """
         return self.predict_df
+
+
+class PredictionResult(BaseModel):
+    result: Prediction
+    status: str

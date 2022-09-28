@@ -48,7 +48,7 @@ def test_iid():
         max_model=5,
         evaluator=RegressionMetric.MAPE,
         custom_feature_types={"Pclass": DataType.numerical},
-        algos=["GLM", TSAlgorithms.XGBoost]
+        algos=["GLM", TSAlgorithms.XGBoost],
     )
 
     print("This will show the info of the experiment:\n", experiment.experiment_info())

@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from decanter_ai_sdk.client import Client
+from decanter_ai_sdk.decanter_client import Client
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.data_types import DataType
