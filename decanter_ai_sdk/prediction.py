@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
+from decanter_ai_sdk.enums.status import Status
 import pandas as pd
 
 
@@ -23,3 +24,8 @@ class Prediction(BaseModel):
 
         """
         return self.predict_df
+
+
+class PredictionResult(BaseModel):
+    result: Optional[Prediction]
+    status: Status

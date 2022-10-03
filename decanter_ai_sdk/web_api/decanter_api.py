@@ -28,7 +28,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["table"]["_id"]
 
-    def post_train_iid(self, data):  # pragma: no cover
+    def post_train_iid(self, data) -> str:  # pragma: no cover
 
         res = requests.post(
             f"{self.url}experiment/create",
@@ -40,7 +40,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
-    def post_train_ts(self, data):  # pragma: no cover
+    def post_train_ts(self, data) -> str:  # pragma: no cover
 
         res = requests.post(
             f"{self.url}experiment/create",
@@ -52,7 +52,7 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
         return res.json()["experiment"]["_id"]
 
-    def post_predict(self, data):  # pragma: no cover
+    def post_predict(self, data) -> str:  # pragma: no cover
 
         res = requests.post(
             f"{self.url}prediction/predict",

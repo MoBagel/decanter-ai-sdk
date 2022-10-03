@@ -1,6 +1,7 @@
 from typing import Any, List, Dict, Optional, Union
 from pydantic import BaseModel, Field
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric, RegressionMetric
+from decanter_ai_sdk.enums.status import Status
 from decanter_ai_sdk.model import Model
 
 
@@ -168,3 +169,8 @@ class Experiment(BaseModel):
             "created_at": self.created_at,
             "completed_at": self.completed_at,
         }
+
+
+class ExperimentResult(BaseModel):
+    result: Optional[Experiment]
+    status: Status

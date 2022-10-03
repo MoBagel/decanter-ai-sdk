@@ -143,6 +143,9 @@ poe format
 ## Releasing
 #TODO
 
+## Enums
+#TODO
+
 ## License
 #TODO
 
