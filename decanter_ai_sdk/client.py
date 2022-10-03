@@ -14,6 +14,8 @@ from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.non_blocking_client import NonBlockingClient
 from .enums.data_types import DataType
+from decanter_ai_sdk.enums.missing_value_handling import MissingValueHandling
+
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -116,6 +118,7 @@ class Client:
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
+        missing_value_settings: Dict[str, MissingValueHandling] = {},
     ) -> Experiment:
         """
         Train iid models.
@@ -130,6 +133,8 @@ class Client:
                 Name of the target column.
             custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
+            missing_value_settings (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set missing value handling method by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             drop_features (List[str])
                 Feature names that are not going to be used during experiment.
             evaluator (Union[`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`])
@@ -206,6 +211,7 @@ class Client:
             seed=seed,
             timeseries_value=timeseries_value,
             holdout_percentage=holdout_percentage,
+            missing_value_settings=missing_value_settings,
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
@@ -235,6 +241,7 @@ class Client:
         drop_features: List[str] = [],
         custom_feature_types: Dict[str, DataType] = {},
         holdout_percentage: int = 10,
+        missing_value_settings: Dict[str, MissingValueHandling] = {},
     ) -> Experiment:
         """
         Train timeseries models.
@@ -275,6 +282,8 @@ class Client:
                 Training forecast derivation window value.
             groupby_method (str)
                 Group by method used for forecast experiment.
+            missing_value_settings (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+                Set missing value handling method by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             #TODO Discuss with Ken about this.
             exogeneous_columns_list (List[Dict[Any, Any]])
                 List of exogeneous columns.
@@ -316,7 +325,6 @@ class Client:
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
-
         return experiment
 
     def predict_iid(

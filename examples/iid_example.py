@@ -3,7 +3,7 @@ from decanter_ai_sdk.client import Client
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
-
+from decanter_ai_sdk.enums.missing_value_handling import MissingValueHandling
 
 
 def test_iid():
@@ -31,7 +31,9 @@ def test_iid():
         print(count, "name:", table["name"], ",id:", table["_id"])
 
     print(
-        "\nThis will show the info of the first table:",
+        "\nThis will show the info of the first table: \n id:",
+        client.get_table_list()[0]["_id"],
+        "\ndata: \n",
         client.get_table(client.get_table_list()[0]["_id"]),
     )
 
@@ -46,6 +48,7 @@ def test_iid():
         },
         max_model=5,
         algos=["DRF", "GBM", IIDAlgorithms.DRF],
+        missing_value_settings={"Age": MissingValueHandling.mean, "Cabin":MissingValueHandling.mode}
     )
 
     print("This will show info of the experiment:\n", experiment.experiment_info())

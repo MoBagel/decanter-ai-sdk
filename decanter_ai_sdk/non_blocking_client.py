@@ -13,6 +13,7 @@ from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.enums.status import Status
 from .enums.data_types import DataType
+from .enums.missing_value_handling import MissingValueHandling
 
 import logging
 
@@ -121,6 +122,7 @@ class NonBlockingClient:
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: int = 10,
+        missing_value_settings: Dict[str, MissingValueHandling] = {},
     ) -> str:
         """
         Train iid models.
@@ -193,7 +195,6 @@ class NonBlockingClient:
             (`~decanter_ai_sdk.web_api.experiment.Experiment`)
                 Experiment id.
         """
-
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
         if validation_percentage < 5 or validation_percentage > 20:
@@ -222,6 +223,15 @@ class NonBlockingClient:
         for feature in feature_types:
             if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
+
+        column_list = []
+        for column in missing_value_settings.keys():
+            column_list.append(
+                {
+                    "columnName": column,
+                    "method": {"imputation": missing_value_settings[column].value},
+                }
+            )
 
         if data_column_info[target] == "numerical":
             category = "regression"
@@ -269,6 +279,7 @@ class NonBlockingClient:
             "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
+            "preprocessing": {"columnWise": column_list},
         }
 
         exp_id = self.api.post_train_iid(training_settings)
@@ -298,6 +309,7 @@ class NonBlockingClient:
         drop_features: List[str] = [],
         custom_feature_types: Dict[str, DataType] = {},
         holdout_percentage: int = 10,
+        missing_value_settings: Dict[str, MissingValueHandling] = {},
     ) -> str:
         """
         Train timeseries models.
@@ -383,6 +395,15 @@ class NonBlockingClient:
             if feature["id"] in custom_feature_types.keys():
                 feature["data_type"] = custom_feature_types[feature["id"]].value
 
+        column_list = []
+        for column in missing_value_settings.keys():
+            column_list.append(
+                {
+                    "columnName": column,
+                    "method": {"imputation": missing_value_settings[column]},
+                }
+            )
+
         training_settings = {
             "project_id": self.project_id,
             "name": experiment_name,
@@ -414,6 +435,7 @@ class NonBlockingClient:
             "forecast_timeunit": timeunit.value,
             "validation_percentage": validation_percentage,
             "nfold": nfold,
+            "preprocessing": {"columnWise": column_list},
         }
 
         exp_id = self.api.post_train_ts(training_settings)
