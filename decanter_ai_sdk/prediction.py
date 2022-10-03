@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional
 from pydantic import BaseModel
+from decanter_ai_sdk.enums.status import Status
 import pandas as pd
 
 
@@ -26,5 +27,5 @@ class Prediction(BaseModel):
 
 
 class PredictionResult(BaseModel):
-    result: Prediction
-    status: str
+    result: Optional[Prediction]
+    status: Status

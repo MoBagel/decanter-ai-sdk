@@ -13,6 +13,7 @@ from decanter_ai_sdk.web_api.ts_testing_api import TestingTsApiClient as TsMockA
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.time_units import TimeUnit
+from decanter_ai_sdk.enums.status import Status
 from .enums.data_types import DataType
 
 import logging
@@ -20,9 +21,10 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-class Client:
+class NonBlockingClient:
     """
-    Handle client side actions.
+    Handle client side actions without blocking.
+    The functions in this client will return the results immediately, so users can do mulitiple works at the same time and check the status.
 
     Support actions sunch as upload data, iid train,
     predict, time series train and predict...etc.
@@ -31,7 +33,7 @@ class Client:
 
     .. code-block:: python
 
-    from decanter_ai_sdk.client import Client
+    from decanter_ai_sdk.client import NonBlockingClient
 
     ...
 
@@ -297,6 +299,7 @@ class Client:
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_feature_types: Dict[str, DataType] = {},
+        holdout_percentage: int = 10,
     ) -> str:
         """
         Train timeseries models.
@@ -394,7 +397,7 @@ class Client:
             "category": "regression",
             "stopping_metric": evaluator.value,
             "is_binary_classification": True,
-            "holdout": {"percent": 10},
+            "holdout": {"percent": holdout_percentage},
             "tolerance": tolerance,
             "max_model": max_model,
             "algos": algo_values,
@@ -551,32 +554,6 @@ class Client:
             logging.info("This task has already stopped or doesn't exist.")
         return None
 
-    def wait_for_response(self, url, id):
-        pbar = tqdm(total=100, desc=url + " task is now pending")
-        progress = 0
-        while self.api.check(task=url, id=id)["status"] != "done":  # pragma: no cover
-            res = self.api.check(task=url, id=id)
-
-            if res["status"] == "fail":
-                raise RuntimeError(res["progress_message"])
-
-            if res["status"] == "running":
-                pbar.set_description(
-                    "[" + url + "] " + "id: " + id + " " + res["progress_message"]
-                )
-                pbar.update(int(float(res["progress"]) * 100) - progress)
-                progress = int(float(res["progress"]) * 100)
-
-            sleep(3)
-
-        pbar.update(100 - progress)
-        pbar.refresh()
-
-        pbar.close()
-        logging.info("[" + url + "] Done!")
-
-        return self.api.check(task=url, id=id)
-
     def get_table(self, data_id: str) -> pd.DataFrame:
         """
         Return table dataframe.
@@ -605,24 +582,68 @@ class Client:
         return self.api.get_table_list()
 
     def check_upload_status(self, id) -> str:
-        return self.api.check(task="table", id=id)["status"]
+        """
+        You can check the status of the uploading task by inputting upload id using this function.
+
+        Params:
+        ----------
+            id (str)
+                Uploaded table id.
+
+        Returns:
+        ----------
+            status (str)
+        """
+        return Status(self.api.check(task="table", id=id)["status"])
 
     def check_exp_status(self, id) -> str:
-        return self.api.check(task="experiment", id=id)["status"]
+        """
+        You can check the status of the experiment by inputting experiment id using this function.
+
+        Params:
+        ----------
+            id (str)
+                Experiment table id.
+
+        Returns:
+        ----------
+            status (str)
+        """
+        return Status(self.api.check(task="experiment", id=id)["status"])
 
     def check_pred_status(self, id) -> str:
-        return self.api.check(task="prediction", id=id)["status"]
+        """
+        You can check the status of the prediction by inputting prediction id using this function.
+
+        Params:
+        ----------
+            id (str)
+                Prediction table id.
+
+        Returns:
+        ----------
+            status (str)
+        """
+        return Status(self.api.check(task="prediction", id=id)["status"])
 
     def get_exp_result(self, exp_id) -> ExperimentResult:
+        """
+        You can get experiment results in ExperimentResult type using this function.
+        """
         response = self.api.check(task="experiment", id=exp_id)
         if response["status"] != "done":
             logging.info("Experiment is not done yet.")
 
-        experiment = ExperimentResult(result=response, status=response["status"])
+        experiment = ExperimentResult(
+            result=response, status=Status(response["status"])
+        )
 
         return experiment
 
     def get_pred_result(self, pred_id) -> PredictionResult:
+        """
+        You can get prediction results in PredictionResult type using this function.
+        """
         response = self.api.check(task="prediction", id=pred_id)
         if response["status"] != "done":
             logging.info("Predict task is not done yet.")
@@ -634,7 +655,7 @@ class Client:
                     pred_id=pred_id, data={"prediction_id": pred_id}
                 ),
             ),
-            status=response["status"],
+            status=Status(response["status"]),
         )
 
         return prediction

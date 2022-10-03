@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.time_units import TimeUnit
-from decanter_ai_sdk.decanter_client import Client
+from decanter_ai_sdk.client import Client
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.data_types import DataType
 from typing import List

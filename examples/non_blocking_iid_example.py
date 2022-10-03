@@ -1,18 +1,18 @@
 from time import sleep
-from decanter_ai_sdk.non_blocking_client import Client
+from decanter_ai_sdk.non_blocking_client import NonBlockingClient 
 import os
 from decanter_ai_sdk.enums.evaluators import ClassificationMetric
 from decanter_ai_sdk.enums.algorithms import IIDAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
 
 
-def test_iid():
+def test_non_blocking_iid():
     auth_key = ""  # TODO fill in real authorization key
     project_id = ""  # TODO fill in real project id
     host = ""  # TODO fill in real host
     print("---From test iid---")
 
-    client = Client(
+    client = NonBlockingClient(
         auth_key=auth_key, project_id=project_id, host=host, dry_run_type=None
     )
 
@@ -63,13 +63,11 @@ def test_iid():
         algos=["DRF", "GBM", IIDAlgorithms.DRF],
     )
 
-    # print("This will show info of the experiment:\n", experiment.experiment_info())
-
     while client.check_exp_status(experiment_id) != "done":
         print("Experiment not done yet.")
         sleep(3)
 
-    print("Experiment id:", experiment_id, " done.")
+    print("Experiment id:", experiment_id, " done. status: ", client.check_exp_status(experiment_id))
 
     exp = client.get_exp_result(exp_id=experiment_id)
 
@@ -105,6 +103,3 @@ def test_iid():
     print(
         "Head of the prediction ../data:\n", prediction.result.get_predict_df().head()
     )
-
-
-test_iid()

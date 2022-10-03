@@ -1,5 +1,5 @@
 from time import sleep
-from decanter_ai_sdk.non_blocking_client import Client
+from decanter_ai_sdk.non_blocking_client import NonBlockingClient 
 import os
 from decanter_ai_sdk.enums.data_types import DataType
 from decanter_ai_sdk.enums.time_units import TimeUnit
@@ -7,13 +7,12 @@ from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 
 
-def test_iid():
-
+def test_non_blocking_ts():
     print("---From test iid---")
     auth_key = ""  # TODO fill in real authorization key
     project_id = ""  # TODO fill in real project id
     host = ""  # TODO fill in real host
-    client = Client(
+    client = NonBlockingClient(
         auth_key=auth_key, project_id=project_id, host=host, dry_run_type=None
     )
 
@@ -105,6 +104,3 @@ def test_iid():
     print(
         "Head of the prediction ../data:\n", prediction.result.get_predict_df().head()
     )
-
-
-test_iid()

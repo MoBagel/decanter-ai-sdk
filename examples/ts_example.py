@@ -1,6 +1,6 @@
 import os
 from decanter_ai_sdk.enums.time_units import TimeUnit
-from decanter_ai_sdk.decanter_client import Client
+from decanter_ai_sdk.client import Client
 from decanter_ai_sdk.enums.evaluators import RegressionMetric
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.data_types import DataType
@@ -18,11 +18,11 @@ def test_iid():
 
     train_file_path = os.path.join(current_path, "../data/ts_train.csv")
     train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "../data/train_file")
+    train_id = client.upload(train_file, "train_file")
 
     test_file_path = os.path.join(current_path, "../data/ts_test.csv")
     test_file = open(test_file_path, "rb")
-    test_id = client.upload(test_file, "../data/test_file")
+    test_id = client.upload(test_file, "test_file")
 
     print("This will show top 2 uploaded table names and ids: \n")
 
