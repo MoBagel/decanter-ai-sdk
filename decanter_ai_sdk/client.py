@@ -214,7 +214,7 @@ class Client:
             missing_value_settings=missing_value_settings,
         )
 
-        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
+        experiment = self.wait_for_response("experiment", exp_id)
 
         return experiment
 
@@ -324,7 +324,7 @@ class Client:
             seed=seed,
         )
 
-        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
+        experiment = self.wait_for_response("experiment", exp_id)
         return experiment
 
     def predict_iid(

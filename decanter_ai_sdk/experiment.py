@@ -29,7 +29,6 @@ class Experiment(BaseModel):
     holdout: Dict[str, str]
     holdout_percentage: float
     is_binary_classification: bool
-    is_favorited: bool
     is_forecast: bool
     is_starred: bool
     max_model: int
