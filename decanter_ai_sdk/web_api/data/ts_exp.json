@@ -1002,7 +1002,6 @@
     "validation_percentage": 0.1
   },
   "is_binary_classification": true,
-  "is_favorited": false,
   "is_forecast": true,
   "is_starred": false,
   "max_model": 5,
