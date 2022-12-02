@@ -28,7 +28,7 @@ class Experiment(BaseModel):
     gp_table_id: str
     holdout: Dict[str, str]
     holdout_percentage: float
-    hyperparameters: Dict[str,Any]
+    hyperparameters: Dict
     is_binary_classification: bool
     is_forecast: bool
     is_starred: bool
