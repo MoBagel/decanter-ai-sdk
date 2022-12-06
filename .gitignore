@@ -28,3 +28,5 @@ tests/test_demo1.py
 tests/test_decanter_ai_sdk.py
 
 .coverage
+
+.vim
