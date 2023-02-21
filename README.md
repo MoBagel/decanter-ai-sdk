@@ -141,7 +141,12 @@ poe format
 ```
 
 ## Releasing
-#TODO
+1. poetry version [new_version]
+2. git commit -m"Bump version"
+3. git push origin develop
+4. create new release on github.
+5. Create release off develop branch, auto generate notes, and review release note.
+6. Publish release
 
 ## Enums
 #TODO
