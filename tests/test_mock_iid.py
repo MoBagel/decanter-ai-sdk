@@ -87,7 +87,7 @@ def test_iid():
     assert experiment.experiment_info()["name"] == exp_name
 
     predict = client.predict_iid(
-        keep_columns=[], non_negative=False, test_table_id=test_id, model=best_model
+        keep_columns=[], non_negative=False, test_table_id=test_id, model=best_model, threshold=0.5
     )
 
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
