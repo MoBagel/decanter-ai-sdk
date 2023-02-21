@@ -10,7 +10,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 pandas = "^1.4.3"
 poethepoet = "^0.16.0"
 requests-toolbelt = "^0.9.1"
@@ -25,6 +25,7 @@ pytest-xdist = "^2.5.0"
 mypy = "^0.971"
 coveralls = "^3.3.1"
 pytest-cov = "^3.0.0"
+pynvim = "^0.4.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

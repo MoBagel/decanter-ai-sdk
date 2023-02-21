@@ -18,7 +18,7 @@ To know more about Decanter AI and how you can be benefited with AutoML, visit [
 
 ## Requirements
 
-- [Python >= 3.10](https://www.python.org/downloads/release/python-3100/)
+- [Python >= 3.8](https://www.python.org/downloads/release/python-380/)
 - [poetry](https://python-poetry.org/)
 
 ## Usage
