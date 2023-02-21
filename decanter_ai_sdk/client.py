@@ -335,6 +335,7 @@ class Client:
         model_id: Optional[str] = None,
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
+        threshold: Optional[float] = None,
     ) -> Prediction:
         """
         Predict model with test iid data.
@@ -366,6 +367,7 @@ class Client:
             model_id=model_id,
             experiment_id=experiment_id,
             model=model,
+            threshold=threshold,
         )
 
         prediction = Prediction(

@@ -66,7 +66,7 @@ def test_iid():
     )
 
     predict = client.predict_iid(
-        keep_columns=[], non_negative=False, test_table_id=test_id, model=m
+        keep_columns=[], non_negative=False, test_table_id=test_id, model=m, threshold=0.5
     )
 
     print(

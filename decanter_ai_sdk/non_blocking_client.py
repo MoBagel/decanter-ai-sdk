@@ -450,6 +450,7 @@ class NonBlockingClient:
         model_id: Optional[str] = None,
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
+        threshold: Optional[float] = None,
     ) -> str:
         """
         Predict model with test iid data.
@@ -491,6 +492,7 @@ class NonBlockingClient:
             "is_multi_model": False,
             "non_negative": non_negative,
             "keep_columns": keep_columns,
+            "threshold": threshold,
         }
 
         pred_id = self.api.post_predict(prediction_settings)
