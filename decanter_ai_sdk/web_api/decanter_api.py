@@ -139,7 +139,7 @@ class DecanterApiClient(ApiClient):
 
         return table_df
 
-    def get_model_list(self, experiment_id, query):  # pragma: no cover
+    def get_model_list(self, experiment_id):  # pragma: no cover
 
         res = requests.get(
             f"{self.url}/experiment/{experiment_id}/model/getlist?projectId={self.project_id}",

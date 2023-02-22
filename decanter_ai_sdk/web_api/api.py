@@ -40,7 +40,7 @@ class ApiClient(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_model_list(self, experiment_id, query):
+    def get_model_list(self, experiment_id):
         raise NotImplementedError
 
     @abstractmethod

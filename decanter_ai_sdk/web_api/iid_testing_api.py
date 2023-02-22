@@ -70,7 +70,7 @@ class TestingIidApiClient(ApiClient):
         table_data = {"name": ["Tom", "nick", "krish", "jack"], "Age": [20, 21, 19, 18]}
         return pd.DataFrame(table_data)
 
-    def get_model_list(self, experiment_id, query):
+    def get_model_list(self, experiment_id):
         f = open(current_path + "/data/model_list.json")
         model_list_data = json.load(f)
         return model_list_data

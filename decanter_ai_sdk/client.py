@@ -487,3 +487,14 @@ class Client:
                 List of uploaded table information.
         """
         return self.api.get_table_list()
+    
+    def get_model_list(self, experiment_id) -> List[str]:
+        """
+        Return list of model in specific experiment_id.
+
+        Returns:
+        ----------
+            (List[str])
+                List of experiment information.
+        """
+        return self.api.get_model_list(experiment_id)
