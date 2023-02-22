@@ -540,7 +540,7 @@ class NonBlockingClient:
         mod_id = model.model_id if model is not None else model_id
         exp_id = model.experiment_id if model is not None else experiment_id
         is_multi_model = False
-        for k in self.api.get_model_list(exp_id, {"projectId": self.project_id}):
+        for k in self.api.get_model_list(exp_id):
             if k["_id"] == mod_id:
                 is_multi_model = k["model_type"] in [
                     "ExodusModel",
