@@ -106,7 +106,7 @@ class DecanterApiClient(ApiClient):
     def get_pred_data(self, pred_id, data):  # pragma: no cover
 
         prediction_get_response = requests.get(
-            f"{self.url}/prediction/{pred_id}/download",
+            f"{self.url}prediction/{pred_id}/download",
             headers=self.headers,
             data=data,
             verify=False,
@@ -120,7 +120,7 @@ class DecanterApiClient(ApiClient):
     def get_table_list(self):  # pragma: no cover
 
         table_list_res = requests.get(
-            f"{self.url}/table/getlist/{self.project_id}",
+            f"{self.url}table/getlist/{self.project_id}",
             headers=self.headers,
             verify=False,
         )
@@ -142,7 +142,7 @@ class DecanterApiClient(ApiClient):
     def get_model_list(self, experiment_id):  # pragma: no cover
 
         res = requests.get(
-            f"{self.url}/experiment/{experiment_id}/model/getlist?projectId={self.project_id}",
+            f"{self.url}experiment/{experiment_id}/model/getlist?projectId={self.project_id}",
             headers=self.auth_headers,
             verify=False,
         )
