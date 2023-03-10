@@ -498,3 +498,36 @@ class Client:
                 List of experiment information.
         """
         return self.api.get_model_list(experiment_id)
+
+    def get_pred_data(self, pred_id, download=1) -> pd.DataFrame:
+        """
+        Return result of prediction on specific prediction id.
+
+        Returns:
+        ----------
+            (pd.DataFrame)
+                DataFrame of prediction
+        """
+        return self.api.get_pred_data(pred_id, download)
+    
+    def get_experiment_list(self, page=1) -> Dict:
+        """
+        Return Dictionary of all experiment on specific page
+
+        Returns:
+        ----------
+            (Dict)
+                Dictionary of all experiment including name and start time.
+        """
+        return self.api.get_experiment_list(page)
+    
+    def get_prediction_list(self, model_id) -> List[Dict]:
+        """
+        Return List of dictionary of prediction
+
+        Returns:
+        ----------
+            (List[Dict])
+                List of dictionary of prediction
+        """
+        return self.api.get_prediction_list(model_id)

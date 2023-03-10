@@ -102,13 +102,39 @@ class DecanterApiClient(ApiClient):
                 f"{self.url}prediction/{id}", verify=False, headers=self.headers
             ).json()
             return res["data"]
+    
+    def get_experiment_list(self, page):
+        experiment = {}
+        experiment_response = requests.get(
+            f'{self.url}experiment/getlist/{self.project_id}',
+            headers=self.headers,
+            params = {'page':page},
+            verify=False)
+        for experiment_ in experiment_response.json()['experiments']:
+            experiment_name = experiment_['name']
+            create_time = pd.to_datetime(
+                experiment_['started_at'][:19]) + pd.Timedelta(8, unit='h')
+            experiment[experiment_['_id']] = {
+                'ExperimentName': experiment_name,
+                'StartTime': create_time.strftime('%Y-%m-%d %H:%M')}
+        return experiment
 
-    def get_pred_data(self, pred_id, data):  # pragma: no cover
+    def get_prediction_list(self, model_id):
+
+        res = requests.get(
+            f"{self.url}prediction/getlist/{model_id}",
+            verify=False,
+            params={"project_id":self.project_id},
+            headers=self.headers)
+
+        return res.json()['predictions']
+
+    def get_pred_data(self, pred_id, download):  # pragma: no cover
 
         prediction_get_response = requests.get(
             f"{self.url}prediction/{pred_id}/download",
             headers=self.headers,
-            data=data,
+            params={'download':download},
             verify=False,
         )
 
