@@ -336,6 +336,7 @@ class Client:
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
         threshold: Optional[float] = None,
+        download: int = 1,
     ) -> Prediction:
         """
         Predict model with test iid data.
@@ -374,7 +375,7 @@ class Client:
             attributes=self.wait_for_response("prediction", pred_id)
         )
         prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes["_id"], data={"prediction_id": pred_id}
+            prediction.attributes["_id"], download
         )
 
         return prediction
@@ -387,6 +388,7 @@ class Client:
         model_id: Optional[str] = None,
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
+        download: int = 1,
     ) -> Prediction:
         """
         Predict model with test timeseries data.
@@ -425,7 +427,7 @@ class Client:
             attributes=self.wait_for_response("prediction", pred_id)
         )
         prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes["_id"], data={"prediction_id": pred_id}
+            prediction.attributes["_id"], download
         )
         return prediction
 
@@ -477,7 +479,7 @@ class Client:
         """
         return self.api.get_table(data_id=data_id)
 
-    def get_table_list(self) -> List[str]:
+    def get_table_list(self, page=1) -> List[str]:
         """
         Return list of table information.
 
@@ -486,7 +488,7 @@ class Client:
             (List[str])
                 List of uploaded table information.
         """
-        return self.api.get_table_list()
+        return self.api.get_table_list(page)
     
     def get_model_list(self, experiment_id) -> List[str]:
         """

@@ -143,12 +143,13 @@ class DecanterApiClient(ApiClient):
 
         return prediction_df
 
-    def get_table_list(self):  # pragma: no cover
+    def get_table_list(self, page):  # pragma: no cover
 
         table_list_res = requests.get(
             f"{self.url}table/getlist/{self.project_id}",
             headers=self.headers,
             verify=False,
+            params= {'page':page}
         )
         return table_list_res.json()["tables"]
 
