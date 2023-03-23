@@ -216,6 +216,22 @@ class Client:
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
+        # In fact, both res["experiment"]["model_id"] and
+        # res['experiment']['attributes'][{algo name}]['model_id'] are corex_model_id,
+        # so need to convert to web_model_id.
+        # But res['best_model_id'] is web_model_id.
+        model_list = self.api.get_model_list(experiment_id=experiment.id)
+        rf_model_dict = {
+            model_list[x]["corex_model_id"]: model_list[x]["_id"]
+            for x in range(len(model_list))
+        }
+
+        # replace model_id
+        for algo_name in experiment.attributes.keys():
+            experiment.attributes[algo_name]["model_id"] = rf_model_dict[
+                experiment.attributes[algo_name]["model_id"]
+            ]
+
         return experiment
 
     def train_ts(
@@ -483,16 +499,22 @@ class Client:
         """
         Return list of table information.
 
+        Args:
+            page (int): page number.
+
         Returns:
         ----------
             (List[str])
                 List of uploaded table information.
         """
         return self.api.get_table_list(page)
-    
+
     def get_model_list(self, experiment_id) -> List[str]:
         """
         Return list of model in specific experiment_id.
+
+        Args:
+            experiment_id
 
         Returns:
         ----------
@@ -505,16 +527,23 @@ class Client:
         """
         Return result of prediction on specific prediction id.
 
+        Args:
+            pred_id: prediction id
+            download (int): download number.
+
         Returns:
         ----------
             (pd.DataFrame)
                 DataFrame of prediction
         """
         return self.api.get_pred_data(pred_id, download)
-    
+
     def get_experiment_list(self, page=1) -> Dict:
         """
         Return Dictionary of all experiment on specific page
+
+        Args:
+            page (int): page number.
 
         Returns:
         ----------
@@ -522,10 +551,13 @@ class Client:
                 Dictionary of all experiment including name and start time.
         """
         return self.api.get_experiment_list(page)
-    
+
     def get_prediction_list(self, model_id) -> List[Dict]:
         """
         Return List of dictionary of prediction
+
+        Args:
+            model_id
 
         Returns:
         ----------
