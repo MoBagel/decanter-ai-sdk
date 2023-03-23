@@ -216,6 +216,22 @@ class Client:
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
 
+        # In fact, both res["experiment"]["model_id"] and
+        # res['experiment']['attributes'][{algo name}]['model_id'] are corex_model_id,
+        # so need to convert to web_model_id.
+        # But res['best_model_id'] is web_model_id.
+        model_list = self.api.get_model_list(experiment_id = experiment.id)
+        rf_model_dict = {
+            model_list[x]["corex_model_id"]: model_list[x]["_id"]
+            for x in range(len(model_list))
+        }
+
+        # replace model_id
+        for algo_name in experiment.attributes.keys():
+            experiment.attributes[algo_name]["model_id"] = rf_model_dict[
+                experiment.attributes[algo_name]["model_id"]
+            ]
+
         return experiment
 
     def train_ts(
