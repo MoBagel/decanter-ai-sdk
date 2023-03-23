@@ -220,7 +220,7 @@ class Client:
         # res['experiment']['attributes'][{algo name}]['model_id'] are corex_model_id,
         # so need to convert to web_model_id.
         # But res['best_model_id'] is web_model_id.
-        model_list = self.api.get_model_list(experiment_id = experiment.id)
+        model_list = self.api.get_model_list(experiment_id=experiment.id)
         rf_model_dict = {
             model_list[x]["corex_model_id"]: model_list[x]["_id"]
             for x in range(len(model_list))
@@ -505,7 +505,7 @@ class Client:
                 List of uploaded table information.
         """
         return self.api.get_table_list(page)
-    
+
     def get_model_list(self, experiment_id) -> List[str]:
         """
         Return list of model in specific experiment_id.
@@ -527,7 +527,7 @@ class Client:
                 DataFrame of prediction
         """
         return self.api.get_pred_data(pred_id, download)
-    
+
     def get_experiment_list(self, page=1) -> Dict:
         """
         Return Dictionary of all experiment on specific page
@@ -538,7 +538,7 @@ class Client:
                 Dictionary of all experiment including name and start time.
         """
         return self.api.get_experiment_list(page)
-    
+
     def get_prediction_list(self, model_id) -> List[Dict]:
         """
         Return List of dictionary of prediction
