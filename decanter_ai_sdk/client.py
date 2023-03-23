@@ -526,7 +526,7 @@ class Client:
     def get_pred_data(self, pred_id, download=1) -> pd.DataFrame:
         """
         Return result of prediction on specific prediction id.
-        
+
         Args:
             pred_id: prediction id
             download (int): download number.
