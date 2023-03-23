@@ -499,6 +499,9 @@ class Client:
         """
         Return list of table information.
 
+        Args:
+            page (int): page number.
+
         Returns:
         ----------
             (List[str])
@@ -510,6 +513,9 @@ class Client:
         """
         Return list of model in specific experiment_id.
 
+        Args:
+            experiment_id
+
         Returns:
         ----------
             (List[str])
@@ -520,6 +526,10 @@ class Client:
     def get_pred_data(self, pred_id, download=1) -> pd.DataFrame:
         """
         Return result of prediction on specific prediction id.
+        
+        Args:
+            pred_id: prediction id
+            download (int): download number.
 
         Returns:
         ----------
@@ -532,6 +542,9 @@ class Client:
         """
         Return Dictionary of all experiment on specific page
 
+        Args:
+            page (int): page number.
+
         Returns:
         ----------
             (Dict)
@@ -542,6 +555,9 @@ class Client:
     def get_prediction_list(self, model_id) -> List[Dict]:
         """
         Return List of dictionary of prediction
+
+        Args:
+            model_id
 
         Returns:
         ----------
