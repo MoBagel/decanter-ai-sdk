@@ -9,7 +9,7 @@ sys.path.append("..")
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
-
+# The following code is generated for local unit testing simulation.
 class TestingTsApiClient(ApiClient):
     def __init__(self):
         self.url = None
@@ -61,7 +61,7 @@ class TestingTsApiClient(ApiClient):
         data = {"Name": ["Tom", "nick", "krish", "jack"], "Age": [20, 21, 19, 18]}
         return pd.DataFrame(data)
 
-    def get_table_list(self):
+    def get_table_list(self, page=1):
         f = open(current_path + "/data/table_list.json")
         data_list = json.load(f)
         return data_list
