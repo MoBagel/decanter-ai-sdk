@@ -565,3 +565,18 @@ class Client:
                 List of dictionary of prediction
         """
         return self.api.get_prediction_list(model_id)
+
+    def get_model_threshold(self, experiment_id, model_id) -> float:
+        """
+        Return threshold by the cross-validation in specific experiment and model
+
+        Args:
+            experiment_id
+            model_id
+
+        Returns:
+        ----------
+            (float)
+                threshold
+        """
+        return self.api.get_model_threshold(experiment_id, model_id)
