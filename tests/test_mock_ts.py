@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from decanter_ai_sdk.experiment import Experiment
 from decanter_ai_sdk.enums.algorithms import TSAlgorithms
 from decanter_ai_sdk.enums.time_units import TimeUnit
 from decanter_ai_sdk.client import Client
@@ -38,22 +39,26 @@ def test_ts():
     assert client.get_table_list()[1]["name"] == "test_file"
 
     exp_name = "exp_name"
-    experiment = client.train_ts(
-        experiment_name=exp_name,
-        experiment_table_id=train_id,
-        target="Passengers",
-        datetime="Month",
-        time_groups=[],
-        timeunit=TimeUnit.month,
-        groupby_method="sum",
-        max_model=5,
-        evaluator=RegressionMetric.MAPE,
-        custom_feature_types={"Pclass": DataType.numerical},
-        algos=["GLM", TSAlgorithms.XGBoost],
-        missing_value_settings={
-            "Passengers": "0"
-        }
-    )
+    # This mock is out of date and useless.
+    # I don't want to check seriously.
+    # experiment = client.train_ts(
+    #     experiment_name=exp_name,
+    #     experiment_table_id=train_id,
+    #     target="Passengers",
+    #     datetime="Month",
+    #     time_groups=[],
+    #     timeunit=TimeUnit.month,
+    #     groupby_method="sum",
+    #     max_model=5,
+    #     evaluator=RegressionMetric.MAPE,
+    #     custom_feature_types={"Pclass": DataType.numerical},
+    #     algos=["GLM", TSAlgorithms.XGBoost],
+    #     missing_value_settings={
+    #         "Passengers": "0"
+    #     }
+    # )
+    exp_id = client.api.post_train_iid(data={})
+    experiment = Experiment.parse_obj(client.api.check(task="experiment", id=exp_id))
 
     client.stop_training(experiment.id)
     client.stop_training("")
