@@ -346,6 +346,19 @@ class Client:
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
+        
+        #### replace model_id in experiment.attributes ###
+        # res['experiment']['attributes'][{algo name}]['model_id'] is corex_model_id,
+        # so need to convert to web_model_id.
+        model_list = self.api.get_model_list(experiment_id=experiment.id)
+        rf_model_dict = {
+            model_list[x]["corex_model_id"]: model_list[x]["_id"]
+            for x in range(len(model_list))
+        }
+        for algo_name in experiment.attributes.keys():
+            experiment.attributes[algo_name]["model_id"] = rf_model_dict[
+                experiment.attributes[algo_name]["model_id"]
+            ]
         return experiment
 
     def predict_iid(
