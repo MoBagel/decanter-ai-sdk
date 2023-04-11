@@ -180,16 +180,15 @@ class DecanterApiClient(ApiClient):
         )
         return res.json()["model_list"]
 
-    def get_model_threshold(self, experiment_id, model_id):  # pragma: no cover
+    def get_model_threshold(self, experiment_id, model_id) -> float: 
 
         res = requests.get(
-            f"{self.url}experiment/{experiment_id}/model/{model_id}",
+            f"{self.url}experiment/{experiment_id}/model/{model_id}/predict_threshold",
             headers=self.headers,
+            params={'project_id':self.project_id},
             verify=False,
         )
-        return res.json()["model"]["attributes"]["auc"]["cv_average"]["th_max_by"][
-            "evaluator"
-        ]
+        return res.json()["threshold"]
 
     def stop_uploading(self, id) -> bool:  # pragma: no cover
         res = requests.post(
