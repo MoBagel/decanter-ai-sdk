@@ -598,3 +598,19 @@ class Client:
                 threshold
         """
         return self.api.get_model_threshold(experiment_id, model_id)
+
+    def get_performance_metrics(self, model_id, table_id) -> Dict:
+        """
+        Return metrics in specific model and table
+
+        Args:
+            model_id
+            table_id
+
+        Returns:
+        ----------
+            (Dict)
+                Dictionary of all metrics
+
+        """
+        return self.api.get_performance_metrics(model_id, table_id)
