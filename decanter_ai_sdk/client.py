@@ -599,9 +599,11 @@ class Client:
         """
         return self.api.get_model_threshold(experiment_id, model_id)
 
-    def get_performance_metrics(self, model_id, table_id) -> Dict:
+    def get_performance_metrics(self, model_id, table_id) -> List:
         """
-        Return metrics in specific model and table
+        Return metrics and threshold in specific model and table.
+
+        Classification problem returns numeric value to be threshold, and regression problem returns np.nan
 
         Args:
             model_id
@@ -609,8 +611,8 @@ class Client:
 
         Returns:
         ----------
-            (Dict)
-                Dictionary of all metrics
+            (List)
+                List of dictionary including all metrics and threshold for specific model.
 
         """
         return self.api.get_performance_metrics(model_id, table_id)

@@ -1,8 +1,9 @@
-from typing import Dict
+from typing import Dict, List
 from io import StringIO
 import json
 import requests
 import pandas as pd
+import numpy as np
 
 from decanter_ai_sdk.web_api.api import ApiClient
 
@@ -190,7 +191,7 @@ class DecanterApiClient(ApiClient):
         )
         return res.json()["threshold"]
 
-    def get_performance_metrics(self, model_id, table_id) -> Dict:
+    def get_performance_metrics(self, model_id, table_id) -> List:
         res = requests.get(
             f"{self.url}prediction/getlist/{model_id}",
             verify=False,
@@ -198,12 +199,17 @@ class DecanterApiClient(ApiClient):
             headers=self.headers,
         )
         res_pred = res.json()["predictions"]
-        perf_dict = {
-            table_id: res_pred[x]["performance"]
+        perf_list = [
+            {
+                "metrics": res_pred[x]["performance"]["metrics"],
+                "threshold": res_pred[x]["threshold"]
+                if "threshold" in list(res_pred[0].keys())
+                else np.nan,
+            }
             for x in range(len(res_pred))
             if res_pred[x]["table_id"] == table_id
-        }
-        return perf_dict[table_id]["metrics"]
+        ]
+        return perf_list
 
     def stop_uploading(self, id) -> bool:  # pragma: no cover
         res = requests.post(
