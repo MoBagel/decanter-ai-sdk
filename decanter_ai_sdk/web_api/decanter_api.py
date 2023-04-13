@@ -228,3 +228,16 @@ class DecanterApiClient(ApiClient):
             data={"experiment_id": id, "project_id": self.project_id},
         )
         return res.ok
+
+    def delete_experiment(self, experiment_id) -> str:
+
+        res = requests.post(
+            f"{self.url}experiment/delete",
+            headers=self.headers,
+            data=json.dumps(
+                {"project_id": self.project_id, "experiment_id": experiment_id}
+            ),
+            verify=False,
+        )
+
+        return res.json()["message"]

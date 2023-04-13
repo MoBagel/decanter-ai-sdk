@@ -616,3 +616,17 @@ class Client:
 
         """
         return self.api.get_performance_metrics(model_id, table_id)
+
+    def delete_experiment(self, experiment_id) -> str:
+        """
+        Return "Experiment delete successful" or "Experiment does not exist"
+
+        Args:
+            experiment_id
+
+        Returns:
+        ----------
+            (str)
+                API's message
+        """
+        return self.api.delete_experiment(experiment_id)
