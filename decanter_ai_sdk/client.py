@@ -100,7 +100,7 @@ class Client:
         experiment_name: str,
         experiment_table_id: str,
         target: str,
-        custom_feature_types: Dict[str, DataType] = {},
+        custom_column_types: Dict[str, DataType] = {},
         drop_features: List[str] = [],
         evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
@@ -131,7 +131,7 @@ class Client:
                 Id for the table used in experiment.
             target (str)
                 Name of the target column.
-            custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+            custom_column_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             missing_value_settings (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set missing value handling method by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
@@ -198,7 +198,7 @@ class Client:
             experiment_name=experiment_name,
             experiment_table_id=experiment_table_id,
             target=target,
-            custom_feature_types=custom_feature_types,
+            custom_column_types=custom_column_types,
             drop_features=drop_features,
             evaluator=evaluator,
             holdout_table_id=holdout_table_id,
@@ -260,7 +260,7 @@ class Client:
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
-        custom_feature_types: Dict[str, DataType] = {},
+        custom_column_types: Dict[str, DataType] = {},
         holdout_percentage: int = 10,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
     ) -> Experiment:
@@ -277,7 +277,7 @@ class Client:
                 Name of the target column.
             datetime (str)
                 Date-time column for Time Series Forecast training.
-            custom_feature_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
+            custom_column_types (Dict[str: `~decanter_ai_sdk.enums.data_type.DataType`])
                 Set customized feature types by inputting {feature_name_1: feature_type_1, feature_name_2: feature_type_2}.
             evaluator (`~decanter_ai_sdk.enums.evaluators.ClassificationMetric`, `~decanter_ai_sdk.enums.evaluators.RegressionMetric`)
                 Evaluator used as stopping metric.
@@ -338,7 +338,7 @@ class Client:
             validation_percentage=validation_percentage,
             nfold=nfold,
             drop_features=drop_features,
-            custom_feature_types=custom_feature_types,
+            custom_column_types=custom_column_types,
             max_model=max_model,
             tolerance=tolerance,
             holdout_percentage=holdout_percentage,

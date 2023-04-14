@@ -49,7 +49,7 @@ def test_ts():
         groupby_method="sum",
         max_model=5,
         evaluator=RegressionMetric.MAPE,
-        custom_feature_types={"Pclass": DataType.numerical},
+        custom_column_types={"Pclass": DataType.numerical},
         algos=["GLM", TSAlgorithms.XGBoost],
         missing_value_settings={"Passengers": MissingValueHandling.zero}
     )
