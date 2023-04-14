@@ -225,8 +225,6 @@ class NonBlockingClient:
         for feature in feature_types:
             if feature["id"] in custom_column_types.keys():
                 feature["data_type"] = custom_column_types[feature["id"]].value
-        
-
 
         column_list = []
         for column in missing_value_settings.keys():
