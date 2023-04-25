@@ -59,7 +59,7 @@ experiment = client.train_iid(
     experiment_table_id=train_id,
     target="Survived",
     evaluator=ClassificationMetric.AUC,
-    custom_feature_types={
+    custom_column_types={
         "Pclass": DataType.categorical,
         "Parch": DataType.categorical,
     },
@@ -78,7 +78,7 @@ experiment = client.train_ts(
     groupby_method="sum",
     max_model=5,
     evaluator=RegressionMetric.MAPE,
-    custom_feature_types={"Pclass": DataType.numerical},
+    custom_column_types={"Pclass": DataType.numerical},
 )
 ```
 To get its attributes, you can either extract them by simply using dot or its functions.

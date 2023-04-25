@@ -55,7 +55,7 @@ def test_non_blocking_iid():
         experiment_table_id=train_id,
         target="Survived",
         evaluator=ClassificationMetric.AUC,
-        custom_feature_types={
+        custom_column_types={
             "Pclass": DataType.categorical,
             "Parch": DataType.categorical,
         },
