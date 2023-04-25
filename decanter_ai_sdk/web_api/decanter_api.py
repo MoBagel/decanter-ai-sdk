@@ -16,10 +16,10 @@ class DecanterApiClient(ApiClient):
         self.project_id = project_id
         self.auth_headers = auth_headers
 
-    def post_upload(self, file: Dict, name: str):  # pragma: no cover
+    def post_upload(self, file: tuple, name: str):  # pragma: no cover
 
         m = MultipartEncoder(
-            fields={"project_id": self.project_id, "name": name, 'file': file[0][-1]})
+            fields={"project_id": self.project_id, "name": name, 'file': file})
         headers = self.auth_headers
         headers["Content-Type"] = m.content_type
 
