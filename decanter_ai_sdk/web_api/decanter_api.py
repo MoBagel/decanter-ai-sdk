@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 
 from decanter_ai_sdk.web_api.api import ApiClient
+from requests_toolbelt import MultipartEncoder
 
 
 class DecanterApiClient(ApiClient):
@@ -17,11 +18,15 @@ class DecanterApiClient(ApiClient):
 
     def post_upload(self, file: Dict, name: str):  # pragma: no cover
 
+        m = MultipartEncoder(
+            fields={"project_id": self.project_id, "name": name, 'file': file[0][-1]})
+        headers = self.auth_headers
+        headers["Content-Type"] = m.content_type
+
         res = requests.post(
             f"{self.url}table/upload",
-            files=file,
-            data={"name": name, "project_id": self.project_id},
-            headers=self.auth_headers,
+            data=m,
+            headers=headers,
             verify=False,
         )
 
