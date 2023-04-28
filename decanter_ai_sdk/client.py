@@ -546,6 +546,27 @@ class Client:
         """
         return self.api.get_table(data_id=data_id)
 
+    def update_table(
+        self, table_id: str, updated_column: str, updated_type: str
+    ) -> None:
+        """
+        update columns type.
+
+        Params:
+        ----------
+            table_id (str)
+                table id which want to update type
+            updated_column (str)
+                column which want to update type
+            updated_type (str)
+                including: categorical, numerical, datetime, id
+
+        Returns:
+        ----------
+           None
+        """
+        return self.api.update_table(table_id, updated_column, updated_type)
+
     def get_table_list(self, page=1) -> List[str]:
         """
         Return list of table information.
