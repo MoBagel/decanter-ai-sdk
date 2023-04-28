@@ -113,6 +113,24 @@ class DecanterApiClient(ApiClient):
             table_info[column["id"]] = column["data_type"]
         return table_info
 
+    def update_table(self, table_id, updated_column, updated_type) -> None:
+        data = {
+            "project_id": self.project_id,
+            "columns": [{"data_type": updated_type, "id": updated_column}],
+            "table_id": table_id,
+        }
+        data = json.dumps(data)
+        update_response = requests.put(
+            f"{self.url}table/update", headers=self.headers, data=data, verify=False
+        )
+        if update_response.status_code == 200:
+            print("Update Successfully!!")
+        else:
+            print(f"Update Fail - {update_response.status_code}")
+            print(
+                "typo? Only categorical, numerical, datetime, and id can be filled in"
+            )
+
     def check(self, task, id):  # pragma: no cover
         if task == "table":
 
