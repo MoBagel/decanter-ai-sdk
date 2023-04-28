@@ -85,8 +85,7 @@ class NonBlockingClient:
         """
 
         if data is None:
-            raise ValueError(
-                "[Upload] Uploaded None file.")  # pragma: no cover
+            raise ValueError("[Upload] Uploaded None file.")  # pragma: no cover
 
         if isinstance(data, pd.DataFrame):
             text_stream = StringIO()
@@ -107,8 +106,7 @@ class NonBlockingClient:
         target: str,
         custom_column_types: Dict[str, DataType] = {},
         drop_features: List[str] = [],
-        evaluator: Optional[Union[RegressionMetric,
-                                  ClassificationMetric]] = None,
+        evaluator: Optional[Union[RegressionMetric, ClassificationMetric]] = None,
         holdout_table_id: Optional[str] = None,
         algos: Union[List[IIDAlgorithms], List[str]] = [
             IIDAlgorithms.DRF,
@@ -197,8 +195,7 @@ class NonBlockingClient:
             (`~decanter_ai_sdk.web_api.experiment.Experiment`)
                 Experiment id.
         """
-        data_column_info = self.api.get_table_info(
-            table_id=experiment_table_id)
+        data_column_info = self.api.get_table_info(table_id=experiment_table_id)
         # cast target column
         data_column_info[target] = custom_column_types[target].value
 
@@ -383,8 +380,7 @@ class NonBlockingClient:
             elif type(algo) == TSAlgorithms:
                 algo_values.append(algo.value)
 
-        data_column_info = self.api.get_table_info(
-            table_id=experiment_table_id)
+        data_column_info = self.api.get_table_info(table_id=experiment_table_id)
 
         features = [
             feature

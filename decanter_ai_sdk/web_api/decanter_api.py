@@ -19,7 +19,8 @@ class DecanterApiClient(ApiClient):
     def post_upload(self, file: tuple, name: str):  # pragma: no cover
 
         m = MultipartEncoder(
-            fields={"project_id": self.project_id, "name": name, 'file': file})
+            fields={"project_id": self.project_id, "name": name, "file": file}
+        )
         headers = self.auth_headers
         headers["Content-Type"] = m.content_type
 
@@ -71,6 +72,32 @@ class DecanterApiClient(ApiClient):
             raise RuntimeError(res.json()["message"])
 
         return res.json()["prediction"]["_id"]
+
+    def batch_predict(
+        self,
+        pred_df: pd.DataFrame,
+        experiment_id: str,
+        model_id: str,
+        timestamp_format: str,
+    ) -> pd.Series:
+
+        data = {
+            "project_id": self.project_id,
+            "featuresList": pred_df.to_dict(orient="records"),
+            "timestamp_format": timestamp_format,
+        }
+
+        res = requests.post(
+            f"{self.url}experiment/{experiment_id}/model/{model_id}/batch_predict",
+            headers=self.headers,
+            data=json.dumps(data),
+            verify=False,
+        )
+
+        if not res.ok:
+            raise RuntimeError(res.json()["message"])
+
+        return pd.DataFrame(res.json()["data"])["prediction"]
 
     def get_table_info(self, table_id):  # pragma: no cover
 

@@ -465,6 +465,39 @@ class Client:
         )
         return prediction
 
+    def batch_predict(
+        self,
+        pred_df: pd.DataFrame,
+        experiment_id: str,
+        model_id: str,
+        timestamp_format: str = "yyyy-MM-dd",
+    ) -> pd.Series:
+        """
+        Predict model with pd.DataFrame.
+
+        The output can't show on Decanter AI.
+
+        Parameters:
+        ----------
+            pred_df (pd.DataFrame)
+                Prediction data
+            model_id (str)
+                Id of model used to predict.
+            experiment_id (str)
+                Id of experiment used to predict.
+            timestamp_format (str)
+                Timestamp format, default: "yyyy-MM-dd"
+                (ref: https://en.wikipedia.org/wiki/ISO_8601)
+
+        Returns:
+        ----------
+            (pd.Series)
+                Prediction results.
+        """
+        return self.api.batch_predict(
+            pred_df, experiment_id, model_id, timestamp_format
+        )
+
     def stop_uploading(self, id: str) -> None:
         self.non_blocking_client.stop_uploading(id)
 
