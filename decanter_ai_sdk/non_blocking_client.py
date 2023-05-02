@@ -198,7 +198,7 @@ class NonBlockingClient:
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
         
         # cast target column
-        if custom_column_types:
+        if target in custom_column_types.keys():
             data_column_info[target] = custom_column_types[target].value
 
         if validation_percentage < 5 or validation_percentage > 20:

@@ -129,9 +129,10 @@ class DecanterApiClient(ApiClient):
             "columns": [{"data_type": updated_type, "id": updated_column}],
             "table_id": table_id,
         }
-        data = json.dumps(data)
+        
         update_response = self.session.put(
-            f"{self.url}table/update", headers=self.headers, data=data, verify=False
+            f"{self.url}table/update", headers=self.headers, data=json.dumps(data), verify=False
+
         )
         if update_response.status_code == 200:
             print("Update Successfully!!")
