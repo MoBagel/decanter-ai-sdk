@@ -5,7 +5,8 @@ from typing import Dict, List
 import numpy as np
 import pandas as pd
 import requests
-from requests.adapters import HTTPAdapter, Retry
+import urllib3
+from requests.adapters import HTTPAdapter
 from requests_toolbelt import MultipartEncoder
 
 from decanter_ai_sdk.web_api.api import ApiClient
@@ -21,8 +22,11 @@ class DecanterApiClient(ApiClient):
 
         # Retry when having temporary connection issue
         # ref: https://stackoverflow.com/a/35504626
-        retries = Retry(
-            total=3, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504]
+        retries = urllib3.Retry(
+            total=3,
+            backoff_factor=0.1,
+            status_forcelist=[500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET", "PUT", "DELETE", "OPTIONS"],
         )
 
         self.session.mount("http://", HTTPAdapter(max_retries=retries))
@@ -210,7 +214,7 @@ class DecanterApiClient(ApiClient):
         return table_list_res.json()["tables"]
 
     def get_table(self, data_id):  # pragma: no cover
-        table_res = requests.get(
+        table_res = self.session.get(
             f"{self.url}table/{data_id}/csv",
             headers=self.headers,
             verify=False,
