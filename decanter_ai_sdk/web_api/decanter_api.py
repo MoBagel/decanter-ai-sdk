@@ -1,12 +1,14 @@
-from typing import Dict, List
-from io import StringIO
 import json
-import requests
-import pandas as pd
+from io import StringIO
+from typing import Dict, List
+
 import numpy as np
+import pandas as pd
+import requests
+from requests.adapters import HTTPAdapter, Retry
+from requests_toolbelt import MultipartEncoder
 
 from decanter_ai_sdk.web_api.api import ApiClient
-from requests_toolbelt import MultipartEncoder
 
 
 class DecanterApiClient(ApiClient):
@@ -15,16 +17,25 @@ class DecanterApiClient(ApiClient):
         self.headers = headers
         self.project_id = project_id
         self.auth_headers = auth_headers
+        self.session = requests.Session()
+
+        # Retry when having temporary connection issue
+        # ref: https://stackoverflow.com/a/35504626
+        retries = Retry(
+            total=3, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504]
+        )
+
+        self.session.mount("http://", HTTPAdapter(max_retries=retries))
+        self.session.mount("https://", HTTPAdapter(max_retries=retries))
 
     def post_upload(self, file: tuple, name: str):  # pragma: no cover
-
         m = MultipartEncoder(
             fields={"project_id": self.project_id, "name": name, "file": file}
         )
         headers = self.auth_headers
         headers["Content-Type"] = m.content_type
 
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}table/upload",
             data=m,
             headers=headers,
@@ -36,8 +47,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["table"]["_id"]
 
     def post_train_iid(self, data) -> str:  # pragma: no cover
-
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}experiment/create",
             headers=self.headers,
             data=json.dumps(data),
@@ -49,8 +59,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["experiment"]["_id"]
 
     def post_train_ts(self, data) -> str:  # pragma: no cover
-
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}experiment/create",
             headers=self.headers,
             data=json.dumps(data),
@@ -61,8 +70,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["experiment"]["_id"]
 
     def post_predict(self, data) -> str:  # pragma: no cover
-
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}prediction/predict",
             headers=self.headers,
             data=json.dumps(data),
@@ -80,14 +88,13 @@ class DecanterApiClient(ApiClient):
         model_id: str,
         timestamp_format: str,
     ) -> pd.Series:
-
         data = {
             "project_id": self.project_id,
             "featuresList": pred_df.to_dict(orient="records"),
             "timestamp_format": timestamp_format,
         }
 
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}experiment/{experiment_id}/model/{model_id}/batch_predict",
             headers=self.headers,
             data=json.dumps(data),
@@ -100,8 +107,7 @@ class DecanterApiClient(ApiClient):
         return pd.DataFrame(res.json()["data"])["prediction"]
 
     def get_table_info(self, table_id):  # pragma: no cover
-
-        table_response = requests.get(
+        table_response = self.session.get(
             f"{self.url}table/{table_id}/columns", headers=self.headers, verify=False
         )
         table_info = {}
@@ -120,7 +126,7 @@ class DecanterApiClient(ApiClient):
             "table_id": table_id,
         }
         data = json.dumps(data)
-        update_response = requests.put(
+        update_response = self.session.put(
             f"{self.url}table/update", headers=self.headers, data=data, verify=False
         )
         if update_response.status_code == 200:
@@ -133,8 +139,7 @@ class DecanterApiClient(ApiClient):
 
     def check(self, task, id):  # pragma: no cover
         if task == "table":
-
-            res = requests.get(
+            res = self.session.get(
                 f"{self.url}table/{id}",
                 verify=False,
                 headers=self.headers,
@@ -142,22 +147,20 @@ class DecanterApiClient(ApiClient):
             return res["table"]
 
         if task == "experiment":
-
-            res = requests.get(
+            res = self.session.get(
                 f"{self.url}experiment/{id}", verify=False, headers=self.headers
             ).json()
             return res["experiment"]
 
         if task == "prediction":
-
-            res = requests.get(
+            res = self.session.get(
                 f"{self.url}prediction/{id}", verify=False, headers=self.headers
             ).json()
             return res["data"]
 
     def get_experiment_list(self, page):
         experiment = {}
-        experiment_response = requests.get(
+        experiment_response = self.session.get(
             f"{self.url}experiment/getlist/{self.project_id}",
             headers=self.headers,
             params={"page": page},
@@ -175,8 +178,7 @@ class DecanterApiClient(ApiClient):
         return experiment
 
     def get_prediction_list(self, model_id):
-
-        res = requests.get(
+        res = self.session.get(
             f"{self.url}prediction/getlist/{model_id}",
             verify=False,
             params={"project_id": self.project_id},
@@ -186,8 +188,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["predictions"]
 
     def get_pred_data(self, pred_id, download):  # pragma: no cover
-
-        prediction_get_response = requests.get(
+        prediction_get_response = self.session.get(
             f"{self.url}prediction/{pred_id}/download",
             headers=self.headers,
             params={"download": download},
@@ -200,8 +201,7 @@ class DecanterApiClient(ApiClient):
         return prediction_df
 
     def get_table_list(self, page):  # pragma: no cover
-
-        table_list_res = requests.get(
+        table_list_res = self.session.get(
             f"{self.url}table/getlist/{self.project_id}",
             headers=self.headers,
             verify=False,
@@ -210,7 +210,6 @@ class DecanterApiClient(ApiClient):
         return table_list_res.json()["tables"]
 
     def get_table(self, data_id):  # pragma: no cover
-
         table_res = requests.get(
             f"{self.url}table/{data_id}/csv",
             headers=self.headers,
@@ -223,8 +222,7 @@ class DecanterApiClient(ApiClient):
         return table_df
 
     def get_model_list(self, experiment_id):  # pragma: no cover
-
-        res = requests.get(
+        res = self.session.get(
             f"{self.url}experiment/{experiment_id}/model/getlist?projectId={self.project_id}",
             headers=self.auth_headers,
             verify=False,
@@ -232,8 +230,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["model_list"]
 
     def get_model_threshold(self, experiment_id, model_id) -> float:
-
-        res = requests.get(
+        res = self.session.get(
             f"{self.url}experiment/{experiment_id}/model/{model_id}/predict_threshold",
             headers=self.headers,
             params={"project_id": self.project_id},
@@ -242,7 +239,7 @@ class DecanterApiClient(ApiClient):
         return res.json()["threshold"]
 
     def get_performance_metrics(self, model_id, table_id) -> List:
-        res = requests.get(
+        res = self.session.get(
             f"{self.url}prediction/getlist/{model_id}",
             verify=False,
             params={"project_id": self.project_id},
@@ -262,7 +259,7 @@ class DecanterApiClient(ApiClient):
         return perf_list
 
     def stop_uploading(self, id) -> bool:  # pragma: no cover
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}table/stop",
             headers=self.auth_headers,
             verify=False,
@@ -271,7 +268,7 @@ class DecanterApiClient(ApiClient):
         return res.ok
 
     def stop_training(self, id) -> bool:  # pragma: no cover
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}experiment/stop",
             headers=self.auth_headers,
             verify=False,
@@ -280,8 +277,7 @@ class DecanterApiClient(ApiClient):
         return res.ok
 
     def delete_experiment(self, experiment_id) -> str:
-
-        res = requests.post(
+        res = self.session.post(
             f"{self.url}experiment/delete",
             headers=self.headers,
             data=json.dumps(
