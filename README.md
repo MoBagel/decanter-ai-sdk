@@ -147,6 +147,16 @@ To run test, do:
 poe test
 ```
 
+To run integration test, do:
+
+1. Rename `.env.example` as `.env`
+2. Modify `.env` file with correct configurations
+3. run
+
+   ```
+   poe test-e2e
+   ```
+
 ### Lint and format
 
 To lint, do:
