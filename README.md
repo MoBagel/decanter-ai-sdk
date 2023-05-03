@@ -1,6 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/MoBagel/decanter-ai-sdk/badge.svg?branch=coveralls)](https://coveralls.io/github/MoBagel/decanter-ai-sdk?branch=coveralls)
 [![tests](https://github.com/MoBagel/decanter-ai-sdk/workflows/main/badge.svg)](https://github.com/MoBagel/decanter-ai-sdk)
 [![PyPI version](https://badge.fury.io/py/decanter-ai-sdk.svg)](https://badge.fury.io/py/decanter-ai-sdk)
+
 # Mobagel decanter ai sdk
 
 Decanter AI is a powerful AutoML tool which enables everyone to build ML models and make predictions without data science background. With Decanter AI SDK, you can integrate Decanter AI into your application more easily with Python.
@@ -26,8 +27,11 @@ To know more about Decanter AI and how you can be benefited with AutoML, visit [
 ### Installation
 
 `pip install decanter-ai-sdk`
+
 ### Constructor
+
 To use this sdk, you must first construct a client object.
+
 ```python
 from decanter_ai_sdk.client import Client
     client = Client(
@@ -38,7 +42,9 @@ from decanter_ai_sdk.client import Client
 ```
 
 ### Upload
+
 After the client is constructed, now you can use it to upload your training and testing files in both csv and pandas dataframe. This function will return uploaded data id in Decanter server.
+
 ```python
 import os
 sys.path.append("..")
@@ -50,8 +56,10 @@ train_id = client.upload(train_file, "train_file")
 ```
 
 ### Experiment
+
 To conduct an experiment, you need to first specify which type of data you are going to use , i.e., iid or ts, then you can input parameters by following our pyhint to customize your experiment.
 After the experiment, the function will return an object which you can get experiment attributes from it.
+
 ```python
 # Training iid data
 experiment = client.train_iid(
@@ -81,21 +89,26 @@ experiment = client.train_ts(
     custom_column_types={"Pclass": DataType.numerical},
 )
 ```
+
 To get its attributes, you can either extract them by simply using dot or its functions.
+
 ```python
 # Experiment object usage
 best_model = experiment.get_best_model()
 model_list = experiment.get_model_list()
 best_auc_model = experiment.get_best_model_by_metric(ClassificationMetric.AUC)
 ```
+
 ### Prediction
+
 Now you can use model data to run prediction.
+
 ```python
 # Predicting iid data
 predict = client.predict_iid(
-    keep_columns=[], 
-    non_negative=False, 
-    test_table_id=test_id, 
+    keep_columns=[],
+    non_negative=False,
+    test_table_id=test_id,
     model=best_model
 )
 ```
@@ -103,44 +116,53 @@ predict = client.predict_iid(
 ```python
 # Predicting ts data
 predict = client.predict_ts(
-    keep_columns=[], 
-    non_negative=False, 
-    test_table_id=test_id, 
+    keep_columns=[],
+    non_negative=False,
+    test_table_id=test_id,
     model=best_model
 )
 ```
+
 To get prediction result, do
+
 ```python
 predict_data = predict.get_predict_df()
 ```
+
 ## Development
 
 ### Installing poetry
 
-1. `pip install poetry poethepoet`
+1. Install poetry from [the official install](https://python-poetry.org/docs/master/#installation)
 2. `poetry install` #Project setup.
-3. `poetry shell` #Start your project in poetry env.
+3. `poetry shell` #Start your project in poetry env. (Optional if you use Conda to manage virtual environment)
 
 Now you can create your own branch to start developing new feature.
 
 ### Testing
+
 To run test, do:
+
 ```
 poe test
 ```
 
 ### Lint and format
+
 To lint, do:
+
 ```
 poe lint
 ```
 
 To reformat, do:
+
 ```
 poe format
 ```
 
 ## Releasing
+
 1. poetry version [new_version]
 2. git commit -m"Bump version"
 3. git push origin main
@@ -149,13 +171,13 @@ poe format
 6. Publish release
 
 ## Enums
+
 #TODO
 
 ## License
+
 #TODO
 
 ## TODO
+
 #TODO
-
-
-
