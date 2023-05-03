@@ -134,8 +134,8 @@ predict_data = predict.get_predict_df()
 ### Installing poetry
 
 1. Install poetry from [the official install](https://python-poetry.org/docs/master/#installation)
-1. `poetry install` #Project setup.
-1. `poetry shell` #Start your project in poetry env. (Optional if you use Conda to manage virtual environment)
+2. `poetry install` #Project setup.
+3. `poetry shell` #Start your project in poetry env. (Optional if you use Conda to manage virtual environment)
 
 Now you can create your own branch to start developing new feature.
 
