@@ -20,6 +20,7 @@ pytest = "^7.1.2"
 pydantic = "^1.9.2"
 pytest-mock = "^3.10.0"
 poetry = "1.4.2"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
@@ -48,7 +49,14 @@ _mypy = 'mypy $SRC --ignore-missing-imports'
 help = "Testing tasks."
 shell = """
 echo run unit tests
-pytest --cov=$SRC --cov-report term-missing
+pytest -k 'not integration' --cov=$SRC --cov-report term-missing --ignore=integration
+"""
+
+[tool.poe.tasks.test-e2e]
+help = "Functional testing on real Decanter AI endpoint"
+shell = """
+echo run functional tests
+pytest -k 'integration' --cov=$SRC --cov-report term-missing --ignore=integration
 """
 
 [tool.poe.tasks.lint]
