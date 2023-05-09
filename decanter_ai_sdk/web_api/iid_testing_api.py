@@ -9,6 +9,7 @@ sys.path.append("..")
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
+
 # The following code is generated for local unit testing simulation.
 class TestingIidApiClient(ApiClient):
     def __init__(self):
@@ -17,7 +18,7 @@ class TestingIidApiClient(ApiClient):
         self.project_id = None
         self.auth_headers = None
 
-    def post_upload(self, file: Dict, name: str):
+    def post_upload(self, file: tuple, name: str):
         if name == "iid_train_file":
             return "63047377818547e247f5aa4e"
         else:

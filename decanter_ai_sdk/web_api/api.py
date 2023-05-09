@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 
 class ApiClient(ABC):
     @abstractmethod
-    def post_upload(self, file: Dict, name: str):
+    def post_upload(self, file: tuple, name: str):
         raise NotImplementedError
 
     @abstractmethod

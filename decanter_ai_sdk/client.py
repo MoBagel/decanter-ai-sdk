@@ -406,10 +406,8 @@ class Client:
         )
 
         prediction = Prediction(
-            attributes=self.wait_for_response("prediction", pred_id)
-        )
-        prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes["_id"], download
+            attributes=self.wait_for_response("prediction", pred_id),
+            predict_df=self.api.get_pred_data(pred_id, download),
         )
 
         return prediction
@@ -458,10 +456,8 @@ class Client:
         )
 
         prediction = Prediction(
-            attributes=self.wait_for_response("prediction", pred_id)
-        )
-        prediction.predict_df = self.api.get_pred_data(
-            prediction.attributes["_id"], download
+            attributes=self.wait_for_response("prediction", pred_id),
+            predict_df=self.api.get_pred_data(pred_id, download),
         )
         return prediction
 

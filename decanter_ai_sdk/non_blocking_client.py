@@ -196,7 +196,7 @@ class NonBlockingClient:
                 Experiment id.
         """
         data_column_info = self.api.get_table_info(table_id=experiment_table_id)
-        
+
         # cast target column
         if target in custom_column_types.keys():
             data_column_info[target] = custom_column_types[target].value
@@ -607,7 +607,7 @@ class NonBlockingClient:
         """
         return self.api.get_table_list()
 
-    def check_upload_status(self, id) -> str:
+    def check_upload_status(self, id) -> Status:
         """
         You can check the status of the uploading task by inputting upload id using this function.
 
@@ -622,7 +622,7 @@ class NonBlockingClient:
         """
         return Status(self.api.check(task="table", id=id)["status"])
 
-    def check_exp_status(self, id) -> str:
+    def check_exp_status(self, id) -> Status:
         """
         You can check the status of the experiment by inputting experiment id using this function.
 
@@ -637,7 +637,7 @@ class NonBlockingClient:
         """
         return Status(self.api.check(task="experiment", id=id)["status"])
 
-    def check_pred_status(self, id) -> str:
+    def check_pred_status(self, id) -> Status:
         """
         You can check the status of the prediction by inputting prediction id using this function.
 
