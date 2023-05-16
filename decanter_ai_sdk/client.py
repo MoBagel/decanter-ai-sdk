@@ -561,7 +561,8 @@ class Client:
         ----------
            None
         """
-        return self.api.update_table(table_id, updated_column, updated_type)
+        self.api.update_table(table_id, updated_column, updated_type)
+        self.wait_for_response("table", table_id)
 
     def get_table_list(self, page=1) -> List[str]:
         """

@@ -22,6 +22,9 @@ def test_train_and_predict_titanic(client):
     assert test_id is not None
     assert isinstance(client.get_table_list(), List)
 
+    client.update_table(table_id=train_id,
+                        updated_column='Pclass',
+                        updated_type= DataType.categorical.value)
     exp_name = "exp_test_iid"
     experiment = client.train_iid(
         experiment_name=exp_name,
