@@ -27,7 +27,7 @@ class Experiment(BaseModel):
     forecast_time_group_columns: List[str] = []
     gp_table_id: str
     holdout: Dict[str, str]
-    holdout_percentage: float
+    holdout_percentage: Optional[float]
     hyperparameters: Dict
     is_binary_classification: bool
     is_forecast: bool
