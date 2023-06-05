@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "decanter-ai-sdk"
-version = "0.1.12"
+version = "0.1.13"
 description = "Decanter AI is a powerful AutoML tool which enables everyone to build ML models and make predictions without data science background. With Decanter AI SDK, you can integrate Decanter AI into your application more easily with Python."
 homepage = "https://github.com/MoBagel/decanter-ai-sdk"
 authors = ["senchao <senchao@mobagel.com>"]
