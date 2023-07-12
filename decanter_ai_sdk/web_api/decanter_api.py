@@ -107,8 +107,17 @@ class DecanterApiClient(ApiClient):
 
         if not res.ok:
             raise RuntimeError(res.json()["message"])
+        
+        res_data = res.json()['data']
+        if 'category' in res_data[0].keys():
+            pred_df = pd.DataFrame(res_data)
+            pred_df = pred_df.groupby(['index', 'category'])['prediction'].first().unstack()
+            pred_df.columns = pred_df.columns.tolist()
+            pred_df.reset_index(drop=True, inplace=True)
+        else:
+            pred_df = pd.DataFrame(res_data)["prediction"]
 
-        return pd.DataFrame(res.json()["data"])["prediction"]
+        return pred_df
 
     def get_table_info(self, table_id):  # pragma: no cover
         table_response = self.session.get(
