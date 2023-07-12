@@ -40,8 +40,15 @@ def test_ts(client):
     predict = client.predict_ts(
         keep_columns=[], non_negative=False, test_table_id=test_id, model=best_model
     )
+    
+    first_mode_id = client.get_model_list(experiment.id)[0]['_id']
+    pred_proba = client.batch_predict(
+        pred_df=train_file_df,
+        experiment_id=experiment.id,
+        model_id=first_mode_id)
 
     assert predict.attributes["status"] == "done"
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
+    assert isinstance(pred_proba, pd.Series)
     assert predict.attributes["model_id"] == best_model.model_id
     assert predict.attributes["table_id"] == test_id
