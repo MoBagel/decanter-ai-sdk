@@ -467,7 +467,7 @@ class Client:
         experiment_id: str,
         model_id: str,
         timestamp_format: str = "yyyy-MM-dd",
-    ) -> pd.Series:
+    ) -> Union[pd.Series, pd.DataFrame]:
         """
         Predict model with pd.DataFrame.
 
