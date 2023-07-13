@@ -111,7 +111,7 @@ class DecanterApiClient(ApiClient):
         res_data = res.json()['data']
         if 'category' in res_data[0].keys():
             pred_df = pd.DataFrame(res_data)
-            pred_df = pred_df.groupby(['index', 'category'])['prediction'].first().unstack()
+            pred_df = pred_df.pivot_table(index="index", columns="category", values="prediction")
             pred_df.columns = pred_df.columns.tolist()
             pred_df.reset_index(drop=True, inplace=True)
             # Binary classification     Multiple classification
