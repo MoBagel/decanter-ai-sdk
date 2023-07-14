@@ -9,8 +9,8 @@ from decanter_ai_sdk.enums.time_units import TimeUnit
 def test_ts(client):
     print("---From test ts---")
     train_file_path = "data/ts_train.csv"
-    train_file_df = pd.read_csv(open(train_file_path, "rb"))
-    train_id = client.upload(train_file_df, "train_file")
+    train_df = pd.read_csv(open(train_file_path, "rb"))
+    train_id = client.upload(train_df, "train_file")
     assert train_id is not None
 
     test_file_path = "data/ts_test.csv"
@@ -40,8 +40,15 @@ def test_ts(client):
     predict = client.predict_ts(
         keep_columns=[], non_negative=False, test_table_id=test_id, model=best_model
     )
+    
+    first_model_id = client.get_model_list(experiment.id)[0]['_id']
+    predictions = client.batch_predict(
+        pred_df=train_df,
+        experiment_id=experiment.id,
+        model_id=first_model_id)
 
     assert predict.attributes["status"] == "done"
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
+    assert isinstance(predictions, pd.Series)
     assert predict.attributes["model_id"] == best_model.model_id
     assert predict.attributes["table_id"] == test_id

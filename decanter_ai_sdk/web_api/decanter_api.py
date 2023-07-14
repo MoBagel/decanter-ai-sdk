@@ -1,6 +1,6 @@
 import json
 from io import StringIO
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import numpy as np
 import pandas as pd
@@ -91,7 +91,7 @@ class DecanterApiClient(ApiClient):
         experiment_id: str,
         model_id: str,
         timestamp_format: str,
-    ) -> pd.Series:
+    ) -> Union[pd.Series, pd.DataFrame]:
         data = {
             "project_id": self.project_id,
             "featuresList": pred_df.to_dict(orient="records"),
@@ -107,8 +107,26 @@ class DecanterApiClient(ApiClient):
 
         if not res.ok:
             raise RuntimeError(res.json()["message"])
+        
+        res_data = res.json()['data']
+        if 'category' in res_data[0].keys():
+            pred_df = pd.DataFrame(res_data)
+            pred_df = pred_df.pivot_table(index="index", columns="category", values="prediction")
+            pred_df.columns = pred_df.columns.tolist()
+            pred_df.reset_index(drop=True, inplace=True)
+            # Binary classification     Multiple classification
+            # Output:                   Output:          
+            #     |  0  |  1                |  A  |  B  |  C 
+            # ---------------           ---------------
+            #     | 0.1 | 0.9               | 0.1 | 0.1 | 0.8
+            #     | 0.2 | 0.8               | 0.2 | 0.1 | 0.3
+            #     |  .  |  .                |  .  |  .  |  .               
+            #     |  .  |  .                |  .  |  .  |  . 
+            #     | 0.3 | 0.7               | 0.3 | 0.1 |  0.6
+        else:
+            pred_df = pd.DataFrame(res_data)["prediction"]
 
-        return pd.DataFrame(res.json()["data"])["prediction"]
+        return pred_df
 
     def get_table_info(self, table_id):  # pragma: no cover
         table_response = self.session.get(

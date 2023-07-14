@@ -13,8 +13,8 @@ def test_train_and_predict_titanic(client):
     current_path = os.path.dirname(os.path.abspath(__file__))
 
     train_file_path = "data/train.csv"
-    train_file = open(train_file_path, "rb")
-    train_id = client.upload(train_file, "train_file")
+    train_df = pd.read_csv(open(train_file_path, "rb"))
+    train_id = client.upload(train_df, "train_file")
     assert train_id is not None
 
     test_file_path = "data/test.csv"
@@ -52,9 +52,15 @@ def test_train_and_predict_titanic(client):
         model=best_model,
         threshold=0.5,
     )
+    first_model_id = client.get_model_list(experiment.id)[0]['_id']
+    pred_proba = client.batch_predict(
+        pred_df=train_df,
+        experiment_id=experiment.id,
+        model_id=first_model_id)
 
     assert predict.attributes["status"] == "done"
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
+    assert isinstance(pred_proba, pd.DataFrame)
     assert predict.attributes["model_id"] == best_model.model_id
     assert predict.attributes["table_id"] == test_id
 
