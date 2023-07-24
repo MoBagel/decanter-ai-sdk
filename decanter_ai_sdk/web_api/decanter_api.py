@@ -1,7 +1,7 @@
 import json
 from io import StringIO
 from typing import Dict, List, Union
-
+from time import time
 import numpy as np
 import pandas as pd
 import requests
@@ -163,25 +163,52 @@ class DecanterApiClient(ApiClient):
             )
 
     def check(self, task, id):  # pragma: no cover
-        if task == "table":
-            res = self.session.get(
-                f"{self.url}table/{id}",
-                verify=False,
-                headers=self.headers,
-            ).json()
-            return res["table"]
+        max_retries = 3  # Set the maximum number of retries
+        retries = 0
+        while retries <= max_retries:
+            if task == "table":
+                res = self.session.get(
+                    f"{self.url}table/{id}",
+                    verify=False,
+                    headers=self.headers,
+                )
 
-        if task == "experiment":
-            res = self.session.get(
-                f"{self.url}experiment/{id}", verify=False, headers=self.headers
-            ).json()
-            return res["experiment"]
+            elif task == "experiment":
+                res = self.session.get(
+                    f"{self.url}experiment/{id}", verify=False, headers=self.headers
+                )
 
-        if task == "prediction":
-            res = self.session.get(
-                f"{self.url}prediction/{id}", verify=False, headers=self.headers
-            ).json()
-            return res["data"]
+            elif task == "prediction":
+                res = self.session.get(
+                    f"{self.url}prediction/{id}", verify=False, headers=self.headers
+                )
+
+            else:
+                raise ValueError("Invalid task")
+            
+        if res.status_code == 200:
+            # confirm that the response is JSON format
+            try:
+                data = res.json()
+            except ValueError:
+                raise Exception("Invalid JSON response")
+                
+            if task == "table":
+                return data["table"]
+            elif task == "experiment":
+                return data["experiment"]
+            elif task == "prediction":
+                return data["data"]
+        else:
+        # request fail, try again and wait a few second
+            retries += 1
+            if retries <= max_retries:
+                wait_time = 3  # Set the waiting time
+                print(f"Request failed with status code {res.status_code}. Retrying in {wait_time} seconds...")
+                time.sleep(wait_time)
+            else:
+                raise Exception(f"Failed to get data. Max retries ({max_retries}) exceeded.")
+
 
     def get_experiment_list(self, page):
         experiment = {}
