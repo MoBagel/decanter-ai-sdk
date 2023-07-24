@@ -199,6 +199,7 @@ class DecanterApiClient(ApiClient):
                         return data["data"]
                     else:
                         raise ValueError("Invalid task")
+                    break
                         
             except (requests.exceptions.HTTPError, ValueError):
                 # request fail, try again and wait a few second
