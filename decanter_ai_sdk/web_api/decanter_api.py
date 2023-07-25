@@ -339,3 +339,15 @@ class DecanterApiClient(ApiClient):
         )
 
         return res.json()["message"]
+
+    def delete_tables(self, table_ids: List[str]) -> str:
+        res = self.session.post(
+            f"{self.url}table/delete",
+            headers=self.headers,
+            data=json.dumps(
+                {"project_id": self.project_id, "table_ids": table_ids}
+            ),
+            verify=False,
+        )
+
+        return res.json()["message"]

@@ -681,3 +681,17 @@ class Client:
                 API's message
         """
         return self.api.delete_experiment(experiment_id)
+
+    def delete_tables(self, table_ids) -> str:
+        """
+        Return "Table delete successful" or "Table does not exist"
+
+        Args:
+            table_ids
+
+        Returns:
+        ----------
+            (str)
+                API's message
+        """
+        return self.api.delete_tables(table_ids)
