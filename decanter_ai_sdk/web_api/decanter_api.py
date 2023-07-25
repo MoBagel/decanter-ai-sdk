@@ -187,19 +187,18 @@ class DecanterApiClient(ApiClient):
             
             try:
                 res.raise_for_status()
-                if res.status_code == 200:
-                    # confirm that the response is JSON format
-                    data = res.json()
+                # confirm that the response is JSON format
+                data = res.json()
 
-                    if task == "table":
-                        return data["table"]
-                    elif task == "experiment":
-                        return data["experiment"]
-                    elif task == "prediction":
-                        return data["data"]
-                    else:
-                        raise ValueError("Invalid task")
-                    break
+                if task == "table":
+                    return data["table"]
+                elif task == "experiment":
+                    return data["experiment"]
+                elif task == "prediction":
+                    return data["data"]
+                else:
+                    raise ValueError("Invalid task")
+                break
                         
             except (requests.exceptions.HTTPError, ValueError):
                 # request fail, try again and wait a few second
