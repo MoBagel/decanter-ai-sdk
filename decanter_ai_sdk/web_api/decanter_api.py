@@ -184,7 +184,7 @@ class DecanterApiClient(ApiClient):
                 )
             else:
                 raise ValueError("Invalid task")
-            
+
             try:
                 res.raise_for_status()
                 # confirm that the response is JSON format
@@ -198,8 +198,7 @@ class DecanterApiClient(ApiClient):
                     return data["data"]
                 else:
                     raise ValueError("Invalid task")
-                break
-                        
+ 
             except (requests.exceptions.HTTPError, ValueError):
                 # request fail, try again and wait a few second
                 retries += 1
