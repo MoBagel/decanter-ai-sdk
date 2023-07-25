@@ -672,6 +672,8 @@ class Client:
         """
         Return "Experiment delete successful" or "Experiment does not exist"
 
+        This function only can delete one experiment.
+
         Args:
             experiment_id
 
@@ -685,6 +687,8 @@ class Client:
     def delete_tables(self, table_ids) -> str:
         """
         Return "Table delete successful" or "Table does not exist"
+
+        This function can delete multiple tables.
 
         Args:
             table_ids
