@@ -85,3 +85,6 @@ class TestingTsApiClient(ApiClient):
         if id == "":
             return False
         return True
+
+    def delete_tables(self, table_ids):
+        return "Table Delete Successfully"
