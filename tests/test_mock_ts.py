@@ -83,4 +83,5 @@ def test_ts():
     assert isinstance(predict.get_predict_df(), pd.DataFrame)
     assert predict.attributes["model_id"] == best_model.model_id
     assert predict.attributes["table_id"] == test_id
-    assert client.delete_tables == "Table Delete Successfully"
+    assert client.delete_tables(table_ids="mock_table_id") == "Table Delete Successfully"
+
