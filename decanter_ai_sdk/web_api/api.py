@@ -50,3 +50,7 @@ class ApiClient(ABC):
     @abstractmethod
     def stop_training(self, id):
         raise NotImplementedError
+
+    @abstractmethod
+    def delete_tables(self, table_ids):
+        raise NotImplementedError
