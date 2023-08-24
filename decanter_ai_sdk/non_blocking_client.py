@@ -314,6 +314,7 @@ class NonBlockingClient:
         custom_column_types: Dict[str, DataType] = {},
         holdout_percentage: int = 10,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
+        train_fusion_model: bool = False,
     ) -> str:
         """
         Train timeseries models.
@@ -362,7 +363,9 @@ class NonBlockingClient:
             #TODO Discuss with Ken about this.
             time_groups (List[Dict[Any, Any]])
                 List of timegroup columns.
-
+            train_fusion_model (bool)
+                Whether to train fusion model or not.
+                The fusion model feature can be accessed exclusively in versions later than v4.12.28.
 
         Returns:
         ----------
@@ -440,6 +443,7 @@ class NonBlockingClient:
             "validation_percentage": validation_percentage,
             "nfold": nfold,
             "preprocessing": {"columnWise": column_list},
+            "train_fusion_model": train_fusion_model,
         }
 
         exp_id = self.api.post_train_ts(training_settings)

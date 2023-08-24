@@ -263,6 +263,7 @@ class Client:
         custom_column_types: Dict[str, DataType] = {},
         holdout_percentage: int = 10,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
+        train_fusion_model: bool = False,
     ) -> Experiment:
         """
         Train timeseries models.
@@ -343,6 +344,7 @@ class Client:
             tolerance=tolerance,
             holdout_percentage=holdout_percentage,
             seed=seed,
+            train_fusion_model=train_fusion_model,
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
