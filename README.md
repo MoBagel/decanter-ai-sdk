@@ -56,6 +56,21 @@ train_file = open(train_file_path, "rb")
 train_id = client.upload(train_file, "train_file")
 ```
 
+upload your pandas dataframe
+
+```python
+import io
+import pandas as pd
+
+df_train = pd.read_csv("./yourpath/train.csv")
+
+csv_file = io.BytesIO()
+df_train.to_csv(csv_file, index=False)
+csv_file.seek(0)  
+train_table_id = client.upload(csv_file, 'train_file')
+```
+
+
 ### Experiment
 
 To conduct an experiment, you need to first specify which type of data you are going to use , i.e., iid or ts, then you can input parameters by following our pyhint to customize your experiment.
