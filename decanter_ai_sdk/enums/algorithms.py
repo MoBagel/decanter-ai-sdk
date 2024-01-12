@@ -14,7 +14,7 @@ class IIDAlgorithms(Enum):
     DeepLearning = "DeepLearning"
     autotpot = "autotpot"
     rfmulticlassifier = "rfmulticlassifier"
-    autolgbm =  "autolgbm"
+    autolgbm = "autolgbm"
     autoxgboost = "autoxgboost"
 
 
