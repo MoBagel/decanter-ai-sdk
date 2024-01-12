@@ -14,6 +14,8 @@ class IIDAlgorithms(Enum):
     DeepLearning = "DeepLearning"
     autotpot = "autotpot"
     rfmulticlassifier = "rfmulticlassifier"
+    autolgbm =  "autolgbm"
+    autoxgboost = "autoxgboost"
 
 
 class TSAlgorithms(str, Enum):
