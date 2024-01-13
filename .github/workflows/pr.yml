@@ -19,11 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Clear the Python package cache
-        run: |
-          rm -rf ${{ runner.home }}/virtualenvs
-          rm -rf ${{ runner.home }}/.cache/pip
-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
