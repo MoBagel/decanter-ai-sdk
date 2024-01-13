@@ -21,8 +21,8 @@ jobs:
 
       - name: Clear the Python package cache
         run: |
-          rm -rf ${{ runner.workspace }}/venv
-          rm -rf ${{ runner.temp }}/pip-*
+          rm -rf ${{ runner.home }}/virtualenvs
+          rm -rf ${{ runner.home }}/.cache/pip
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
