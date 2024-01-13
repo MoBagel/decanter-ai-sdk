@@ -29,6 +29,7 @@ pytest-mock = "^3.10.0"
 poetry = "1.4.2"
 python-dotenv = "^1.0.0"
 mypy = "^1.2.0"
+types-requests = "<2.31.0.7"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
