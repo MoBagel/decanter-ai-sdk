@@ -239,17 +239,27 @@ class NonBlockingClient:
 
         if data_column_info[target] == "numerical":
             category = "regression"
+            is_binary_classification: bool = False
             if evaluator is None:
                 evaluator = RegressionMetric.MAPE
             elif evaluator.name not in RegressionMetric.__members__:
                 raise ValueError(
                     "Wrong evaluator, you need to fill wmape, mse ..."
                 )  # pragma: no cover
-
         else:
             category = "classification"
+
+            if self.get_table(experiment_table_id)[target].nunique() > 2:
+                is_binary_classification = False
+            else:
+                is_binary_classification = True
+
             if evaluator is None:
-                evaluator = ClassificationMetric.AUC
+                evaluator = (
+                    ClassificationMetric.AUC
+                    if is_binary_classification
+                    else ClassificationMetric.LOGLOSS
+                )
             elif evaluator.name not in ClassificationMetric.__members__:
                 raise ValueError(
                     "Wrong evaluator, you need to fill auc, logloss..."
@@ -274,7 +284,7 @@ class NonBlockingClient:
             "feature_types": feature_types,
             "category": category,
             "stopping_metric": evaluator.value,
-            "is_binary_classification": True,
+            "is_binary_classification": is_binary_classification,
             "holdout": holdout_config,
             "tolerance": tolerance,
             "nfold": nfold,
