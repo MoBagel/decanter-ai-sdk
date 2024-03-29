@@ -239,17 +239,27 @@ class NonBlockingClient:
 
         if data_column_info[target] == "numerical":
             category = "regression"
+            is_binary_classification: bool = False
             if evaluator is None:
                 evaluator = RegressionMetric.MAPE
             elif evaluator.name not in RegressionMetric.__members__:
                 raise ValueError(
                     "Wrong evaluator, you need to fill wmape, mse ..."
                 )  # pragma: no cover
-
         else:
             category = "classification"
+
+            if self.get_table(experiment_table_id)[target].nunique() > 2:
+                is_binary_classification = False
+            else:
+                is_binary_classification = True
+
             if evaluator is None:
-                evaluator = ClassificationMetric.AUC
+                evaluator = (
+                    ClassificationMetric.AUC
+                    if is_binary_classification
+                    else ClassificationMetric.LOGLOSS
+                )
             elif evaluator.name not in ClassificationMetric.__members__:
                 raise ValueError(
                     "Wrong evaluator, you need to fill auc, logloss..."
@@ -274,7 +284,7 @@ class NonBlockingClient:
             "feature_types": feature_types,
             "category": category,
             "stopping_metric": evaluator.value,
-            "is_binary_classification": True,
+            "is_binary_classification": is_binary_classification,
             "holdout": holdout_config,
             "tolerance": tolerance,
             "nfold": nfold,
@@ -298,6 +308,9 @@ class NonBlockingClient:
         datetime: str,
         time_groups: List,
         timeunit: TimeUnit,
+        nfold: int,
+        validation_percentage: int,
+        holdout_percentage: int,
         algos: Union[List[TSAlgorithms], List[str]] = [TSAlgorithms.GBM],
         groupby_method: Optional[str] = None,
         evaluator: RegressionMetric = RegressionMetric.WMAPE,
@@ -305,14 +318,11 @@ class NonBlockingClient:
         gap: int = 0,
         feature_derivation_window: int = 60,
         horizon_window: int = 1,
-        validation_percentage: int = 10,
-        nfold: int = 5,
         max_model: int = 20,
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_column_types: Dict[str, DataType] = {},
-        holdout_percentage: int = 10,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
         train_fusion_model: bool = False,
     ) -> str:
@@ -422,12 +432,12 @@ class NonBlockingClient:
             "feature_types": feature_types,
             "category": "regression",
             "stopping_metric": evaluator.value,
-            "is_binary_classification": True,
+            "is_binary_classification": False,
             "holdout": {"percent": holdout_percentage},
             "tolerance": tolerance,
             "max_model": max_model,
             "algos": algo_values,
-            "balance_class": True,
+            "balance_class": False,
             "is_forecast": True,
             "stacked_ensemble": False,
             "forecast_column": datetime,
