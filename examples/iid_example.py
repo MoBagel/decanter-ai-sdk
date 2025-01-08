@@ -46,7 +46,6 @@ def test_iid():
             "Pclass": DataType.categorical,
             "Parch": DataType.categorical,
         },
-        max_model=5,
         algos=["DRF", "GBM", IIDAlgorithms.DRF],
         missing_value_settings={"Age": MissingValueHandling.mean, "Cabin":MissingValueHandling.mode}
     )
