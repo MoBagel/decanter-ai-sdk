@@ -59,7 +59,6 @@ def test_non_blocking_iid():
             "Pclass": DataType.categorical,
             "Parch": DataType.categorical,
         },
-        max_model=5,
         algos=["DRF", "GBM", IIDAlgorithms.DRF],
     )
 

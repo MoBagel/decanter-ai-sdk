@@ -110,15 +110,15 @@ class Client:
             IIDAlgorithms.XGBoost,
             IIDAlgorithms.GLM,
         ],
-        max_model: int = 20,
+        max_model: Optional[int] = None,
         tolerance: int = 3,
         nfold: int = 5,
-        stacked_ensemble: bool = True,
         validation_percentage: int = 10,
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
-        holdout_percentage: int = 10,
+        holdout_percentage: Optional[int] = None,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
+        trainMode: Optional[str] = None
     ) -> Experiment:
         """
         Train iid models.
@@ -149,12 +149,12 @@ class Client:
                 Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
-            stacked_ensemble (boolean)
-                If stacked ensemble models will be trained.
             validation_percentage (int)
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
+            trainMode (str)
+                Experiment train mode, only balance, speed, accuracy, efficiency (default is balance)
             timeseries_value (List[Dict[str, Any]])
                 Folds for time series cross validation (train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag).
                 \tExample:
@@ -206,12 +206,12 @@ class Client:
             max_model=max_model,
             tolerance=tolerance,
             nfold=nfold,
-            stacked_ensemble=stacked_ensemble,
             validation_percentage=validation_percentage,
             seed=seed,
             timeseries_value=timeseries_value,
             holdout_percentage=holdout_percentage,
             missing_value_settings=missing_value_settings,
+            trainMode=trainMode
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
@@ -256,14 +256,14 @@ class Client:
         horizon_window: int = 1,
         validation_percentage: int = 5,
         nfold: int = 1,
-        max_model: int = 20,
+        max_model: Optional[int] = None,
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_column_types: Dict[str, DataType] = {},
-        holdout_percentage: int = 10,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
         train_fusion_model: bool = False,
+        trainMode: Optional[str] = None
     ) -> Experiment:
         """
         Train timeseries models.
@@ -294,8 +294,6 @@ class Client:
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
-            holdout_percentage (int)
-                Holdout percentage for experiment.
             horizon_window (int)
                 experiment forecast horizon window value.
             gap (int)
@@ -314,6 +312,8 @@ class Client:
             #TODO Discuss with Ken about this.
             time_groups (List[Dict[Any, Any]])
                 List of timegroup columns.
+            trainMode (str)
+                Experiment train mode, only balance, speed, accuracy, efficiency (default is balance)
 
 
         Returns:
@@ -342,9 +342,9 @@ class Client:
             custom_column_types=custom_column_types,
             max_model=max_model,
             tolerance=tolerance,
-            holdout_percentage=holdout_percentage,
             seed=seed,
             train_fusion_model=train_fusion_model,
+            trainMode=trainMode
         )
 
         experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))

@@ -41,7 +41,6 @@ class Experiment(BaseModel):
     project_id: str
     recommendations: List[Dict]
     seed: int
-    stacked_ensemble: bool
     started_at: str
     status: str
     stopping_metric: str
@@ -53,6 +52,7 @@ class Experiment(BaseModel):
     train_table: Dict
     updated_at: str
     validation_percentage: float
+    trainMode: str
     id: str = Field(..., alias="_id")
     """
     Experiment class returned by training actions.

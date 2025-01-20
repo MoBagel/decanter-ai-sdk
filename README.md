@@ -100,7 +100,6 @@ experiment = client.train_ts(
     time_groups=[],
     timeunit=TimeUnit.month,
     groupby_method="sum",
-    max_model=5,
     evaluator=RegressionMetric.MAPE,
     custom_column_types={"Pclass": DataType.numerical},
 )

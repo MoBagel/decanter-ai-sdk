@@ -411,6 +411,7 @@
    "task_id": "630439e3ea117c7b1f9314bd",
    "timeseriesValues": {},
    "tolerance": 0.0001,
+   "trainMode": "balance",
    "train_table": {
      "_id": "62ff59883a6eef99be6e8e86",
      "celery_task_id": "aa860a67-9a6e-439f-a53d-937798900d2e",

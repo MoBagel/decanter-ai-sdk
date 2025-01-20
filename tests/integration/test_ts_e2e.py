@@ -27,7 +27,6 @@ def test_ts(client):
         time_groups=[],
         timeunit=TimeUnit.month,
         groupby_method="sum",
-        max_model=5,
         evaluator=RegressionMetric.WMAPE,
         algos=["ets", TSAlgorithms.theta],
     )

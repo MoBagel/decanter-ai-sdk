@@ -114,15 +114,15 @@ class NonBlockingClient:
             IIDAlgorithms.XGBoost,
             IIDAlgorithms.GLM,
         ],
-        max_model: int = 20,
+        max_model: Optional[int] = None,
         tolerance: int = 3,
         nfold: int = 5,
-        stacked_ensemble: bool = True,
         validation_percentage: int = 10,
         seed: int = 1180,
         timeseries_value: List[Dict[str, Any]] = [],
-        holdout_percentage: int = 10,
+        holdout_percentage: Optional[int] = None,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
+        trainMode: Optional[str] = None
     ) -> str:
         """
         Train iid models.
@@ -151,12 +151,12 @@ class NonBlockingClient:
                 Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
-            stacked_ensemble (boolean)
-                If stacked ensemble models will be trained.
             validation_percentage (int)
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
+            trainMode (str)
+                Experiment train mode, only balance, speed, accuracy, efficiency (default is balance)
             timeseries_value (List[Dict[str, Any]])
                 Folds for time series cross validation (train, window, test, holdout_timeseries, cv, holdout_Percentage, split_By, lag).
                 \tExample:
@@ -290,11 +290,13 @@ class NonBlockingClient:
             "nfold": nfold,
             "max_model": max_model,
             "algos": algo_values,
-            "stacked_ensemble": stacked_ensemble,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
             "preprocessing": {"columnWise": column_list},
         }
+
+        if trainMode is not None:
+            training_settings["trainMode"] = trainMode
 
         exp_id = self.api.post_train_iid(training_settings)
 
@@ -310,7 +312,6 @@ class NonBlockingClient:
         timeunit: TimeUnit,
         nfold: int,
         validation_percentage: int,
-        holdout_percentage: int,
         algos: Union[List[TSAlgorithms], List[str]] = [TSAlgorithms.GBM],
         groupby_method: Optional[str] = None,
         evaluator: RegressionMetric = RegressionMetric.WMAPE,
@@ -318,13 +319,14 @@ class NonBlockingClient:
         gap: int = 0,
         feature_derivation_window: int = 60,
         horizon_window: int = 1,
-        max_model: int = 20,
+        max_model: Optional[int] = None,
         tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_column_types: Dict[str, DataType] = {},
         missing_value_settings: Dict[str, MissingValueHandling] = {},
         train_fusion_model: bool = False,
+        trainMode: Optional[str] = None
     ) -> str:
         """
         Train timeseries models.
@@ -355,8 +357,6 @@ class NonBlockingClient:
                 Validation percentage of experiment. (5~20)
             seed (int)
                 Random Seed of experiment. (1 ~ 65535)
-            holdout_percentage (int)
-                Holdout percentage for experiment.
             horizon_window (int)
                 experiment forecast horizon window value.
             gap (int)
@@ -376,6 +376,8 @@ class NonBlockingClient:
             train_fusion_model (bool)
                 Whether to train fusion model or not.
                 The fusion model feature can be accessed exclusively in versions later than v4.12.28.
+            trainMode (str)
+                Experiment train mode, only balance, speed, accuracy, efficiency (default is balance)
 
         Returns:
         ----------
@@ -433,13 +435,11 @@ class NonBlockingClient:
             "category": "regression",
             "stopping_metric": evaluator.value,
             "is_binary_classification": False,
-            "holdout": {"percent": holdout_percentage},
             "tolerance": tolerance,
             "max_model": max_model,
             "algos": algo_values,
             "balance_class": False,
             "is_forecast": True,
-            "stacked_ensemble": False,
             "forecast_column": datetime,
             "forecast_exogeneous_columns": exogeneous_columns_list,
             "forecast_groupby_method": groupby_method,
@@ -455,6 +455,9 @@ class NonBlockingClient:
             "preprocessing": {"columnWise": column_list},
             "train_fusion_model": train_fusion_model,
         }
+
+        if trainMode is not None:
+            training_settings["trainMode"] = trainMode
 
         exp_id = self.api.post_train_ts(training_settings)
 
