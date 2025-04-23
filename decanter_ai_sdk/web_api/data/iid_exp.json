@@ -329,7 +329,6 @@
        { "data_type": "categorical", "id": "Survived" }
      ],
      "holdout_percentage": 0.1,
-     "max_model": 5,
      "max_runtime": 259200,
      "model_type": "binary classification",
      "nfold": 5,
@@ -339,7 +338,6 @@
      "target": "Survived",
      "time_group": [],
      "time_series_split": null,
-     "tolerance": 0.0001,
      "transformed_features": [
        "PassengerId",
        "Pclass",
@@ -357,7 +355,6 @@
    "is_favorited": false,
    "is_forecast": false,
    "is_starred": false,
-   "max_model": 5,
    "name": "exp_name",
    "nfold": 5,
    "preprocessing": {},
@@ -410,7 +407,6 @@
    "target_type": "categorical",
    "task_id": "630439e3ea117c7b1f9314bd",
    "timeseriesValues": {},
-   "tolerance": 0.0001,
    "trainMode": "balance",
    "train_table": {
      "_id": "62ff59883a6eef99be6e8e86",
