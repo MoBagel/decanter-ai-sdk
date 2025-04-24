@@ -110,8 +110,6 @@ class Client:
             IIDAlgorithms.XGBoost,
             IIDAlgorithms.GLM,
         ],
-        max_model: Optional[int] = None,
-        tolerance: int = 3,
         nfold: int = 5,
         validation_percentage: int = 10,
         seed: int = 1180,
@@ -143,10 +141,6 @@ class Client:
                 Id of the table used to perform holdout.
             algos (Union[List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`], List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`]])
                 Algorithms used for experiment.
-            max_model (int)
-                Limit for the number of models to train for this experiment.
-            tolerance (int)
-                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             validation_percentage (int)
@@ -203,8 +197,6 @@ class Client:
             evaluator=evaluator,
             holdout_table_id=holdout_table_id,
             algos=algos,
-            max_model=max_model,
-            tolerance=tolerance,
             nfold=nfold,
             validation_percentage=validation_percentage,
             seed=seed,
@@ -256,8 +248,6 @@ class Client:
         horizon_window: int = 1,
         validation_percentage: int = 5,
         nfold: int = 1,
-        max_model: Optional[int] = None,
-        tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_column_types: Dict[str, DataType] = {},
@@ -284,10 +274,6 @@ class Client:
                 Evaluator used as stopping metric.
             algos (List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`],  List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
                 Algorithms used for experiment.
-            max_model (int)
-                Limit for the number of models to train for this experiment.
-            tolerance (int)
-                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             validation_percentage (int)
@@ -340,8 +326,6 @@ class Client:
             nfold=nfold,
             drop_features=drop_features,
             custom_column_types=custom_column_types,
-            max_model=max_model,
-            tolerance=tolerance,
             seed=seed,
             train_fusion_model=train_fusion_model,
             trainMode=trainMode

@@ -32,7 +32,6 @@ class Experiment(BaseModel):
     is_binary_classification: bool
     is_forecast: bool
     is_starred: bool
-    max_model: int
     name: str
     nfold: int
     preprocessing: Dict[str, Any]
@@ -48,7 +47,6 @@ class Experiment(BaseModel):
     target_type: str
     task_id: str
     timeseriesValues: Dict
-    tolerance: float
     train_table: Dict
     updated_at: str
     validation_percentage: float

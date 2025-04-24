@@ -114,8 +114,6 @@ class NonBlockingClient:
             IIDAlgorithms.XGBoost,
             IIDAlgorithms.GLM,
         ],
-        max_model: Optional[int] = None,
-        tolerance: int = 3,
         nfold: int = 5,
         validation_percentage: int = 10,
         seed: int = 1180,
@@ -145,10 +143,6 @@ class NonBlockingClient:
                 Id of the table used to perform holdout.
             algos (Union[List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`], List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`]])
                 Algorithms used for experiment.
-            max_model (int)
-                Limit for the number of models to train for this experiment.
-            tolerance (int)
-                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             validation_percentage (int)
@@ -286,9 +280,7 @@ class NonBlockingClient:
             "stopping_metric": evaluator.value,
             "is_binary_classification": is_binary_classification,
             "holdout": holdout_config,
-            "tolerance": tolerance,
             "nfold": nfold,
-            "max_model": max_model,
             "algos": algo_values,
             "validation_percentage": validation_percentage,
             "timeseriesValues": timeseries_value,
@@ -319,8 +311,6 @@ class NonBlockingClient:
         gap: int = 0,
         feature_derivation_window: int = 60,
         horizon_window: int = 1,
-        max_model: Optional[int] = None,
-        tolerance: int = 3,
         seed: int = 1111,
         drop_features: List[str] = [],
         custom_column_types: Dict[str, DataType] = {},
@@ -347,10 +337,6 @@ class NonBlockingClient:
                 Evaluator used as stopping metric.
             algos (List[`~decanter_ai_sdk.enums.algorithms.IIDAlgorithms`],  List[`~decanter_ai_sdk.enums.algorithms.TSAlgorithms`])
                 Algorithms used for experiment.
-            max_model (int)
-                Limit for the number of models to train for this experiment.
-            tolerance (int)
-                Larger error tolerance will let the training stop earlier. Smaller error tolerance usually generates more accurate models but takes more time. (1~10)
             nfold (int)
                 Amount of folds in experiment. (2~10) for autoML. (1~10) for autoTSF.
             validation_percentage (int)
@@ -435,8 +421,6 @@ class NonBlockingClient:
             "category": "regression",
             "stopping_metric": evaluator.value,
             "is_binary_classification": False,
-            "tolerance": tolerance,
-            "max_model": max_model,
             "algos": algo_values,
             "balance_class": False,
             "is_forecast": True,

@@ -986,7 +986,6 @@
       "valid": true
     },
     "max_iteration": 10,
-    "max_model": 5,
     "max_runtime": 259200,
     "max_window_for_feature_derivation": 60,
     "model_type": "time series regression",
@@ -997,7 +996,6 @@
     "time_group": [],
     "time_group_unique_count": 1.0,
     "time_unit": "month",
-    "tolerance": 0.01,
     "transformed_features": [],
     "validation_percentage": 0.1
   },
@@ -1005,7 +1003,6 @@
   "is_favorited": false,
   "is_forecast": true,
   "is_starred": false,
-  "max_model": 5,
   "name": "exp_name",
   "nfold": 5,
   "preprocessing": {},
@@ -1022,7 +1019,6 @@
   "target_type": "numerical",
   "task_id": "63044b58ea117c7b1f9314e4",
   "timeseriesValues": {},
-  "tolerance": 0.01,
   "trainMode": "balance",
   "train_table": {
     "_id": "63044594818547e247f5aa44",
