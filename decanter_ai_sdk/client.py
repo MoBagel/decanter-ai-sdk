@@ -116,7 +116,8 @@ class Client:
         timeseries_value: List[Dict[str, Any]] = [],
         holdout_percentage: Optional[int] = None,
         missing_value_settings: Dict[str, MissingValueHandling] = {},
-        trainMode: Optional[str] = None
+        trainMode: Optional[str] = None,
+        timeout: int = 3600
     ) -> Experiment:
         """
         Train iid models.
@@ -206,7 +207,7 @@ class Client:
             trainMode=trainMode
         )
 
-        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
+        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id, timeout=timeout))
 
         #### replace model_id in experiment.attributes ###
         # In fact, both res["experiment"]["model_id"] and
@@ -253,7 +254,8 @@ class Client:
         custom_column_types: Dict[str, DataType] = {},
         missing_value_settings: Dict[str, MissingValueHandling] = {},
         train_fusion_model: bool = False,
-        trainMode: Optional[str] = None
+        trainMode: Optional[str] = None,
+        timeout: int = 3600
     ) -> Experiment:
         """
         Train timeseries models.
@@ -331,7 +333,7 @@ class Client:
             trainMode=trainMode
         )
 
-        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id))
+        experiment = Experiment.parse_obj(self.wait_for_response("experiment", exp_id, timeout=timeout))
 
         #### replace model_id in experiment.attributes ###
         # res['experiment']['attributes'][{algo name}]['model_id'] is corex_model_id,
@@ -357,6 +359,7 @@ class Client:
         model: Optional[Model] = None,
         threshold: Optional[float] = None,
         download: int = 1,
+        timeout: int = 3600
     ) -> Prediction:
         """
         Predict model with test iid data.
@@ -392,7 +395,7 @@ class Client:
         )
 
         prediction = Prediction(
-            attributes=self.wait_for_response("prediction", pred_id),
+            attributes=self.wait_for_response("prediction", pred_id, timeout=timeout),
             predict_df=self.api.get_pred_data(pred_id, download),
         )
 
@@ -407,6 +410,7 @@ class Client:
         experiment_id: Optional[str] = None,
         model: Optional[Model] = None,
         download: int = 1,
+        timeout: int = 3600
     ) -> Prediction:
         """
         Predict model with test timeseries data.
@@ -442,7 +446,7 @@ class Client:
         )
 
         prediction = Prediction(
-            attributes=self.wait_for_response("prediction", pred_id),
+            attributes=self.wait_for_response("prediction", pred_id, timeout=timeout),
             predict_df=self.api.get_pred_data(pred_id, download),
         )
         return prediction
@@ -486,30 +490,40 @@ class Client:
     def stop_training(self, id: str) -> None:
         self.non_blocking_client.stop_training(id)
 
-    def wait_for_response(self, url, id):
+    def wait_for_response(self, url, id, timeout=3600):
+        import time
+        start_time = time.time()
         pbar = tqdm(total=100, desc=url + " task is now pending")
         progress = 0
         while self.api.check(task=url, id=id)["status"] != "done":  # pragma: no cover
+            if time.time() - start_time > timeout:
+                pbar.close()
+                raise TimeoutError(f"Timeout after {timeout} seconds ({timeout//60} minutes), task not finished.")
             res = self.api.check(task=url, id=id)
-
             if res["status"] == "fail":
                 raise RuntimeError(res["progress_message"])
-
             if res["status"] == "running":
                 pbar.set_description(
                     "[" + url + "] " + "id: " + id + " " + res["progress_message"]
                 )
                 pbar.update(int(float(res["progress"]) * 100) - progress)
                 progress = int(float(res["progress"]) * 100)
-
             sleep(3)
 
+        # Only prediction needs to wait for performance
+        if url == "prediction":
+            while True:
+                if time.time() - start_time > timeout:
+                    pbar.close()
+                    raise TimeoutError(f"Timeout after {timeout} seconds ({timeout//60} minutes), task not finished.")
+                final_res = self.api.check(task=url, id=id)
+                if "performance" in final_res and final_res["performance"]:
+                    break
+                sleep(3)
         pbar.update(100 - progress)
         pbar.refresh()
-
         pbar.close()
         logging.info("[" + url + "] Done!")
-
         return self.api.check(task=url, id=id)
 
     def get_table(self, data_id: str) -> pd.DataFrame:
