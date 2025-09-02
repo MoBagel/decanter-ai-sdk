@@ -500,35 +500,30 @@ class Client:
                 pbar.close()
                 raise TimeoutError(f"Timeout after {timeout} seconds ({timeout//60} minutes), task not finished.")
             res = self.api.check(task=url, id=id)
-
             if res["status"] == "fail":
                 raise RuntimeError(res["progress_message"])
-
             if res["status"] == "running":
                 pbar.set_description(
                     "[" + url + "] " + "id: " + id + " " + res["progress_message"]
                 )
                 pbar.update(int(float(res["progress"]) * 100) - progress)
                 progress = int(float(res["progress"]) * 100)
+            sleep(3)
 
-            sleep(10)
-
-        while True:
-            if time.time() - start_time > timeout:
-                pbar.close()
-                raise TimeoutError(f"Timeout after {timeout} seconds ({timeout//60} minutes), task not finished.")
-            final_res = self.api.check(task=url, id=id)
-            # Need to wait for performance to be non-empty
-            if "performance" in final_res and final_res["performance"]:
-                break
-            sleep(10)
-
+        # Only prediction needs to wait for performance
+        if url == "prediction":
+            while True:
+                if time.time() - start_time > timeout:
+                    pbar.close()
+                    raise TimeoutError(f"Timeout after {timeout} seconds ({timeout//60} minutes), task not finished.")
+                final_res = self.api.check(task=url, id=id)
+                if "performance" in final_res and final_res["performance"]:
+                    break
+                sleep(3)
         pbar.update(100 - progress)
         pbar.refresh()
-
         pbar.close()
         logging.info("[" + url + "] Done!")
-
         return self.api.check(task=url, id=id)
 
     def get_table(self, data_id: str) -> pd.DataFrame:
